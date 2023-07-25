@@ -1,0 +1,255 @@
+.App {
+  text-align: center;
+  background-color: rgb(36, 32, 32);
+  color: red;
+  font-family: 'Aharoni', 'Courier New', Courier, monospace;
+  font-size: 3rem;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+a {
+  list-style: none;
+}
+
+a:-webkit-any-link {
+  color: red;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+
+.App-link {
+  color: red;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+html {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  flex-wrap: nowrap;
+  background-color: rgb(36, 32, 32);
+
+}
+
+.home {
+  display: flex;
+
+  flex-direction: column
+}
+
+.logo {
+  display: flex;
+  justify-content: space-between;
+
+}
+
+.loginimg {
+  margin-top: 10px;
+  margin-right: 6px;
+}
+
+.inputtext {
+  font-size: 1.5rem;
+  font-family: 'Aharoni', 'Courier New', Courier, monospace;
+  box-shadow: 30px red;
+}
+
+.myButton {
+  box-shadow: 3px 4px 0px 0px #8a2a21;
+  background: linear-gradient(to bottom, #c62d1f 5%, #f24437 100%);
+  background-color: #c62d1f;
+  border-radius: 18px;
+  border: 1px solid #d02718;
+  display: inline-block;
+  cursor: pointer;
+  color: #ffffff;
+  font-family: Arial;
+  font-size: 17px;
+  padding: 7px 25px;
+  text-decoration: none;
+  text-shadow: 0px 1px 0px #810e05;
+}
+
+.myButton:hover {
+  background: linear-gradient(to bottom, #f24437 5%, #c62d1f 100%);
+  background-color: #f24437;
+}
+
+.myButton:active {
+  position: relative;
+  top: 1px;
+}
+
+.hov{
+  font-size: 1.2rem;
+}
+
+.orderview{
+  display: flex;
+  flex-direction: column;
+}
+
+#logodiv {
+  display: flex;
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.editimg {
+  width: 70px;
+  height: auto;
+  border-radius: 50%;
+}
+
+#plus {
+  width: 3.5px;
+  height: auto;
+  border-radius: 50%;
+}
+
+#menueimg {
+  width: 50px;
+  height: auto;
+  border-radius: 10%;
+}
+
+#productName {
+  background-color: #8a2a21;
+  color: white;
+  width: 100px;
+  height: 25px;
+  font-size: 1.5rem;
+  margin-left: 5px;
+  margin-right: 6px;
+  padding-top: 14;
+}
+
+.product {
+  background-color: #810e05;
+  display: flex;
+  align-items: center;
+  margin: 1.5px;
+  justify-content: center;
+}
+
+.menue {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.productView{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  font-size: 1.5rem;
+}
+.items{
+  margin: 9px;
+}
+#adddiv{
+  width: 100%;
+}
+
+.branchInfo{
+  display: flex;
+  flex-direction: row;
+  font-size: 1rem;
+  margin: 3px;
+  background-color: black;
+  justify-content: center;
+}
+
+.branchselect{
+  font-size: 1rem;
+}
+.oneselect{
+  display: flex;
+  flex-direction: row;
+}
+.radiodiv{
+  display: flex;
+  justify-content: center;
+  
+}
+
+.ovpa{
+  display: flex;
+  flex-direction: row;
+}
+.productsov{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.addingov{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  margin: 7px;
+}
+.imgov{
+  border-radius: 50px;
+  width: 60px;
+}
+.buttonov{
+  border-radius: 50px;
+  background-color: #282c34;
+}
+
+.branchmoney{
+  display: flex;
+  flex-direction: row;
+  font-size: 2rem;
+}
+
+.pinadmin{
+  width: 50%;
+  background-color: #8a2a21;
+  color: #ffffff;
+
+}
+
+.sum{
+  width: 100%;
+  background-color: #80271e;
+  color: #ffffff;
+}
+.buttoninorder{
+  
+  font-size: 1.5rem;
+}
