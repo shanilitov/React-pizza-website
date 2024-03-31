@@ -4,42 +4,35 @@ import ok from '../img/ok.jpg'
 
 function ProductView(data) {
     const [showModal, setShowModal] = useState(false);
-    const [cartQuantity, setCartQuantity] = useState(0);
+    const [cartItems, setCartItems] = useState([]);
     const [quantityToAdd, setQuantityToAdd] = useState(1); // סטייט עבור הכמות להוספה לעגלה
     let temp = JSON.parse(data.data);
 
     useEffect(() => {
-        let cart = JSON.parse(localStorage.getItem('shopping_cart'));
-        if (cart) {
-            let quantity = cart.reduce((total, item) => {
-                if (item.id === temp.id) {
-                    return total + 1;
-                }
-                return total;
-            }, 0);
-            setCartQuantity(quantity);
-        } else {
-            setCartQuantity(0);
-        }
+        let cart = JSON.parse(localStorage.getItem('shopping_cart')) || [];
+        setCartItems(cart);
     }, []);
 
-    const okClick = () => {
+    const okClick = (quantity) => {
         setShowModal(false);
-        let cart = JSON.parse(localStorage.getItem('shopping_cart'));
-        if (cart) {
-            localStorage.removeItem('shopping_cart');
-            for (let i = 0; i < quantityToAdd; i++) {
-                cart.push(temp);
-            }
-            localStorage.setItem('shopping_cart', JSON.stringify(cart));
+        let cart = JSON.parse(localStorage.getItem('shopping_cart')) || [];
+
+        console.log(`in onCkick: temp= ${JSON.stringify(temp)} cart: ${cart} tempId: ${temp.id}`)
+        // בדיקה האם המוצר כבר קיים בעגלה
+        const existingProductIndex = cart.findIndex(item =>{ 
+            console.log(JSON.stringify(item))
+            return JSON.parse( JSON.stringify(item)).key === temp.id});
+
+        if (existingProductIndex !== -1) {
+            // אם המוצר כבר קיים, עדכון הכמות שלו
+            cart[existingProductIndex].quantity = quantity;
         } else {
-            let product = [];
-            for (let i = 0; i < quantityToAdd; i++) {
-                product.push(temp);
-            }
-            localStorage.setItem('shopping_cart', JSON.stringify(product));
+            // אם המוצר לא קיים, הוספתו לעגלה עם הכמות המבוקשת
+            cart.push({ key: temp.id, product: temp, quantity: quantity });
         }
-        setCartQuantity(cartQuantity + quantityToAdd);
+
+        localStorage.setItem('shopping_cart', JSON.stringify(cart));
+        setCartItems(cart);
         setQuantityToAdd(1); // לאפס את הכמות להוספה
     };
 
@@ -48,7 +41,7 @@ function ProductView(data) {
             <div className="producttext">
                 <h1>{temp.name}</h1>
                 <h1>{temp.price + '$'}</h1>
-                <p>Quantity in Cart: {cartQuantity}</p>
+                <p>Quantity in Cart: {cartItems.find(item => item.key === temp.id)?.quantity || 0}</p>
             </div>
             <button onClick={() => setShowModal(true)}><img src={ok} className="icon" /></button>
 
@@ -65,7 +58,7 @@ function ProductView(data) {
                             max="10"
                             onChange={(e) => setQuantityToAdd(parseInt(e.target.value))}
                         />
-                        <button onClick={okClick}>Add to Cart</button>
+                        <button onClick={() => okClick(quantityToAdd)}>Add to Cart</button>
                         <button onClick={() => setShowModal(false)}>Close</button>
                     </div>
                 </div>

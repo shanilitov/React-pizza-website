@@ -17,16 +17,17 @@ function ShoppingCart() {
         let sum = 0
         if (getlist != null) {
             getlist.map((data, i) => {
-
+                console.log(`data: ${data}`)
                 let t = JSON.stringify(data)
                 console.log(JSON.parse(t))
                 console.log('t' + t)
                 let v = JSON.parse(t)
-                console.log('t' + v.price)
-                sum = sum + v.price;
+                console.log('t' + v.product.price + " a" + v.quantity)
+                sum = sum +( v.product.price * v.quantity);
                 return true;
             })
             setprice(sum)
+            
         }
         else {
             setprice(0)

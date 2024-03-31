@@ -8,7 +8,7 @@ function Finish1() {
     //display your product and your comment
     const [shoppinglist, setshoppinglist] = useState([])
     const [final, setfinal] = useState(0)
-    const [comment, setcomment] = useState([])
+    const [comment, setcomment] = useState("")
     const state = []
 
     useEffect(() => {
@@ -19,14 +19,14 @@ function Finish1() {
             setshoppinglist(getlist)
             let sum = 0
             getlist.map((data, i) => {
-
+                console.log(`data: ${data}`)
                 let t = JSON.stringify(data)
                 console.log(JSON.parse(t))
                 console.log('t' + t)
                 let v = JSON.parse(t)
-                console.log('t' + v.price)
-                sum = sum + v.price;
-
+                console.log('t' + v.product.price + " a" + v.quantity)
+                sum = sum +( v.product.price * v.quantity);
+                return true;
             })
             setfinal(sum)
             localStorage.setItem('price', JSON.stringify(sum))
@@ -37,11 +37,17 @@ function Finish1() {
         if (getlist) {
             // getlist = JSON.parse(getlist)
             console.log(getlist);
-            setcomment(comment.push(getlist))
+            setcomment(getlist)
+            console.log(comment)
         }
 
 
     }, state)
+
+    function saveCommit(){
+        localStorage.setItem('comment', comment);
+    }
+
     return (
         <div className="finish1">
             <div className="listf1" style={{ backgroundColor: 'black' }}>
@@ -54,7 +60,8 @@ function Finish1() {
                     if (a !== undefined) {
                         return (
                             <div className="finish1p" key={i}>
-                                <h1 className="h1f1">{a.name}</h1>
+                                <h1 className="h1f1">{a.product.name}</h1>
+                                <p>{`Quantity: ${a.quantity}`}</p>
                             </div>
                         )
                     }
@@ -69,7 +76,7 @@ function Finish1() {
                 <Link to='/'><img src={back} className="myButton" width='50px' /></Link>
                 <div style={{ backgroundColor: 'black' }}>
 
-                    <textarea style={{height: '100px'}} onChange={(event) => { setcomment(event.target.value) }} placeholder="Leave your commits here...">{comment}</textarea>
+                    <textarea style={{height: '100px'}} onChange={(event) => { setcomment(event.target.value) }} onBlur={saveCommit} placeholder="Leave your commits here..." value={comment}></textarea>
 
                     <h1 style={{ color: 'red' }}>{final + '$'}</h1>
                     <Link to='/pay' > <img src={pay} className='myButton' width='50px' /></Link>
