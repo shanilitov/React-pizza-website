@@ -118,7 +118,7 @@ function Pizza() {
                                     // <Adding data={JSON.stringify(a)} key={i} />
                                     <div key={i} className='displayadding'>
                                         <input type='checkbox' onChange={() => { checked(JSON.stringify(a), i) }} />
-                                        <p>{a.name}</p>
+                                        <p style={{ color: 'white', }}>{a.name}</p>
                                     </div>
                                 )
                             }
@@ -130,7 +130,12 @@ function Pizza() {
                 <div className="bandt">
                     <Link to='/' id="back"><img src={back} className="icon" /></Link>
                     <button onClick={() => { okclick() }}><img src={ok} className='icon' /></button>
-                    <input type='text' className="text" onChange={(event) => { setcomment(event.target.value) }} placeholder="WRITE YOUR COMMENTS HERE..." />
+                    <textarea
+                        className="text"
+                        onChange={(event) => { setcomment(event.target.value) }}
+                        placeholder="WRITE YOUR COMMENTS HERE..."
+                    />
+
                 </div>
             </div>
 
