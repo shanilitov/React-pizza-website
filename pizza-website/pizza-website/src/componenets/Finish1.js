@@ -44,7 +44,11 @@ function Finish1() {
     }, state)
     return (
         <div className="finish1">
-            <div className="listf1">
+            <div className="listf1" style={{ backgroundColor: 'black' }}>
+                <h1 style={{
+                    backgroundColor: 'red',
+                    color: 'black'
+                }}>YOUR ORDER</h1>
                 {shoppinglist.map((a, i) => {
                     console.log(a)
                     if (a !== undefined) {
@@ -59,15 +63,17 @@ function Finish1() {
                     }
                 })}
             </div>
-            <div>
-                
-                
-                <Link to='/'><img src={back} className="myButton" width='50px'/></Link>
-                <Link to='/pay' > <img src={pay} className='myButton' width='50px'/></Link>
-                <div>
-                    <textarea onChange={(event) => { setcomment(event.target.value) }}>{comment}</textarea>
+            <div >
+
+
+                <Link to='/'><img src={back} className="myButton" width='50px' /></Link>
+                <div style={{ backgroundColor: 'black' }}>
+
+                    <textarea style={{height: '100px'}} onChange={(event) => { setcomment(event.target.value) }} placeholder="Leave your commits here...">{comment}</textarea>
+
+                    <h1 style={{ color: 'red' }}>{final + '$'}</h1>
+                    <Link to='/pay' > <img src={pay} className='myButton' width='50px' /></Link>
                 </div>
-                <h1>{final + '$'}</h1>
             </div>
         </div>
     )

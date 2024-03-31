@@ -15,17 +15,22 @@ function ShoppingCart() {
         console.log(getlist)
         setList(getlist)
         let sum = 0
-        getlist.map((data, i) => {
-            
-            let t = JSON.stringify(data)
-            console.log(JSON.parse(t))
-            console.log('t'+t)
-            let v = JSON.parse(t)
-            console.log('t'+v.price)
-            sum = sum + v.price;
-            return true;
-        })
-        setprice(sum)
+        if (getlist != null) {
+            getlist.map((data, i) => {
+
+                let t = JSON.stringify(data)
+                console.log(JSON.parse(t))
+                console.log('t' + t)
+                let v = JSON.parse(t)
+                console.log('t' + v.price)
+                sum = sum + v.price;
+                return true;
+            })
+            setprice(sum)
+        }
+        else {
+            setprice(0)
+        }
 
     }, state)
     return (
@@ -34,7 +39,7 @@ function ShoppingCart() {
             <div id="shoppingcart">
                 <div className="shoppingcart">
                     <div >
-                        {
+                        {list != null || list == [] ?
                             list.map((data, i) => {
                                 if (data) {
                                     console.log(data)
@@ -48,6 +53,7 @@ function ShoppingCart() {
                                     )
                                 }
                             })
+                            : 'You dont have any dish in your cart yet...'
                         }
                     </div>
                     <div className="linkdiv">
@@ -55,7 +61,9 @@ function ShoppingCart() {
                         <div>
                             <h1>{finleprice + '$'}</h1>
                         </div>
-                        <Link to="/finish1" ><img src={finish2} className="myButton" width='100px' /></Link>
+                        {finleprice == 0 ? <></> :
+                            <Link to="/finish1" ><img src={finish2} className="myButton" width='100px' /></Link>
+                        }
                     </div>
                 </div>
             </div>
