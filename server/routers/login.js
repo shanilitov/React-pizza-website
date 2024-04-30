@@ -19,8 +19,8 @@ router.post('/', async (req, res) => {
             }
         }))
     }
-    catch {
-        console.log('error!')
+    catch(err) {
+        console.log('error!:' + err)
         res.send(false)
     }
 

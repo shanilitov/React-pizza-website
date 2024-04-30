@@ -12,6 +12,7 @@ function Finish2() {
     const [city, setcity] = useState('')
     const [street, setsrteet] = useState('')
     const [number, setnumber] = useState(-1)
+    const [phone, setPhone] = useState(0)
     const state = []
 
     const navigate = useNavigate()
@@ -39,6 +40,7 @@ function Finish2() {
         }
         else {
             const order = {
+                phone: phone,
                 city: city,
                 street: street,
                 number: number,
@@ -79,6 +81,7 @@ function Finish2() {
                 <input type='text' placeholder="STREET" onChange={(event) => { setsrteet(event.target.value) }} />
                 <input type='text' placeholder="NUMBER" onChange={(event) => { setnumber(event.target.value) }} />
             </div>
+            <input type='text' placeholder="Phone Number" onChange={(event) => { setPhone(event.target.value) }} />
             <div>
                 <h1 className="h1inf2">{choice.name}</h1>
                 <button onClick={() => { finish2Click() }}><img src={delivery} className="myButton" width='50px' /></button>

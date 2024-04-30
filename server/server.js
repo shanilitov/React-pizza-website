@@ -7,6 +7,7 @@ const signin_router= require('./routers/signin')
 const menue_router= require('./routers/menue')
 const orders_router= require('./routers/orders')
 const admin_router= require('./routers/admin')
+const chat_router= require('./routers/chat')
 
 const app = express()
 
@@ -26,6 +27,7 @@ app.use('/signin', signin_router)
 app.use('/menue', menue_router)
 app.use('/orders', orders_router)
 app.use('/admin', admin_router)
+app.use('/chat', chat_router)
 
 
 

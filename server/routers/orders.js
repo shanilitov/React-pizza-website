@@ -22,40 +22,48 @@ router.get('/get_order_data/:order_id', (req, res) => {
     }
 })
 
-router.post('/create_new_order', (req, res) => {
+// create new order
+router.post('/create_new_order', async (req, res) => {
+    console.log(`in post create new order.`)
     try {
-        const order = req.body
+
+        const order = req.body;
         console.log({ order });
 
-        queries.createneworder(order.city, order.street, order.number, order.order_date, order.comment,
-            order.price, order.name, (ans) => {
-                console.log('ans is:' + ans)
-                if (ans) {
-                    let { insertId } = JSON.parse(ans)
 
-                    queries.insertintobranchorders(order.branch_id, insertId, async (ans) => {
-                        console.log(ans)
-                        if (ans) {
-                            for (let detail of order.orderdetails) {
-                                await queries.insertintoorderdetailes(insertId, detail.id, detail.price, (ans) => {
-                                    console.log(ans)
-                                })
-                            }
-                            res.send(true)
+        await queries.createneworder(order.city, order.street, order.number, order.order_date, order.comment, order.price, order.name, order.phone, orderResponse => {
+            console.log(`res1 is ${orderResponse}`)
+            console.log(`####: ${orderResponse}`)
+            const orderInsertId = JSON.parse(orderResponse).insertId;
+
+            console.log(`%%%%: ${orderResponse}`)
+            queries.insertintobranchorders(order.branch_id, orderInsertId, branchOrderResponse => {
+                if (!branchOrderResponse) {
+                    return res.send(false);
+                }
+
+                for (const detail of order.orderdetails) {
+                    console.log({ detail })
+                    //const product = JSON.parse( JSON.stringify(detail.product));
+                    //console.log({ product })
+                    const quantity = detail.quantity;
+
+                    queries.insertintoorderdetailes(orderInsertId, detail.key, quantity, detail.product.price, orderDetailsResponse => {
+                        if (!orderDetailsResponse) {
+                            return res.send(false);
                         }
-
                     })
                 }
-                else {
-                    res.send(false)
-                }
             })
+
+            res.send(true);
+        })
+    } catch (error) {
+        console.error(error);
+        res.send(false);
     }
-    catch {
-        console.log('error!')
-        res.send(false)
-    }
-})
+});
+
 
 
 router.get('/get_product_id_and_price_by_order_id/:order_id', (req, res) => {
@@ -152,6 +160,27 @@ router.get('/changesendbyorderid/:id', (req, res) => {
     catch {
         console.log('error!')
         res.send(false)
+    }
+})
+
+router.post('/getOrderByPhone', (req, res) => {
+    try {
+        console.log('in get order by phone, phone is:' + req.body.phone)
+
+        queries.getOrderByPhone(req.body.phone, (order) => {
+            console.log('order: ' + order)
+            if (order) {
+                return res.json(order);
+            } else {
+                res.status(500).json({ error: 'Error fetching order' });
+            }
+        });
+
+
+    }
+    catch (err) {
+        console.log(err)
+        res.status(500).json({ error: 'Error fetching order' });
     }
 })
 

@@ -14,6 +14,7 @@ import Finish1 from './componenets/Finish1';
 import Finish2 from './componenets/Finish2';
 import Sent from './componenets/Sent';
 import Pay from './componenets/Pay';
+import RegistrationComponent from './componenets/RegistrationComponent'
 
 
 
@@ -37,6 +38,7 @@ function App() {
             <Route path='/pay' element={<Pay />} />
             <Route path='/finish2' element={<Finish2 />} />
             <Route path='/sent' element={<Sent />} />
+            <Route path='/RegistrationComponent' element={<RegistrationComponent />} />
 
           </Routes>
         </Router>

@@ -16,6 +16,12 @@ function Home() {
                         <img src={menu} className="homeimg"  id="menuicon"/>
                     </div>
                 </Link>
+                <Link to='/RegistrationComponent' className="yourOrder">
+                    <div className="yourOrder">
+                        
+                        <img src={menu} className="homeimg"  id="menuicon"/>
+                    </div>
+                </Link>
                 <Link to='/pizza' className="homelink">
                     <div className="homediv">
                         <p className="homep">DO YOUR PIZZA</p>

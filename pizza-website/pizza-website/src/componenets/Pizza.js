@@ -46,12 +46,20 @@ function Pizza() {
 
     const checked = (a, i) => {
         JSON.parse(a)
-        console.log(a + 'checked')
-        let e = existedid.find(element => element === i)
+        console.log(a + 'checked!!!!!1')
+
+        console.log('i : ' + i);
+
+        let currentAdd = {
+            'key:' : a.id,
+            'product': a,
+            'quantity': 1
+        }
+        let e = existedid.find(element => element === currentAdd)
         console.log(e)
         if (e === undefined) {
             let value = selected
-            value.push(a)
+            value.push(currentAdd)
             setselected(value)
             value = existedid
             value.push(i)
@@ -74,7 +82,7 @@ function Pizza() {
         selected.map((a, i) => {
             if (a !== null) {
                 console.log(a + 'add to list')
-                let t = JSON.parse(a)
+                let t = JSON.parse(JSON.stringify( a))
                 console.log(t)
                 list.push(t)
             }
@@ -84,7 +92,13 @@ function Pizza() {
         if (list === null) {
             list = []
         }
-        list.push(pizza)
+
+        list.push({
+            'key': pizza.id,
+            'prudact': pizza,
+            'quantity': 1
+        }
+            )
         console.log(list)
         localStorage.removeItem('shopping_cart')
         console.log('your list: ' + list)
