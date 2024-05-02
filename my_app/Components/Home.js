@@ -1,7 +1,32 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const Home = ({ userName, userId }) => {
+const Home = ({ route }) => {
+  const { userName, userId } = route.params;
+  
+  const texts = ['Get new order to deliver','Picked up already?', 'Delivered already?']
+  const[currentOrder, setCurrentOrder] = useState({}) // ההזמנה הנוכחית שהשליח עובד עליה
+  const [status, setStatus] = useState(0) 
+  const [flag, setFlag] = useState(true)
+
+  useEffect(() => {
+    if(flag)
+      checkIfUserHasOrderNow()
+    
+  }, [status]);
+
+  const checkIfUserHasOrderNow = async () =>{
+    
+  }
+
+  const buttonClicked = async () =>{
+
+  }
+
+
+
+
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => console.log('Navigate to Profile')} style={styles.profileButton}>
@@ -12,7 +37,7 @@ const Home = ({ userName, userId }) => {
         <Text style={styles.greeting}>Hi, {userName}</Text>
 
         <TouchableOpacity style={styles.button} onPress={() => console.log('Navigate to Current Delivery')}>
-          <Text style={styles.buttonText}>Current Delivery</Text>
+          <Text style={styles.buttonText}>{texts[status]}</Text>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button} onPress={() => console.log('Navigate to Activities')}>

@@ -1,5 +1,7 @@
 const express = require('express')
 const cors = require('cors')
+const http = require('http');
+
 
 const login_router= require('./routers/login')
 const branch_router= require('./routers/branch')
@@ -33,10 +35,15 @@ app.use('/chat', chat_router)
 
 //WebSocket area:
 
-const WebSocket = require('ws');
+const WebSocket = require('websocket').server;
+const server = http.createServer(app);
+const wss = new WebSocket({
+    httpServer: server,
+    autoAcceptConnections: true,
+});
 
-const wss = new WebSocket.Server({ port: 8080 });
 
+console.log(`web socket: ${JSON.stringify(wss)}`)
 // מערך לקוחות מחוברים
 const clients = [];
 
@@ -59,6 +66,7 @@ wss.on('connection', function connection(ws) {
         // id = מספר ההזמנה + סוג הצד 
         //123S דוגמא
         const data = JSON.parse(message);
+        console.log(`user connect to web socket ${data.id}`)
         // הוספת לקוח לרשימת הלקוחות המחוברים
         clients.push({ id: data.id, socket: ws });
     });

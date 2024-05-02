@@ -14,19 +14,22 @@ async function query(sql, callback) {
     connection.connect((err) => {
         if (err)
             callback(false)
-        connection.query(sql, (err, result, field) => {
-            console.log('err: ' + err, 'result: ' + JSON.stringify(result), "field: " + field)
-            
-            if (err)
-                callback(false)
-         
-            result = JSON.stringify(result)
-            console.log(`in query, the response: ${result}`)
+        else {
+            connection.query(sql, (err, result, field) => {
+                console.log('err: ' + err, 'result: ' + JSON.stringify(result), "field: " + field)
 
-            
-            callback(result);
-        })
+                if (err || result === undefined)
+                    callback(false)
+                else {
 
+                    result = JSON.stringify(result)
+                    console.log(`in query, the response: ${result}`)
+
+                    if(result)
+                        callback(result);
+                }
+            })
+        }
 
     })
 }

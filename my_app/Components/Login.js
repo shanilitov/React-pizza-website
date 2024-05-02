@@ -1,15 +1,50 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Signin from './Signin'; // הנחה: הקומפוננטה של Signin קיימת באותו מחברת
 
 const Login = () => {
   const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [Id, setPassword] = useState('');
+  const navigation = useNavigation();
+
 
   const handleLogin = () => {
     // הוספת לוגיקה לטיפול בהתחברות כאן
     console.log('Username:', username);
-    console.log('Password:', password);
+    console.log('Id:', Id);
+
+    const fetchLogin = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3600/login/delivery`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body:JSON.stringify( {
+              id: Id,
+              name: username
+            })
+          }
+        );
+        const data = await response.json();
+        console.log(data)
+        if (data !== false) {
+          navigation.navigate('Home', {
+            userName: username,
+            userId: Id,
+          });
+          
+        }
+
+      } catch (error) {
+        console.error('Error fetching chat:', error);
+      }
+    };
+
+    fetchLogin();
   };
 
   return (
@@ -23,16 +58,16 @@ const Login = () => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Password"
+        placeholder="Id"
         secureTextEntry={true}
-        value={password}
+        value={Id}
         onChangeText={(text) => setPassword(text)}
       />
       <TouchableOpacity style={styles.button} onPress={handleLogin}>
         <Text style={styles.buttonText}>Login</Text>
       </TouchableOpacity>
-      <Text style={styles.signupText}>
-        Don't have an account? 
+      <Text style={styles.signupText} onPress={() => navigation.navigate('Signin')}>
+        Don't have an account?
       </Text>
     </View>
   );

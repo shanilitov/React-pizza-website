@@ -1,20 +1,55 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
 const Signin = () => {
   const [username, setUsername] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [repeatPassword, setRepeatPassword] = useState('');
+  const [Id, setId] = useState('');
+  const navigation = useNavigation();
 
   const handleSignIn = () => {
     // הוספת לוגיקה לטיפול בהרשמה כאן
     console.log('Username:', username);
     console.log('Phone Number:', phoneNumber);
-    console.log('Email:', email);
-    console.log('Password:', password);
-    console.log('Repeat Password:', repeatPassword);
+    console.log('Id:', Id);
+
+
+    const fetchSignin = async () => {
+      try {
+        const body = {
+          id: Id,
+          name: username,
+          phone: phoneNumber
+        }
+        console.log(`body: ${body}`)
+        const response = await fetch(
+          `http://localhost:3600/signin/Delivery`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body)
+          }
+        );
+        const data = await response.json();
+        console.log(data)
+        if (data !== false) {
+          navigation.navigate('Home', {
+            userName: username,
+            userId: Id,
+          });
+
+        }
+
+      } catch (error) {
+        console.error('Error fetching chat:', error);
+      }
+    };
+
+    fetchSignin();
+
   };
 
   return (
@@ -35,37 +70,19 @@ const Signin = () => {
         onChangeText={(text) => setPhoneNumber(text)}
       />
 
-      <Text style={styles.label}>Email:</Text>
+      <Text style={styles.label}>Id:</Text>
       <TextInput
         style={styles.input}
-        placeholder="Enter your email"
-        value={email}
-        onChangeText={(text) => setEmail(text)}
-      />
-
-      <Text style={styles.label}>Password:</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Enter your password"
-        secureTextEntry={true}
-        value={password}
-        onChangeText={(text) => setPassword(text)}
-      />
-
-      <Text style={styles.label}>Repeat Password:</Text>
-      <TextInput
-        style={styles.input}
-        placeholder="Repeat your password"
-        secureTextEntry={true}
-        value={repeatPassword}
-        onChangeText={(text) => setRepeatPassword(text)}
+        placeholder="Enter your Id"
+        value={Id}
+        onChangeText={(text) => setId(text)}
       />
 
       <TouchableOpacity style={styles.button} onPress={handleSignIn}>
         <Text style={styles.buttonText}>SignIn</Text>
       </TouchableOpacity>
 
-      <Text style={styles.text}>Already have an account? </Text>
+      <Text style={styles.text} onPress={() => navigation.navigate('Login')}>Already have an account? </Text>
     </ScrollView>
   );
 };

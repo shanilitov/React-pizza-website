@@ -44,4 +44,25 @@ router.get('/get_user_is/:name', (req, res) => {
     }
 })
 
+router.post('/Delivery', async (req, res) => {
+    try {
+        console.log(`the body: ${req.body}`)
+
+        queries.signinDelivery(req.body.id, req.body.name, req.body.phone, (ans) => {
+            console.log(ans)
+            if (ans) {
+                res.json(ans)
+            }
+            else {
+                res.send(false)
+            }
+        })
+    }
+    catch {
+        console.log('error!')
+        res.send(false)
+    }
+
+})
+
 module.exports = router

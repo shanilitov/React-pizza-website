@@ -185,4 +185,15 @@ router.post('/getOrderByPhone', (req, res) => {
 })
 
 
+router.get('/getCurrentOrder/:deliverId', (req, res) => {
+    try{
+        
+    }
+    catch (err) {
+        console.log(err)
+        res.status(500).json({ error: 'Error fetching order' });
+    }
+})
+
+
 module.exports = router

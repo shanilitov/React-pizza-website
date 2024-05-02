@@ -9,14 +9,33 @@ async function loginByNameAndPass(name, password, callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
+    }
+}
+
+async function loginDelivery(name, id, callback) {
+    console.log('name ' + name, 'id ' + id)
+    console.log('making sql requset')
+    let sql = `select * from delivery.users where name = '${name}' and idusers =${id};`
+    try {
+        db.query(sql, callback);
+    }
+    catch (err) {
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
 async function getAllBranches(callback) {
     let sql = `select id, name from branch`
-    db.query(sql, callback)
+    try {
+        db.query(sql, callback)
+    }
+    catch (err) {
+        console.log(`in querise : ${err}`)
+        //throw err;
+    }
 }
 
 async function getBranchById(branchId, callback) {
@@ -30,8 +49,8 @@ async function getBranchById(branchId, callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -43,8 +62,8 @@ async function getOrdersByBranchId(branchId, callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -56,8 +75,21 @@ async function signin(name, password, branch, callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
+    }
+}
+
+async function signinDelivery(Id, Name, Phone, callback) {
+    console.log('in signin function')
+    let sql = `insert into delivery.users(idusers, name, phone)
+    values('${Id}', '${Name}', '${Phone}');`
+    try {
+        db.query(sql, callback);
+    }
+    catch (err) {
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -68,8 +100,8 @@ async function getAllProduct(callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -81,8 +113,8 @@ async function addNewProduct(name, price, enable, callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -94,8 +126,8 @@ async function deleteProduct(id, callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -109,8 +141,8 @@ async function updateProduct(id, name, price, enable, callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -122,8 +154,8 @@ async function getOrderDataByOrderId(order_id, callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -134,8 +166,8 @@ async function getallbranchesdata(callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -146,8 +178,8 @@ async function getalladdings(callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -158,8 +190,8 @@ async function getpizzaitem(callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -170,8 +202,8 @@ async function getuseridbyname(name, callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -183,8 +215,8 @@ values(${phone}, '${city}', '${street}', '${number}', '${comment}', '${price}',f
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(`catch err in create new order: $${err}`)
-        // callback(err)
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -196,8 +228,8 @@ async function insertintobranchorders(order_id, branch_id, callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -209,8 +241,8 @@ async function insertintoorderdetailes(order_id, product_id, amount, price, call
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -221,8 +253,8 @@ async function getproductandpricebyorderid(order_id, callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -233,8 +265,8 @@ async function getaddingnamebyid(id, callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -248,8 +280,8 @@ async function getaddingnbyorderid(id, callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -263,8 +295,8 @@ async function getproductsnbyorderid(id, callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -279,8 +311,8 @@ async function changesendbyorderid(id, callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -294,8 +326,8 @@ async function getordermoney(id, callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -313,8 +345,8 @@ async function getChat(orderId, connection, callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -331,8 +363,8 @@ async function sendMessage(message, orderId, connection, callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
@@ -350,9 +382,9 @@ async function getOrderByPhone(phone, callback) {
         db.query(sql, callback);
     }
     catch (err) {
-        console.log(err)
-        throw err;
+        console.log(`in querise : ${err}`)
+        //throw err;
     }
 }
 
-module.exports = {getOrderByPhone, sendMessage, getChat, getordermoney, changesendbyorderid, getproductsnbyorderid, getaddingnbyorderid, getaddingnamebyid, getproductandpricebyorderid, insertintoorderdetailes, insertintobranchorders, createneworder, getuseridbyname, getpizzaitem, getalladdings, getallbranchesdata, getOrderDataByOrderId, updateProduct, deleteProduct, addNewProduct, loginByNameAndPass, getAllBranches, getBranchById, getOrdersByBranchId, signin, getAllProduct }
+module.exports = {signinDelivery, loginDelivery, getOrderByPhone, sendMessage, getChat, getordermoney, changesendbyorderid, getproductsnbyorderid, getaddingnbyorderid, getaddingnamebyid, getproductandpricebyorderid, insertintoorderdetailes, insertintobranchorders, createneworder, getuseridbyname, getpizzaitem, getalladdings, getallbranchesdata, getOrderDataByOrderId, updateProduct, deleteProduct, addNewProduct, loginByNameAndPass, getAllBranches, getBranchById, getOrdersByBranchId, signin, getAllProduct }

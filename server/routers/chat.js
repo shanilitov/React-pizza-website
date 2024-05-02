@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const queries = require('./queries')
-const server = require('./server')
+const server = require('../server')
 
 router.get('/get/:orderId/:connection', async (req, res) => {
     try {
