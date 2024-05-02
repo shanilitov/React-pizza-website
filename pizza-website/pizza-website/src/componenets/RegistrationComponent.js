@@ -37,7 +37,9 @@ const RegistrationComponent = () => {
       console.log('תוצאה:', data);
 
       // כאן תוכלי להוסיף לוגיקה נוספת לאחר הקבלת התוצאה מהשרת
-
+      if (data[0] != undefined) {
+        
+      }
 
 
     } catch (error) {

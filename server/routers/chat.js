@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const queries = require('./queries')
+const server = require('./server')
 
 router.get('/get/:orderId/:connection', async (req, res) => {
     try {
@@ -33,6 +34,10 @@ router.post('/send', async (req, res) => {
         queries.sendMessage(message, orderId, connection, (ans) => {
             if (ans) {
                 res.send(true);
+                // נשלח דרך הweb socket עדכון על ההודעה החדשה.
+                const client1 = JSON.stringify(orderId) + connection[0] 
+                const client2 = JSON.stringify(orderId) + connection[1] 
+                server.sendMessage(client1, client2, message)
             }
             else {
                 res.send(false)

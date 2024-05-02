@@ -10,7 +10,26 @@ const Chat = () => {
   const[update, setUpdate] = useState(0)
   const [connection, setConnection] = useState('DS') //שומר את ההגדרה עם מי הצ'אט הנוכחי
 
-  // יש להשתמש באפשרות useEffect על מנת לקבל את הצ'אט בעת טעינת הדף או כל שינוי בערכי connection
+  //websocket:
+  const WebSocket = require('websocket').w3cwebsocket;
+  const socket = new WebSocket('http://localhost:3601'); // צייני את ה-URL של השרת WebSocket
+  
+  socket.onopen = () => {
+    console.log('WebSocket connection established.');
+  };
+  
+  socket.onmessage = (event) => {
+    console.log('Message received from server:', event.data);
+
+  };
+  
+  socket.onclose = (event) => {
+    console.log('WebSocket connection closed:', event);
+  };
+  
+
+
+// יש להשתמש באפשרות useEffect על מנת לקבל את הצ'אט בעת טעינת הדף או כל שינוי בערכי connection
 useEffect(() => {
   const fetchChat = async () => {
     try {
