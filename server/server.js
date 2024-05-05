@@ -6,10 +6,11 @@ const http = require('http');
 const login_router= require('./routers/login')
 const branch_router= require('./routers/branch')
 const signin_router= require('./routers/signin')
-const menue_router= require('./routers/menue')
+const menue_router= require('./routers/menu')
 const orders_router= require('./routers/orders')
 const admin_router= require('./routers/admin')
 const chat_router= require('./routers/chat')
+const delivery_router= require('./routers/delivery')
 
 const app = express()
 
@@ -30,6 +31,7 @@ app.use('/menue', menue_router)
 app.use('/orders', orders_router)
 app.use('/admin', admin_router)
 app.use('/chat', chat_router)
+app.use('/delivery', delivery_router)
 
 
 

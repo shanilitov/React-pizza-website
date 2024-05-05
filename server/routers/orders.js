@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const queries = require('./queries')
+const queries = require('../queries/orders')
 
 router.get('/get_order_data/:order_id', (req, res) => {
     try {
@@ -185,15 +185,7 @@ router.post('/getOrderByPhone', (req, res) => {
 })
 
 
-router.get('/getCurrentOrder/:deliverId', (req, res) => {
-    try{
-        
-    }
-    catch (err) {
-        console.log(err)
-        res.status(500).json({ error: 'Error fetching order' });
-    }
-})
+
 
 
 module.exports = router

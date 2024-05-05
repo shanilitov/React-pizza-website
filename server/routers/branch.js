@@ -1,7 +1,7 @@
 
 const express = require('express');
 const router = express.Router();
-const queries = require('./queries')
+const branchQueries = require('../queries/branch')
 
 
 
@@ -14,7 +14,7 @@ router.get('/getBranchData/:branchid', (req, res) => {
 
 
         console.log('in get branch by id')
-        queries.getBranchById(id, (branch => {
+        branchQueries.getBranchById(id, (branch => {
             console.log(branch)
             if (branch) {
                 res.json(branch)
@@ -35,7 +35,7 @@ router.get('/getBranchData/:branchid', (req, res) => {
 router.get('/info', (req, res) => {
 
     try {
-        queries.getAllBranches((ans => {
+        branchQueries.getAllBranches((ans => {
             console.log(ans)
             if (ans) {
                 res.json(ans)
@@ -59,7 +59,7 @@ router.get(`/get_all_orders/:branchid`, (req, res) => {
         id = parseInt(id)
         console.log('in get all orders by branch id ' + id)
 
-        queries.getOrdersByBranchId(id, (ans) => {
+        branchQueries.getOrdersByBranchId(id, (ans) => {
             console.log(ans)
 
             if (ans) {
@@ -80,7 +80,7 @@ router.get(`/get_all_orders/:branchid`, (req, res) => {
 router.get('/get_all_branches_data', (req, res) => {
     try {
         console.log('in get all branches data router')
-        queries.getallbranchesdata((ans) => {
+        branchQueries.getallbranchesdata((ans) => {
             console.log(ans)
             if (ans) {
                 res.json(ans)

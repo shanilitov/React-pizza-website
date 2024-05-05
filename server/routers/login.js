@@ -2,7 +2,7 @@
 
 const express = require('express');
 const router = express.Router();
-const queries = require('./queries')
+const queries = require('../queries/login')
 
 router.post('/', async (req, res) => {
     try {
@@ -26,27 +26,6 @@ router.post('/', async (req, res) => {
 
 })
 
-router.post('/delivery', async (req, res) => {
-    try {
-        console.log(req.body)
-
-        queries.loginDelivery(req.body.name, req.body.id, (user => {
-            console.log('answer: ' + user)
-            if (user) {
-                // const dataBack = { 'user': user[0].id, 'admin': user[0].adamin, 'userData': { 'branchId': user[0].branch_id, 'userName': user[0].user_name } }
-                res.json(user)
-            }
-            else {
-                res.send(false)
-            }
-        }))
-    }
-    catch(err) {
-        console.log('error!:' + err)
-        res.send(false)
-    }
-
-})
 
 
 
