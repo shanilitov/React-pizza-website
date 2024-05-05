@@ -2,10 +2,11 @@ const db = require('../dal/DB');
 
 
 async function signin(name, password, branch, callback) {
-    console.log('in signin function')
-    let sql = `insert into users(user_name, password,branch_id, adamin)
-    values('${name}', '${password}', '${branch}', false);`
     try {
+        console.log('in signin function')
+        let sql = `insert into users(user_name, password,branch_id, adamin)
+    values('${name}', '${password}', '${branch}', false);`
+
         db.query(sql, callback);
     }
     catch (err) {
@@ -15,9 +16,10 @@ async function signin(name, password, branch, callback) {
 }
 
 async function getuseridbyname(name, callback) {
-    console.log('in get users id by name func ' + name);
-    let sql = `select id from users where user_name = '${name}'`
     try {
+        console.log('in get users id by name func ' + name);
+        let sql = `select id from users where user_name = '${name}'`
+
         db.query(sql, callback);
     }
     catch (err) {
@@ -27,4 +29,4 @@ async function getuseridbyname(name, callback) {
 }
 
 
-module.exports = {signin, getuseridbyname}
+module.exports = { signin, getuseridbyname }

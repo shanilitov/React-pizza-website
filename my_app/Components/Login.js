@@ -17,7 +17,7 @@ const Login = () => {
     const fetchLogin = async () => {
       try {
         const response = await fetch(
-          `http://localhost:3600/login/delivery`,
+          `http://localhost:3600/delivery/login`,
           {
             method: 'POST',
             headers: {

@@ -4,23 +4,45 @@ import { useNavigation } from '@react-navigation/native';
 
 const Home = ({ route }) => {
   const { userName, userId } = route.params;
-  
-  const texts = ['Get new order to deliver','Picked up already?', 'Delivered already?']
-  const[currentOrder, setCurrentOrder] = useState({}) // ההזמנה הנוכחית שהשליח עובד עליה
-  const [status, setStatus] = useState(0) 
+
+  const texts = ['Get new order to deliver', 'Picked up already?', 'Delivered already?']
+  const [currentOrder, setCurrentOrder] = useState({}) // ההזמנה הנוכחית שהשליח עובד עליה
+  const [status, setStatus] = useState(0)
   const [flag, setFlag] = useState(true)
 
   useEffect(() => {
-    if(flag)
+    if (flag)
       checkIfUserHasOrderNow()
-    
+
   }, [status]);
 
-  const checkIfUserHasOrderNow = async () =>{
-    
+  const checkIfUserHasOrderNow = async () => {
+    try {
+      const response = await fetch(
+        `http://localhost:3600/getCurrentOrder/${userId}`
+      );
+      if (response.status === 200) {
+        const data = await response.json();
+        console.log(data)
+        if (data == false) {
+          setStatus(0)
+        }
+        if (data !== false) {
+          //לסדר את הסטטוס לסטטוס המתאים לפי ההזמנה 
+          
+
+        }
+      }
+      else {
+
+      }
+
+    } catch (error) {
+      console.error('Error fetching chat:', error);
+    }
   }
 
-  const buttonClicked = async () =>{
+  const buttonClicked = async () => {
 
   }
 

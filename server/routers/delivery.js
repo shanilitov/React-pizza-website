@@ -26,8 +26,19 @@ router.post('/signin', async (req, res) => {
 
 // לקבל את ההזמנה הנוכחית של השליח אם יש לו כזות אם לא יחזור false
 router.get('/getCurrentOrder/:deliverId', (req, res) => {
-    try{
-        
+    try {
+        const deliverId = req.params.deliverId
+        console.log(`in get current order, the deliver id is: ${deliverId}`)
+
+        queries.getCurrentOrder(deliverId, (ans) => {
+            console.log(`in get current order callback function: ans is ${ans}`)
+            // ans = [{orderId, status, city, street, number}] or false.
+            if (ans)
+                res.json(ans)
+            else
+                res.json(false)
+        })
+
     }
     catch (err) {
         console.log(err)
@@ -51,7 +62,7 @@ router.post('/login', async (req, res) => {
             }
         }))
     }
-    catch(err) {
+    catch (err) {
         console.log('error!:' + err)
         res.send(false)
     }

@@ -1,8 +1,9 @@
 const db = require('../dal/DB');
 
 async function getAllBranches(callback) {
-    let sql = `select id, name from branch`
     try {
+        let sql = `select id, name from branch`
+
         db.query(sql, callback)
     }
     catch (err) {
@@ -12,13 +13,14 @@ async function getAllBranches(callback) {
 }
 
 async function getBranchById(branchId, callback) {
-    let id = JSON.stringify(branchId)
-    console.log(id + 'in')
-    id = parseInt(id)
-
-    console.log('in get branch by id query function')
-    let sql = `select * from branch where id=${id}`
     try {
+        let id = JSON.stringify(branchId)
+        console.log(id + 'in')
+        id = parseInt(id)
+
+        console.log('in get branch by id query function')
+        let sql = `select * from branch where id=${id}`
+
         db.query(sql, callback);
     }
     catch (err) {
@@ -29,10 +31,10 @@ async function getBranchById(branchId, callback) {
 
 
 async function getOrdersByBranchId(branchId, callback) {
-
-    console.log('in get order by branch id function')
-    let sql = `SELECT order_id FROM branch_orders WHERE branch_id = ${branchId} and send=false`
     try {
+        console.log('in get order by branch id function')
+        let sql = `SELECT order_id FROM branch_orders WHERE branch_id = ${branchId} and send=false`
+
         db.query(sql, callback);
     }
     catch (err) {
@@ -42,10 +44,11 @@ async function getOrdersByBranchId(branchId, callback) {
 }
 
 async function getOrderDataByOrderId(order_id, callback) {
-    console.log('in get order data by id function')
-    console.log(order_id)
-    let sql = `select * from orders where id=${order_id}`
     try {
+        console.log('in get order data by id function')
+        console.log(order_id)
+        let sql = `select * from orders where id=${order_id}`
+
         db.query(sql, callback);
     }
     catch (err) {
@@ -55,9 +58,10 @@ async function getOrderDataByOrderId(order_id, callback) {
 }
 
 async function getallbranchesdata(callback) {
-    console.log('in get all branches data function')
-    let sql = `select * from branch`
     try {
+        console.log('in get all branches data function')
+        let sql = `select * from branch`
+
         db.query(sql, callback);
     }
     catch (err) {
@@ -67,4 +71,4 @@ async function getallbranchesdata(callback) {
 }
 
 
-module.exports = {getallbranchesdata, getOrderDataByOrderId, getAllBranches, getBranchById, getOrdersByBranchId}
+module.exports = { getallbranchesdata, getOrderDataByOrderId, getAllBranches, getBranchById, getOrdersByBranchId }

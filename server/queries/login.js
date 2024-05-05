@@ -1,10 +1,11 @@
 const db = require('../dal/DB');
 
 async function loginByNameAndPass(name, password, callback) {
-    console.log('name' + name, 'password' + password)
-    console.log('making sql requset')
-    let sql = `select * from users where user_name = '${name}' and password ='${password}';`
     try {
+        console.log('name' + name, 'password' + password)
+        console.log('making sql requset')
+        let sql = `select * from users where user_name = '${name}' and password ='${password}';`
+
         db.query(sql, callback);
     }
     catch (err) {
@@ -14,4 +15,4 @@ async function loginByNameAndPass(name, password, callback) {
 }
 
 
-module.exports = {loginByNameAndPass}
+module.exports = { loginByNameAndPass }

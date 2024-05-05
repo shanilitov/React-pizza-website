@@ -24,7 +24,7 @@ const Signin = () => {
         }
         console.log(`body: ${body}`)
         const response = await fetch(
-          `http://localhost:3600/signin/Delivery`,
+          `http://localhost:3600/delivery/signin`,
           {
             method: 'POST',
             headers: {
