@@ -33,7 +33,7 @@ async function getCurrentOrder(deliverId, callback) {
         console.log(`making query to get current order for deliver: ${deliverId}`)
         let sql = `SELECT o.city, o.street, o.number, d.orderId, d.status
         FROM orders.orders o
-        INNER JOIN delivery.deliver d ON o.orderId = d.orderId
+        INNER JOIN delivery.deliver d ON o.id = d.orderId
         WHERE d.userId = ${deliverId}
         AND d.status < 2
         `

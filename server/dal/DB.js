@@ -10,7 +10,7 @@ async function query(sql, callback) {
         password: 'od1cos2mysql',
         database: 'pizzawebsite'
     });
-
+    // כאן מריצים את השאילתה ואחרי שיש תשובה מפעילים את הפונקצית calback עם הפרמטר
     connection.connect((err) => {
         if (err)
             callback(false)

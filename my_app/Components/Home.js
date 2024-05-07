@@ -19,22 +19,26 @@ const Home = ({ route }) => {
   const checkIfUserHasOrderNow = async () => {
     try {
       const response = await fetch(
-        `http://localhost:3600/getCurrentOrder/${userId}`
+        `http://localhost:3600/delivery/getCurrentOrder/${userId}`
       );
       if (response.status === 200) {
         const data = await response.json();
-        console.log(data)
+        console.log(`data is ${data}`)
         if (data == false) {
           setStatus(0)
+          setFlag(true)
         }
         if (data !== false) {
           //לסדר את הסטטוס לסטטוס המתאים לפי ההזמנה 
-          
-
+          // data = [{orderId, status, city, street, number}] or false.
+          setFlag(false)
+          setCurrentOrder(data[0])
+          setStatus(currentOrder.status + 1)
         }
       }
       else {
-
+        // היתה תקלה בשרת
+        // צריך לסדר שתהיה הודעת שגיאה יפה.
       }
 
     } catch (error) {
@@ -43,7 +47,17 @@ const Home = ({ route }) => {
   }
 
   const buttonClicked = async () => {
-
+    // צריך לסדר שלפי הסטטוס יהיה הפעולה של הכפתור.
+    switch (status) {
+      case 0: // אין הזמנה נוכחית -> צריך לאפשר לקבל הזמנה חדשה
+        break;
+      case 1: // יש הזמנה שממתינה לאיסוף -> צריך לאפשר לשליח לעדכן שהוא אסף את המשלוח מהסניף
+        break;
+      case 2: // ההזמנה ממתינה למסירה -> צריך לאפשר לשליח לדווח על מסירה
+        break;
+      default:
+        break;
+    }
   }
 
 
@@ -57,6 +71,8 @@ const Home = ({ route }) => {
 
       <View style={styles.content}>
         <Text style={styles.greeting}>Hi, {userName}</Text>
+        <Text style={styles.greeting}>{status > 0 ? `Adress: ${currentOrder.street} ${currentOrder.number}, ${currentOrder.city}` : `You don't have order to deliver now, click the button to get a new one`}</Text>
+
 
         <TouchableOpacity style={styles.button} onPress={() => console.log('Navigate to Current Delivery')}>
           <Text style={styles.buttonText}>{texts[status]}</Text>

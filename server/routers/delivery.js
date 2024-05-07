@@ -32,9 +32,12 @@ router.get('/getCurrentOrder/:deliverId', (req, res) => {
 
         queries.getCurrentOrder(deliverId, (ans) => {
             console.log(`in get current order callback function: ans is ${ans}`)
-            // ans = [{orderId, status, city, street, number}] or false.
-            if (ans)
+            // ans = [{orderId, status, city, street, number}] or [].
+
+            if (ans !== false && JSON.parse(ans)[0] !== undefined) {
+                console.log(JSON.parse(ans)[0])
                 res.json(ans)
+            }
             else
                 res.json(false)
         })
