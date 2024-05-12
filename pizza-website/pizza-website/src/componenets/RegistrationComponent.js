@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import '../CSS/RegistrationComponent.css' // כותבים את שם קובץ ה-CSS החדש שיצרנו
+
 
 const RegistrationComponent = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
@@ -6,8 +8,6 @@ const RegistrationComponent = () => {
   const handlePhoneNumberChange = (e) => {
     setPhoneNumber(e.target.value);
   };
-
-
 
   const handleRegistration = async () => {
     console.log('מספר טלפון:', phoneNumber);
@@ -38,22 +38,16 @@ const RegistrationComponent = () => {
 
       // כאן תוכלי להוסיף לוגיקה נוספת לאחר הקבלת התוצאה מהשרת
       if (data[0] != undefined) {
-        
+        // כלום כרגע, אפשר להוסיף פעולות נוספות
       }
-
 
     } catch (error) {
       console.error('There was a problem with the fetch operation:', error);
     }
   };
 
-
-
-
-
-
   return (
-    <div>
+    <div className="container" >
       <div className="header">
         {/* אייקון חזרה לדף הבית */}
         <button onClick={() => window.history.back()}>🏠</button>
@@ -62,12 +56,12 @@ const RegistrationComponent = () => {
         {/* שדה להזנת מספר הפלפון */}
         <input
           type="text"
-          placeholder="הזן מספר טלפון"
+          placeholder="Enter phone number"
           value={phoneNumber}
           onChange={handlePhoneNumberChange}
         />
         {/* כפתור להרשמה */}
-        <button onClick={handleRegistration}>הרשם</button>
+        <button onClick={handleRegistration}>Find your orders</button>
       </div>
     </div>
   );

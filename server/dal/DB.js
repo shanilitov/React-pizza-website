@@ -1,5 +1,4 @@
 const mysql = require('mysql');
-// const config = require('./config')
 
 async function query(sql, callback) {
     console.log('server sql in DB: ' + sql)
@@ -33,5 +32,4 @@ async function query(sql, callback) {
 
     })
 }
-
 module.exports = { query };

@@ -4,6 +4,7 @@ import Header from "./Header";
 import ProductView from "./ProductView";
 import back from '../img/back.png';
 import pizza from '../img/pizza3.jfif'
+import "../CSS/Menu.css"
 
 const ShoppingCartContext = createContext({
     cart: [],
@@ -30,11 +31,15 @@ function Menu() {
     }, state)
     return (
         // <ShoppingCartContext.Provider>
-        <div>
+        <div id="MainDiv">
             <Header />
-            <div className="menudiv">
-
-                <div className="menu">
+            <div className="menuContainer">
+                <Link to="/"><img src={back} className="backicon" /></Link>
+                <div className="menudiv">
+                    <div className="linkdiv productdiv">
+                        <h1>DO YOUR PIZZA</h1>
+                        <Link to="/pizza"><img src={pizza} className="pizzaimg" /></Link>
+                    </div>
                     {productList.map((a, i) => {
                         console.log(a)
                         if (a.enable === 1) {
@@ -47,14 +52,10 @@ function Menu() {
                         }
                     })}
                 </div>
-                <div className="linkdiv">
-                    <Link to="/"><img src={back} className="backicon" /></Link>
-                    <Link to="/pizza"><img src={pizza} className="pizzaimg" /></Link>
-                </div>
             </div>
-
-
         </div>
+
+
         // </ShoppingCartContext.Provider>
     )
 }

@@ -1,0 +1,5 @@
+.Homecontainer {
+    background-image: url('../img/back-ground.jfif'); /* החלף background.jpg בשם התמונה שלך */
+    background-size: cover;
+    background-position: center;
+  }

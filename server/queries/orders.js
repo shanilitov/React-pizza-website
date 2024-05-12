@@ -17,7 +17,7 @@ async function getOrderDataByOrderId(order_id, callback) {
 async function createneworder(city, street, number, order_date, comment, price, name, phone, callback) {
     try {
         console.log('in create new order')
-        let sql = `insert into orders(clint_id, city, street, number, comment, price,accept, name)
+        let sql = `insert into orders.orders(clint_id, city, street, number, comment, price,accept, name)
 values(${phone}, '${city}', '${street}', '${number}', '${comment}', '${price}',false, '${name}')`
 
         db.query(sql, callback);

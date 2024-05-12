@@ -4,6 +4,7 @@ import Header from "./Header";
 import Item from "./Item";
 import finish2 from '../img/finish2.jfif'
 import back from '../img/back.png'
+import '../CSS/ShopingCart.css'
 
 function ShoppingCart() {
     const [finleprice, setprice] = useState(0)
@@ -35,9 +36,10 @@ function ShoppingCart() {
 
     }, state)
     return (
-        <div>
+        <div className="shoppingCartContainer">
             <Header />
-            <div id="shoppingcart">
+            <div id="shoppingcart" >
+          
                 <div className="shoppingcart">
                     <div >
                         {list != null || list == [] ?
@@ -58,7 +60,7 @@ function ShoppingCart() {
                         }
                     </div>
                     <div className="linkdiv">
-                        <Link to="/"><img src={back} className="backicon" width='100px' /></Link>
+                        <Link to="/"><img src={back} className="backicon" width='150px' /></Link>
                         <div>
                             <h1>{finleprice + '$'}</h1>
                         </div>

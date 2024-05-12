@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const queries = require('../queries/orders')
 
+// get the order details, by order id
 router.get('/get_order_data/:order_id', (req, res) => {
     try {
         console.log('in get order data by order id router')
@@ -64,8 +65,7 @@ router.post('/create_new_order', async (req, res) => {
     }
 });
 
-
-
+// get the products, ids and names by the order id
 router.get('/get_product_id_and_price_by_order_id/:order_id', (req, res) => {
     try {
         console.log(req.params)
@@ -85,6 +85,7 @@ router.get('/get_product_id_and_price_by_order_id/:order_id', (req, res) => {
     }
 })
 
+// get the adding for a specipic order
 router.get('get_adding_by_order_id/:id', (req, res) => {
     try {
         console.log(req.params.id)
@@ -104,6 +105,7 @@ router.get('get_adding_by_order_id/:id', (req, res) => {
     }
 })
 
+// get the adding mane by it's id
 router.get('/gettadingnamebyid/:id', (req, res) => {
     try {
         console.log(req.params.id)
@@ -124,6 +126,7 @@ router.get('/gettadingnamebyid/:id', (req, res) => {
 
 })
 
+// get the product name by it's id
 router.get('/getproductsnamebyid/:id', (req, res) => {
     try {
         console.log(req.params.id)
@@ -144,6 +147,7 @@ router.get('/getproductsnamebyid/:id', (req, res) => {
 
 })
 
+// change order status to sent, by it's id
 router.get('/changesendbyorderid/:id', (req, res) => {
     try {
         console.log(req.params.id)
@@ -163,6 +167,7 @@ router.get('/changesendbyorderid/:id', (req, res) => {
     }
 })
 
+// get order by the client phone
 router.post('/getOrderByPhone', (req, res) => {
     try {
         console.log('in get order by phone, phone is:' + req.body.phone)
@@ -183,9 +188,4 @@ router.post('/getOrderByPhone', (req, res) => {
         res.status(500).json({ error: 'Error fetching order' });
     }
 })
-
-
-
-
-
 module.exports = router

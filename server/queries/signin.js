@@ -11,7 +11,6 @@ async function signin(name, password, branch, callback) {
     }
     catch (err) {
         console.log(`in querise : ${err}`)
-        //throw err;
     }
 }
 
@@ -24,7 +23,6 @@ async function getuseridbyname(name, callback) {
     }
     catch (err) {
         console.log(`in querise : ${err}`)
-        //throw err;
     }
 }
 
