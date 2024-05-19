@@ -13,13 +13,27 @@ const Stack = createStackNavigator();
 
 export default function App() {
   return (
-    <NavigationContainer>
+    <NavigationContainer
+      linking={{
+        prefixes: ['https://delivery.com', 'delivery://'],
+        config: {
+          screens: {
+            Home: 'home',
+            Login: 'login',
+            Signin: 'signin',
+            CurrentDelivery: 'currentDelivery',
+            Chat: 'chat',
+          },
+        },
+      }}
+      fallback={<Text>Loading...</Text>}
+    >
       <Stack.Navigator initialRouteName="Login">
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Home" component={Home} />
-        <Stack.Screen name='Signin' component={Signin}/>
-        <Stack.Screen name='CurrentDelivery' component={CurrentDelivery}/>
-        <Stack.Screen name='Chat' component={Chat}/>
+        <Stack.Screen name='Signin' component={Signin} />
+        <Stack.Screen name='CurrentDelivery' component={CurrentDelivery} />
+        <Stack.Screen name='Chat' component={Chat} />
       </Stack.Navigator>
     </NavigationContainer>
   );

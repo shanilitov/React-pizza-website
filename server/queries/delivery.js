@@ -45,4 +45,56 @@ async function getCurrentOrder(deliverId, callback) {
     }
 }
 
-module.exports = { getCurrentOrder, loginDelivery, signinDelivery }
+async function getOrederWaiting(branchId, callback) {
+    try {
+        console.log(`making query to get the order to the new deliver for branch number: ${branchId}`)
+        let sql = `
+        SELECT o*
+        FROM orders.orders o
+        JOIN branches.branch_orders bo ON o.id = bo.order_id
+        WHERE bo.id = ${branchId}
+        ORDER BY o.id ASC
+        LIMIT 1;
+        `
+        db.query(sql, callback)
+    }
+    catch (err) {
+        console.log(`in querise : ${err}`)
+        //throw err;
+
+    }
+}
+
+async function getDeliverBranch(deliverId, callback) {
+    try {
+        console.log('in get branch for delivey guy function')
+        let sql = `
+        SELECT branch
+        FROM delivery.users
+        WHERE idusers = ${deliverId}
+        `
+
+        db.query(sql, callback);
+    }
+    catch (err) {
+        console.log(`in querise : ${err}`)
+        //throw err;
+    }
+}
+
+async function addNewDeliveryToDeliver(deliverId, orderId, callback) {
+    try {
+        console.log('in addNewDeliveryToDeliver function')
+        let sql = `
+        INSERT INTO delivery.deliver (orderId, userId, status) 
+        VALUES (${orderId}, ${deliverId}, 0);
+        `
+
+        db.query(sql, callback);
+    }
+    catch (err) {
+        console.log(`in querise : ${err}`)
+    }
+}
+
+module.exports = { getCurrentOrder, loginDelivery, signinDelivery, getDeliverBranch, getOrederWaiting, addNewDeliveryToDeliver }

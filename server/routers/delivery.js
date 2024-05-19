@@ -72,6 +72,48 @@ router.post('/login', async (req, res) => {
 
 })
 
+router.get('/getNewOrder/:deliverId', async (req, res) => {
+    try {
+        const deliverId = req.params.deliverId
+        console.log(`in get new order, the deliver id is: ${deliverId}`)
+        // בדיקת תקינות: לוודא שאין לשליח הזמנה שלא נגמרה.
+        queries.getCurrentOrder(deliverId, async (ans) => {
+            console.log(`in get current order callback function: ans is ${ans}`)
+            if (ans == false && JSON.parse(ans)[0] == undefined) {
+                // 1. למצוא את הסניף של השליח
+                queries.getDeliverBranch(deliverId, async (branchId) => {
+                    console.log(`deliver branch is ${branchId}`)
+                    if (branchId) {
+                        // 2. לבקש את ההזמנה שממתינה למשלוח הכי הרבה זמן
+                        queries.getOrederWaiting(branchId, async(order)=>{
+                            console.log(`Order to take is ${order}`)
+                             // 3. להוסיף לשליח את ההזמנה
+                             queries.addNewDeliveryToDeliver(deliverId, order.orderId, (ans)=>{
+                                console.log(`ans after inserting the deliver to the delivery is: ${ans}`)
+                                if(ans){
+                                    res.json(order)
+                                }
+                                else{
+                                    res.json(false)
+                                }
+                             })
+
+                            
+                        })
+                    }
+                })
+
+            }
+
+
+        })
+    }
+    catch (err) {
+        console.log(err)
+        res.status(500).json({ error: 'Error fetching order' });
+    }
+})
+
 
 
 

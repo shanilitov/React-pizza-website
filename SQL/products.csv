@@ -1,0 +1,14 @@
+id,name,price,enable
+1,pizza,65,1
+2,garlic-bread,15,1
+3,personal-pizza,25,1
+4,special-pizza,80,0
+5,pasta,25,1
+29,shake,15,1
+33,frozen,25,1
+34,water,8,1
+35,"cocka cola",5,1
+36,"orange juice",15,1
+37,"banana juice",25,1
+39,"פיצה דובי",85,1
+40,Chips,12,1

@@ -92,7 +92,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f0f0f0',
+    backgroundImage: 'url("../Media/background.jfif")',
     paddingHorizontal: 30,
     paddingBottom: 50, // עבור גלילה למטה
   },
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   button: {
-    backgroundColor: '#ff5a5f',
+    backgroundColor: '#ff6347',
     width: '100%',
     height: 50,
     justifyContent: 'center',

@@ -78,8 +78,9 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#f0f0f0',
+    // backgroundColor: '#f0f0f0',
     paddingHorizontal: 30,
+    backgroundImage: 'url("../Media/background.jfif")',
   },
   header: {
     fontSize: 28,
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
   },
   button: {
-    backgroundColor: '#ff5a5f',
+    backgroundColor: '#ff6347',
     width: '100%',
     height: 50,
     justifyContent: 'center',

@@ -4,7 +4,7 @@ async function getOrderDataByOrderId(order_id, callback) {
     try {
         console.log('in get order data by id function')
         console.log(order_id)
-        let sql = `select * from orders where id=${order_id}`
+        let sql = `select * from orders.orders where id=${order_id}`
 
         db.query(sql, callback);
     }
@@ -31,7 +31,7 @@ values(${phone}, '${city}', '${street}', '${number}', '${comment}', '${price}',f
 async function insertintobranchorders(order_id, branch_id, callback) {
     try {
         console.log(order_id + branch_id)
-        let sql = `insert into branch_orders(branch_id, order_id, send)
+        let sql = `insert into branches.branch_orders(branch_id, order_id, send)
     values(${order_id}, ${branch_id}, false)`
 
         db.query(sql, callback);
@@ -45,7 +45,7 @@ async function insertintobranchorders(order_id, branch_id, callback) {
 async function insertintoorderdetailes(order_id, product_id, amount, price, callback) {
     try {
         console.log(order_id + product_id + price)
-        let sql = `insert into order_details(order_id, product_id, amount, price, ready, accept)
+        let sql = `insert into orders.order_details(order_id, product_id, amount, price, ready, accept)
     values(${order_id}, ${product_id}, ${amount}, ${price}, false, false)`
 
         db.query(sql, callback);
@@ -59,7 +59,7 @@ async function insertintoorderdetailes(order_id, product_id, amount, price, call
 async function getproductandpricebyorderid(order_id, callback) {
     try {
         console.log('in get product and price by order id' + order_id)
-        let sql = `select product_id, price from order_details where order_id = ${order_id}`
+        let sql = `select product_id, price from orders.order_details where order_id = ${order_id}`
 
         db.query(sql, callback);
     }
@@ -73,7 +73,7 @@ async function getaddingnbyorderid(id, callback) {
     try {
         console.log('in get adding by order id' + id)
         let sql = `SELECT adding.name
-    FROM adding Join order_details
+    FROM products.adding adding Join orders.order_details order_details
     ON adding.id = order_details.product_id
     where order_details.price<3 And order_details.order_id = ${id}`
 
@@ -89,7 +89,7 @@ async function getproductsnbyorderid(id, callback) {
     try {
         console.log('in get products by order id' + id)
         let sql = `SELECT products.name
-    FROM products Join order_details
+    FROM products.products products Join orders.order_details order_details
     ON products.id = order_details.product_id
     where order_details.price>3 And order_details.order_id = ${id}`
 
@@ -104,7 +104,7 @@ async function getproductsnbyorderid(id, callback) {
 async function changesendbyorderid(id, callback) {
     try {
         console.log('in change set by orderid function' + id)
-        let sql = `UPDATE branch_orders
+        let sql = `UPDATE branches.branch_orders
     SET 
         send = true
     WHERE

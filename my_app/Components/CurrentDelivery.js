@@ -1,11 +1,28 @@
-import React from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 
-const CurrentDelivery = () => {
+const CurrentDelivery = ({route, args}) => {
+  const { userName, userId } = route.params;
+  const [status, setStatus] = useState(args.status)
+  const [currentOrder, setCurrentOrder] = useState(args.CurrentDelivery)
+  const texts = ['Get the next delivery', 'Picked up already?', 'Delivered already?']
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    if(status === 0){
+      // get new order to deliver
+
+    }
+
+  }, [status]);
+
+
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => console.log('Navigate to Home')} style={styles.goBack}>
-        <Text style={styles.icon}>⬅️</Text>
+      <TouchableOpacity onPress={() => navigation.navigate('/Home')} style={styles.goBack}>
+        <Image source={require('../Media/back.png')} style={styles.imageStyle} />
       </TouchableOpacity>
 
       <View style={styles.content}>
@@ -16,7 +33,7 @@ const CurrentDelivery = () => {
       </View>
 
       <TouchableOpacity onPress={() => console.log('Navigate to Chat')} style={styles.chatIcon}>
-        <Text style={styles.icon}>💬</Text>
+        <Image source={require('../Media/chat.jpeg')} style={styles.imageStyle} />
       </TouchableOpacity>
     </View>
   );
@@ -25,7 +42,7 @@ const CurrentDelivery = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundImage: 'url("../Media/background.jfif")',
     justifyContent: 'center',
     alignItems: 'center',
   },
@@ -66,6 +83,11 @@ const styles = StyleSheet.create({
     color: '#FFF',
     fontSize: 18,
     fontWeight: 'bold',
+  },
+  imageStyle: {
+    width: 100, // רוחב התמונה
+    height: 100, // גובה התמונה
+    borderRadius: 50, // חצי הרוחב מייצר מסגרת עגולה
   },
 });
 

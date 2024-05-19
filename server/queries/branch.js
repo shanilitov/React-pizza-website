@@ -2,7 +2,8 @@ const db = require('../dal/DB');
 
 async function getAllBranches(callback) {
     try {
-        let sql = `select id, name from branch`
+        let sql = `select id, name 
+        from branches.branch`
 
         db.query(sql, callback)
     }
@@ -19,7 +20,7 @@ async function getBranchById(branchId, callback) {
         id = parseInt(id)
 
         console.log('in get branch by id query function')
-        let sql = `select * from branch where id=${id}`
+        let sql = `select * from branches.branch where id=${id}`
 
         db.query(sql, callback);
     }
@@ -33,7 +34,7 @@ async function getBranchById(branchId, callback) {
 async function getOrdersByBranchId(branchId, callback) {
     try {
         console.log('in get order by branch id function')
-        let sql = `SELECT order_id FROM branch_orders WHERE branch_id = ${branchId} and send=false`
+        let sql = `SELECT order_id FROM branches.branch_orders WHERE branch_id = ${branchId} and send=false`
 
         db.query(sql, callback);
     }
@@ -47,7 +48,7 @@ async function getOrderDataByOrderId(order_id, callback) {
     try {
         console.log('in get order data by id function')
         console.log(order_id)
-        let sql = `select * from orders where id=${order_id}`
+        let sql = `select * from orders.orders where id=${order_id}`
 
         db.query(sql, callback);
     }
@@ -60,7 +61,7 @@ async function getOrderDataByOrderId(order_id, callback) {
 async function getallbranchesdata(callback) {
     try {
         console.log('in get all branches data function')
-        let sql = `select * from branch`
+        let sql = `select * from branches.branch`
 
         db.query(sql, callback);
     }
