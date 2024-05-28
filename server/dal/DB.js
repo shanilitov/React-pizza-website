@@ -11,8 +11,10 @@ async function query(sql, callback) {
     });
     // כאן מריצים את השאילתה ואחרי שיש תשובה מפעילים את הפונקצית calback עם הפרמטר
     connection.connect((err) => {
-        if (err)
+        if (err){
+            console.log(err)
             callback(false)
+        }
         else {
             connection.query(sql, (err, result, field) => {
                 console.log('err: ' + err, 'result: ' + JSON.stringify(result), "field: " + field)

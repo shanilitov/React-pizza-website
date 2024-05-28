@@ -11,6 +11,8 @@ const orders_router= require('./routers/orders')
 const admin_router= require('./routers/admin')
 const chat_router= require('./routers/chat')
 const delivery_router= require('./routers/delivery')
+const swagger = require('./swagger')
+
 
 const app = express()
 
@@ -22,6 +24,7 @@ app.listen(3600, ()=>{console.log('http://localhost:3600')})
 app.get('/', (req, res)=>{
     res.send({message:"it's the pizza shop server.\nYou're more then welcom to visit the website..."})
 })
+
 
 
 app.use('/login', login_router)

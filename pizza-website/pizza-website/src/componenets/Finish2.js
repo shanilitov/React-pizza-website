@@ -13,6 +13,7 @@ function Finish2() {
     const [street, setsrteet] = useState('')
     const [number, setnumber] = useState(-1)
     const [phone, setPhone] = useState(0)
+    const [takeAway, setTakeAway] = useState(false)
     const state = []
 
     const navigate = useNavigate()
@@ -49,7 +50,8 @@ function Finish2() {
                 price: localStorage.getItem('price'),
                 name: name,
                 branch_id: choice.id,
-                orderdetails: JSON.parse(localStorage.getItem('shopping_cart'))
+                orderdetails: JSON.parse(localStorage.getItem('shopping_cart')),
+                takeAway: takeAway
 
             }
             console.log({ order })
@@ -82,10 +84,7 @@ function Finish2() {
                 <input type='text' placeholder="NUMBER" onChange={(event) => { setnumber(event.target.value) }} />
             </div>
             <input type='text' placeholder="Phone Number" onChange={(event) => { setPhone(event.target.value) }} />
-            <div>
-                <h1 className="h1inf2">{choice.name}</h1>
-                <button onClick={() => { finish2Click() }}><img src={delivery} className="myButton" width='50px' /></button>
-            </div>
+            
             <div className="branchesinf2">
                 {branch.map((a, i) => {
                     console.log(a)
@@ -98,6 +97,14 @@ function Finish2() {
                         </div>
                     )
                 })}
+            </div>
+            <button id="takeaway" onClick={()=> takeAway ? setTakeAway(false) : setTakeAway(true)} style={takeAway ? {backgroundColor: "green"}: {}}>
+                <h1>TAKE AWAY?</h1>
+                <p>press if yes</p>
+            </button>
+            <div>
+                <h1 className="h1inf2">{choice.name}</h1>
+                <button onClick={() => { finish2Click() }}><img src={delivery} className="myButton" width='50px' /></button>
             </div>
         </div>
     )

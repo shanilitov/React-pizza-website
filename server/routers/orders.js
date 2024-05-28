@@ -37,6 +37,7 @@ router.post('/create_new_order', async (req, res) => {
             console.log(`####: ${orderResponse}`)
             const orderInsertId = JSON.parse(orderResponse).insertId;
 
+            
             console.log(`%%%%: ${orderResponse}`)
             queries.insertintobranchorders(order.branch_id, orderInsertId, branchOrderResponse => {
                 if (!branchOrderResponse) {
@@ -51,7 +52,15 @@ router.post('/create_new_order', async (req, res) => {
 
                     queries.insertintoorderdetailes(orderInsertId, detail.key, quantity, detail.product.price, orderDetailsResponse => {
                         if (!orderDetailsResponse) {
+
                             return res.send(false);
+                        }
+                        if(order.takeaway){
+                            queries.takeaway(order.id,(takeawayRes)=>{
+                                if(!takeawayRes){
+                                    return res.send(false)
+                                }
+                            })
                         }
                     })
                 }
@@ -190,18 +199,69 @@ router.post('/getOrderByPhone', (req, res) => {
 })
 
 router.get('/get_full_order/:id', (req, res) => {
-    console.log(`\nin get ful order: ${req.params}`)
+    console.log(`\nin get ful order: ${req.params.id}`)
     // מחזיר את הפרטים המלאים של ההזמנה.
     // יראה ככה: 
     // [order_id, adress, order_date, status, client_name, products_list[{item_in_order_id, product_name, product_price, status}, {...}, ...], total_price, worker_id, is_takeaway, deliver_id]
-    queries.get_full_order(req.params.id, (order)=>{
+    queries.get_full_order(req.params.id, (order) => {
+        console.log('@@@')
         console.log(order)
-        if(order){
+        if (order) {
             res.json(order)
         }
-        else{
+        else {
             res.json(false)
         }
     })
 })
+
+router.get('/get_status/:orderId', (req, res) => {
+    try {
+        console.log(`\nin get order status: ${req.params}`)
+        queries.get_order_status(req.params.orderId, (statusData) => {
+            console.log(statusData)
+            if (statusData) {
+                const data = JSON.parse(statusData)[0]
+                console.log(`\n${data}`)
+                let sum = 0
+                sum += data.client_accepted
+                sum += data.branch_send
+                sum += data.delivery_status === null ? 0 : data.delivery_status
+
+                res.json(sum)
+            }
+            else {
+                res.json(false)
+            }
+
+        })
+    }
+    catch (err) {
+        
+    }
+
+})
+
+router.get('/get_ready_products_list/:orderId', (req, res)=>{
+    console.log(`\nin get productlist: ${req.params.orderId}`)
+    queries.get_ready_products_list(req.params.orderId, (products)=>{
+        console.log(`\nproducts: ${products}`)
+        if(products)
+            res.json(products)
+        else
+            res.json(false)
+    })
+
+})
+
+router.get('/change_product_in_order_status/:orderId/:productId', (req, res)=>{
+    console.log('update ststus to product')
+    queries.setProductStatus(req.params.orderId, req.params.productId, (ans)=>{
+        if(ans)
+            res.json('Success')
+        else
+            res.json(false)
+    })
+})
+
 module.exports = router

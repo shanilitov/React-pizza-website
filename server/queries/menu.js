@@ -3,7 +3,8 @@ const db = require('../dal/DB');
 async function getAllProduct(callback) {
     try {
         console.log('in get all product function')
-        let sql = `SELECT * FROM products.products;`
+        let sql = `SELECT DISTINCT *
+         FROM products.products;`
 
         db.query(sql, callback);
     }

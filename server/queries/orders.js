@@ -17,7 +17,7 @@ async function getOrderDataByOrderId(order_id, callback) {
 async function createneworder(city, street, number, order_date, comment, price, name, phone, callback) {
     try {
         console.log('in create new order');
-        
+
         // המרת תאריך לפורמט YYYY-MM-DD
         let formattedDate = new Date(order_date).toISOString().split('T')[0];
 
@@ -94,10 +94,11 @@ async function getaddingnbyorderid(id, callback) {
 async function getproductsnbyorderid(id, callback) {
     try {
         console.log('in get products by order id' + id)
-        let sql = `SELECT products.name
-    FROM products.products products Join orders.order_details order_details
-    ON products.id = order_details.product_id
-    where order_details.price>3 And order_details.order_id = ${id}`
+        let sql = `SELECT products.id, products.name
+                 FROM products.products products 
+                 Join orders.order_details order_details
+                 ON products.id = order_details.product_id
+                 where order_details.price>3 And order_details.order_id = ${id}`
 
         db.query(sql, callback);
     }
@@ -111,10 +112,10 @@ async function changesendbyorderid(id, callback) {
     try {
         console.log('in change set by orderid function' + id)
         let sql = `UPDATE branches.branch_orders
-    SET 
-        send = true
-    WHERE
-        order_id =${id}`
+        SET 
+            send = true
+        WHERE
+            order_id =${id}`
 
         db.query(sql, callback);
     }
@@ -144,8 +145,8 @@ async function getOrderByPhone(phone, callback) {
     }
 }
 
-async function get_full_order(orderId, callback){
-    try{
+async function get_full_order(orderId, callback) {
+    try {
         let query = `
         SELECT o.*, od.order_products, tkw.orderId as is_take_away
         FROM orders.orders AS o
@@ -178,6 +179,56 @@ async function get_full_order(orderId, callback){
     }
 }
 
+async function get_order_status(orderId, callback) {
+    try {
+        console.log(orderId)
+        let query = `
+                    select distinct o.accept as client_accepted, bo.send as branch_send, d.status as delivery_status
+                    from (
+	                    select * 
+                        from orders.orders as o1
+                        where o1.id = ${orderId}
+                    ) as o
+                    LEFT join branches.branch_orders as bo on o.id = bo.order_Id
+                    LEFT join delivery.deliver as d on d.orderId = o.id; 
+                    `
+        db.query(query, callback)
+
+    }
+    catch (err) {
+        console.log(`in querise : ${err}`)
+        //throw err;
+    }
 
 
-module.exports = {get_full_order, getOrderByPhone, getaddingnbyorderid, getproductsnbyorderid, getproductandpricebyorderid, changesendbyorderid, createneworder, insertintobranchorders, getOrderDataByOrderId, getproductandpricebyorderid, insertintoorderdetailes }
+}
+
+async function get_ready_products_list(orderId, callback){
+    console.log('\nin get the ready products list')
+    let query = `
+    select product_id
+    from orders.order_details as o
+    where o.order_id = ${orderId} and o.ready = 1;
+    `
+    db.query(query, callback)
+}
+
+async function takeaway(orderId, calback){
+    console.log('\nin takeAway')
+    let query = `
+    INSERT INTO orders.takeaway(orderId)
+    VALUES(${orderId});
+    `
+}
+
+async function setProductStatus(orderId, productId, callback){
+    console.log('in setProductStatus function')
+    let query = `
+    UPDATE orders.order_details as o
+    SET ready = true
+    WHERE order_id = ${orderId} and product_id = ${productId};
+    `
+    db.query(query, callback)
+}
+
+module.exports = {setProductStatus, takeaway, get_ready_products_list, get_order_status,  get_full_order, getOrderByPhone, getaddingnbyorderid, getproductsnbyorderid, getproductandpricebyorderid, changesendbyorderid, createneworder, insertintobranchorders, getOrderDataByOrderId, getproductandpricebyorderid, insertintoorderdetailes }

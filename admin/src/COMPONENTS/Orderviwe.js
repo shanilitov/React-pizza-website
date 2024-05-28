@@ -9,9 +9,9 @@ function Orderview() {
 
     const [product, setproduct] = useState([])
     const [adding, setadding] = useState([])
-    
+
     const [list, setlist] = useState(['start'])
-   
+
 
     const state = []
     const navigate = useNavigate()
@@ -41,40 +41,45 @@ function Orderview() {
                     let temp = JSON.parse(ans)
                     console.log(temp)
                     setproduct(temp)
-                    
+
                     setlist(temp)
                 })
         }
         getproducts()
         getadding()
 
-    
+
     }, state)
 
-    const taskClicked = (c)=>{
-        console.log(c)
+    const taskClicked = async (c, id) => {
+        console.log(`c: ${c}`)
         console.log(list)
         let ans = list.find(element => element.name === c)
-        console.log('ans: '+ans)
+        console.log('ans: ' + JSON.stringify(ans))
         if (ans) {
+            await fetch(`http://localhost:3600/orders/change_product_in_order_status/${nameandid.order_id}/${ans.id}`)
+                .then(res => {
+                    console.log(res)
+                })
+                .catch()
             let t = list
             console.log(t)
-            t.splice(ans,1)
+            t.splice(ans, 1)
             console.log(t)
             setlist(t)
-            if(list[0]=== undefined){
+            if (list[0] === undefined) {
                 console.log('empty')
                 fetch(`http://localhost:3600/orders/changesendbyorderid/${nameandid.order_id}`)
-                .then(res=>res.json())
-                .then(ans=>{
-                    console.log(ans)
-                    navigate('/sent')
-                })
-                
+                    .then(res => res.json())
+                    .then(ans => {
+                        console.log(ans)
+                        navigate('/sent')
+                    })
+
             }
         }
-        else{
-            if(list[0]=== undefined){
+        else {
+            if (list[0] === undefined) {
                 console.log('empty')
                 navigate('')
             }
@@ -89,10 +94,10 @@ function Orderview() {
                 <div>
                     {product.map((c, i) => {
                         if (c) {
-                            console.log('product ' + c);
+                            console.log('product ' + JSON.stringify(c));
                             return (
                                 <div key={i} className="ovpa myButton">
-                                    <button className="buttonov" onClick={()=>{taskClicked(c.name)}}><img src={ok} className="imgov" width='40px' /></button>
+                                    <button className="buttonov" onClick={() => { taskClicked(c.name, c.id) }}><img src={ok} className="imgov" width='40px' /></button>
                                     <p className="hov">{c.name}</p>
                                 </div>)
                         }
@@ -103,7 +108,7 @@ function Orderview() {
                 <div className="addingov">
                     {adding.map((c, i) => {
                         if (c) {
-                            
+
                             console.log('product ' + c);
 
                             return (
