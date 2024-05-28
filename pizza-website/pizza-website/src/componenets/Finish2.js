@@ -44,7 +44,7 @@ function Finish2() {
                 city: city,
                 street: street,
                 number: number,
-                order_date: new Date(),
+                order_date: new Date().toISOString().split('T')[0],
                 comment: localStorage.getItem('comment'),
                 price: localStorage.getItem('price'),
                 name: name,

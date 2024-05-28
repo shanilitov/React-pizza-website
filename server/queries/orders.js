@@ -16,17 +16,23 @@ async function getOrderDataByOrderId(order_id, callback) {
 
 async function createneworder(city, street, number, order_date, comment, price, name, phone, callback) {
     try {
-        console.log('in create new order')
-        let sql = `insert into orders.orders(clint_id, city, street, number, comment, price,accept, name)
-values(${phone}, '${city}', '${street}', '${number}', '${comment}', '${price}',false, '${name}')`
+        console.log('in create new order');
+        
+        // המרת תאריך לפורמט YYYY-MM-DD
+        let formattedDate = new Date(order_date).toISOString().split('T')[0];
+
+        let sql = `INSERT INTO orders.orders 
+        (clint_id, city, street, number, order_date, comment, price, accept, name) 
+        VALUES ('${phone}', '${city}', '${street}', ${number}, '${formattedDate}', '${comment}', ${price}, 0, '${name}');`;
 
         db.query(sql, callback);
-    }
-    catch (err) {
-        console.log(`in querise : ${err}`)
+    } catch (err) {
+        console.log(`in querise : ${err}`);
         //throw err;
     }
 }
+
+
 
 async function insertintobranchorders(order_id, branch_id, callback) {
     try {
@@ -138,7 +144,40 @@ async function getOrderByPhone(phone, callback) {
     }
 }
 
+async function get_full_order(orderId, callback){
+    try{
+        let query = `
+        SELECT o.*, od.order_products, tkw.orderId as is_take_away
+        FROM orders.orders AS o
+        JOIN (
+            SELECT order_Id, 
+                   CONCAT('[', GROUP_CONCAT(
+                       DISTINCT CONCAT(
+                           '{', 
+                           '"product_id": ', od1.product_id, ', ',
+                           '"product_name": "', p.name, '", ',
+                           '"price": ', p.price, ', ',
+                           '"amount": ', od1.amount, ', ',
+                           '"ready": ', od1.ready, ', ',
+                           '"accept": ', od1.accept, 
+                           '}'
+                       )
+                   SEPARATOR ', '), ']') AS order_products
+            FROM orders.order_Details AS od1
+            JOIN products.products AS p ON p.id = od1.product_id
+            GROUP BY order_Id
+        ) AS od ON o.id = od.order_Id
+        left join orders.takeaway AS tkw ON o.id = tkw.orderid
+        WHERE o.id = ${orderId};
+        `
+        db.query(query, callback)
+    }
+    catch (err) {
+        console.log(`in querise : ${err}`)
+        //throw err;
+    }
+}
 
 
 
-module.exports = { getOrderByPhone, getaddingnbyorderid, getproductsnbyorderid, getproductandpricebyorderid, changesendbyorderid, createneworder, insertintobranchorders, getOrderDataByOrderId, getproductandpricebyorderid, insertintoorderdetailes }
+module.exports = {get_full_order, getOrderByPhone, getaddingnbyorderid, getproductsnbyorderid, getproductandpricebyorderid, changesendbyorderid, createneworder, insertintobranchorders, getOrderDataByOrderId, getproductandpricebyorderid, insertintoorderdetailes }

@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import '../CSS/RegistrationComponent.css' // כותבים את שם קובץ ה-CSS החדש שיצרנו
+import { useNavigate } from 'react-router-dom';
 
 
 const RegistrationComponent = () => {
   const [phoneNumber, setPhoneNumber] = useState('');
+  const navigate = useNavigate()
 
   const handlePhoneNumberChange = (e) => {
     setPhoneNumber(e.target.value);
@@ -34,7 +36,8 @@ const RegistrationComponent = () => {
 
       // אם הכל בסדר, הדפסי את התוצאה
       const data = await response.json();
-      console.log('תוצאה:', data);
+      console.log('תוצאה:', JSON.parse(data));
+      navigate('/TrackOrder', { state: { orders: JSON.parse(data) } });
 
       // כאן תוכלי להוסיף לוגיקה נוספת לאחר הקבלת התוצאה מהשרת
       if (data[0] != undefined) {

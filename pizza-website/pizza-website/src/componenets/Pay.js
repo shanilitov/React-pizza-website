@@ -11,17 +11,18 @@ function Pay(){
     const navigate = useNavigate()
 
     const buttonClick = ()=>{
-        console.log(credit.length)
-        console.log(cvv.length)
-        console.log(date.length)
-        console.log(id.length)
-        if (credit.length === 16 ||cvv.toString.length === 3 || date.length === 4 || id.length === 9)  {
-            navigate('/finish2')
+        // console.log(credit.length)
+        // console.log(cvv.length)
+        // console.log(date.length)
+        // console.log(id.length)
+        // if (credit.length === 16 ||cvv.toString.length === 3 || date.length === 4 || id.length === 9)  {
+        //     navigate('/finish2')
             
-        }
-        else{
-            alert('check your data!')
-        }
+        // }
+        // else{
+        //     alert('check your data!')
+        // }
+        navigate('/finish2')
     }
     return(
         <div className="pay">

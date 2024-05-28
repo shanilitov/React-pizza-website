@@ -15,6 +15,8 @@ import Finish2 from './componenets/Finish2';
 import Sent from './componenets/Sent';
 import Pay from './componenets/Pay';
 import RegistrationComponent from './componenets/RegistrationComponent'
+import TrackOrder from './componenets/TrackOrder';
+import OrderComponent from './componenets/OrderComponent';
 
 
 
@@ -39,6 +41,8 @@ function App() {
             <Route path='/finish2' element={<Finish2 />} />
             <Route path='/sent' element={<Sent />} />
             <Route path='/RegistrationComponent' element={<RegistrationComponent />} />
+            <Route path='/TrackOrder' element={<TrackOrder />} />
+            <Route path='/order/:orderId' element={<OrderComponent />} />
 
           </Routes>
         </Router>

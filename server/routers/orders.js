@@ -188,4 +188,20 @@ router.post('/getOrderByPhone', (req, res) => {
         res.status(500).json({ error: 'Error fetching order' });
     }
 })
+
+router.get('/get_full_order/:id', (req, res) => {
+    console.log(`\nin get ful order: ${req.params}`)
+    // מחזיר את הפרטים המלאים של ההזמנה.
+    // יראה ככה: 
+    // [order_id, adress, order_date, status, client_name, products_list[{item_in_order_id, product_name, product_price, status}, {...}, ...], total_price, worker_id, is_takeaway, deliver_id]
+    queries.get_full_order(req.params.id, (order)=>{
+        console.log(order)
+        if(order){
+            res.json(order)
+        }
+        else{
+            res.json(false)
+        }
+    })
+})
 module.exports = router

@@ -1,13 +1,13 @@
 const mysql = require('mysql');
 
 async function query(sql, callback) {
-    console.log('server sql in DB: ' + sql)
+    console.log('\nserver sql in DB: ' + sql)
     const connection = mysql.createConnection({
         host: 'localhost',
         port: 3306,
         user: 'root',
         password: 'od1cos2mysql',
-        database: 'pizzawebsite'
+        // database: 'pizzawebsite'
     });
     // כאן מריצים את השאילתה ואחרי שיש תשובה מפעילים את הפונקצית calback עם הפרמטר
     connection.connect((err) => {
