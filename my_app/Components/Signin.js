@@ -1,30 +1,60 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { View, Text, TextInput, Button, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
+import { Picker } from '@react-native-picker/picker';
 
 const Signin = () => {
   const [username, setUsername] = useState('');
   const [phoneNumber, setPhoneNumber] = useState('');
   const [Id, setId] = useState('');
+  const [branches, setBranches] = useState([]);
+  const [selectedBranch, setSelectedBranch] = useState('');
+  const [email, setEmail] = useState('')
   const navigation = useNavigation();
 
+  useEffect(() => {
+    getBranches();
+  }, []);
+
+  async function getBranches() {
+    try {
+      const response = await fetch('http://localhost:3600/branches/info');
+      const ans = await response.json();
+      if (typeof ans === 'string') {
+        const parsedAns = JSON.parse(ans);
+        if (Array.isArray(parsedAns)) {
+          setBranches(parsedAns);
+        } else {
+          console.error('Parsed branches data is not an array:', parsedAns);
+        }
+      } else if (Array.isArray(ans)) {
+        setBranches(ans);
+      } else {
+        console.error('Branches data is not an array:', ans);
+      }
+    } catch (error) {
+      console.error('Error fetching branches:', error);
+    }
+  }
+
   const handleSignIn = () => {
-    // הוספת לוגיקה לטיפול בהרשמה כאן
     console.log('Username:', username);
     console.log('Phone Number:', phoneNumber);
     console.log('Id:', Id);
-
+    console.log('Selected Branch:', selectedBranch);
+    console.log('Email:', email);
 
     const fetchSignin = async () => {
       try {
         const body = {
           id: Id,
           name: username,
-          phone: phoneNumber
-        }
-        console.log(`body: ${body}`)
+          phone: phoneNumber,
+          branch: selectedBranch,
+          email: email
+        };
         const response = await fetch(
-          `http://localhost:3600/delivery/signin`,
+          'http://localhost:3600/delivery/signin',
           {
             method: 'POST',
             headers: {
@@ -34,22 +64,18 @@ const Signin = () => {
           }
         );
         const data = await response.json();
-        console.log(data)
         if (data !== false) {
           navigation.navigate('Home', {
             userName: username,
             userId: Id,
           });
-
         }
-
       } catch (error) {
-        console.error('Error fetching chat:', error);
+        console.error('Error fetching signin:', error);
       }
     };
-
-    fetchSignin();
-
+    if (username !== '' && phoneNumber !== '' && Id !== '' && selectedBranch > 0 && email !== '')
+      fetchSignin();
   };
 
   return (
@@ -69,6 +95,13 @@ const Signin = () => {
         value={phoneNumber}
         onChangeText={(text) => setPhoneNumber(text)}
       />
+      <Text style={styles.label}>Email:</Text>
+      <TextInput
+        style={styles.input}
+        placeholder="Enter your email"
+        value={email}
+        onChangeText={(text) => setEmail(text)}
+      />
 
       <Text style={styles.label}>Id:</Text>
       <TextInput
@@ -77,6 +110,19 @@ const Signin = () => {
         value={Id}
         onChangeText={(text) => setId(text)}
       />
+
+      <Text style={styles.label}>Branch:</Text>
+      <View style={styles.pickerContainer}>
+        <Picker
+          selectedValue={selectedBranch}
+          onValueChange={(itemValue) => setSelectedBranch(itemValue)}
+        >
+          <Picker.Item label="Select a branch" value="" />
+          {branches.map((branch) => (
+            <Picker.Item key={branch.id} label={branch.name} value={branch.id} />
+          ))}
+        </Picker>
+      </View>
 
       <TouchableOpacity style={styles.button} onPress={handleSignIn}>
         <Text style={styles.buttonText}>SignIn</Text>
@@ -92,9 +138,8 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundImage: 'url("../Media/background.jfif")',
     paddingHorizontal: 30,
-    paddingBottom: 50, // עבור גלילה למטה
+    paddingBottom: 50,
   },
   label: {
     fontSize: 18,
@@ -107,6 +152,14 @@ const styles = StyleSheet.create({
     borderColor: '#ccc',
     borderRadius: 10,
     paddingHorizontal: 15,
+    marginBottom: 20,
+    backgroundColor: '#fff',
+  },
+  pickerContainer: {
+    width: '100%',
+    borderWidth: 1,
+    borderColor: '#ccc',
+    borderRadius: 10,
     marginBottom: 20,
     backgroundColor: '#fff',
   },

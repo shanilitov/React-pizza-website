@@ -45,16 +45,17 @@ function Pizza() {
     }, state)
 
     const checked = (a, i) => {
-        JSON.parse(a)
+        let t = JSON.parse(a)
         console.log(a + 'checked!!!!!1')
 
         console.log('i : ' + i);
 
         let currentAdd = {
-            'key:' : a.id,
+            'key': -1,
             'product': a,
             'quantity': 1
         }
+        console.log(`current add: ${JSON.stringify(currentAdd)}`)
         let e = existedid.find(element => element === currentAdd)
         console.log(e)
         if (e === undefined) {
@@ -95,7 +96,7 @@ function Pizza() {
 
         list.push({
             'key': pizza.id,
-            'prudact': pizza,
+            'product': pizza,
             'quantity': 1
         }
             )

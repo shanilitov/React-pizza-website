@@ -14,11 +14,11 @@ async function loginDelivery(name, id, callback) {
     }
 }
 
-async function signinDelivery(Id, Name, Phone, callback) {
+async function signinDelivery(Id, Name, Phone, branch, email, callback) {
     try {
         console.log('in signin function')
-        let sql = `insert into delivery.users(idusers, name, phone)
-    values('${Id}', '${Name}', '${Phone}');`
+        let sql = `insert into delivery.users(idusers, name, phone, branch, email)
+    values('${Id}', '${Name}', '${Phone}', ${branch}, '${email}');`
 
         db.query(sql, callback);
     }
@@ -49,10 +49,11 @@ async function getOrederWaiting(branchId, callback) {
     try {
         console.log(`making query to get the order to the new deliver for branch number: ${branchId}`)
         let sql = `
-        SELECT o*
-        FROM orders.orders o
-        JOIN branches.branch_orders bo ON o.id = bo.order_id
-        WHERE bo.id = ${branchId}
+        SELECT o.*
+        FROM orders as o
+        JOIN branches.branch_orders as bo ON o.id = bo.order_id
+        WHERE bo.branch_id = ${branchId} and o.id not in (select orderId
+                                                         from delivery.deliver)
         ORDER BY o.id ASC
         LIMIT 1;
         `
@@ -87,7 +88,7 @@ async function addNewDeliveryToDeliver(deliverId, orderId, callback) {
         console.log('in addNewDeliveryToDeliver function')
         let sql = `
         INSERT INTO delivery.deliver (orderId, userId, status) 
-        VALUES (${orderId}, ${deliverId}, 0);
+        VALUES (${orderId}, ${deliverId}, 1);
         `
 
         db.query(sql, callback);
@@ -97,4 +98,19 @@ async function addNewDeliveryToDeliver(deliverId, orderId, callback) {
     }
 }
 
-module.exports = { getCurrentOrder, loginDelivery, signinDelivery, getDeliverBranch, getOrederWaiting, addNewDeliveryToDeliver }
+async function getStatus(orderId, callback){
+    try{
+        console.log(`Get the order status for order ${orderId}`)
+        let query = `
+        select status 
+        from delivery.deliver
+        where orderId = ${orderId}
+        `
+        db.query(query, callback)
+    }
+    catch (err) {
+        console.log(`in querise : ${err}`)
+    }
+}
+
+module.exports = {getStatus, getCurrentOrder, loginDelivery, signinDelivery, getDeliverBranch, getOrederWaiting, addNewDeliveryToDeliver }

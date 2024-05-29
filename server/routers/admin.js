@@ -9,7 +9,12 @@ router.get('/get_branch_money/:id', (req, res) => {
         oredrQueries.getordermoney(req.params.id, (ans) => {
             console.log(ans)
             if (ans) {
-                res.json(ans)
+                let sum = JSON.parse(ans)[0].sum
+                console.log(`sun is ${sum} $`)
+                if(sum !== null)
+                    res.json(sum)
+                else
+                    res.json(0)
             }
             else {
                 res.send(false)

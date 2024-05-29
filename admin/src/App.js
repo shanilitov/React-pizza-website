@@ -8,7 +8,7 @@ import Admin from './COMPONENTS/Admin'
 import Singin from './COMPONENTS/Signin';
 import OrderView from './COMPONENTS/OrderView';
 import Complete from './COMPONENTS/Complete';
-import Menue from './COMPONENTS/Menue';
+import Menu from './COMPONENTS/Menu';
 import logo from './img/logo.jpg'
 import login from './img/login.jpg'
 import ProductView from './COMPONENTS/ProductView';
@@ -27,7 +27,7 @@ function App() {
             <Route path='orderview/:data' element={<Orderview />}></Route>
             <Route path='complete' element={<Complete />}></Route>
             <Route path='admin' element={<Admin />}></Route>
-            <Route path='menue' element={<Menue />}></Route>
+            <Route path='menu' element={<Menu />}></Route>
             <Route path='productview/:data' element={<ProductView />}></Route>
             <Route path='sent' element={<Sent />}></Route>
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, Text, TouchableOpacity, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
 
@@ -33,10 +33,32 @@ const Home = ({ route }) => {
         }
         if (data !== false) {
           //לסדר את הסטטוס לסטטוס המתאים לפי ההזמנה 
-          // data = [{orderId, status, city, street, number}] or false.
+          // data = {orderId, status, city, street, number} or false.
           setFlag(false)
-          setCurrentOrder(data[0])
-          setStatus(currentOrder.status + 1)
+          setCurrentOrder(data)
+          getOrderStatus(data.orderId)
+        }
+      }
+      else {
+        // היתה תקלה בשרת
+        // צריך לסדר שתהיה הודעת שגיאה יפה.
+      }
+
+    } catch (error) {
+      console.error('Error fetching chat:', error);
+    }
+  }
+  const getOrderStatus = async (orderId) => {
+    try {
+      const response = await fetch(
+        `http://localhost:3600/delivery/getOredrStatus/${orderId}`
+      );
+      if (response.status === 200) {
+        const data = await response.json();
+        console.log(`data is ${data}`)
+        if (data !== false) {
+          setFlag(false)
+          setStatus(data)
         }
       }
       else {
@@ -49,29 +71,38 @@ const Home = ({ route }) => {
     }
   }
 
+  // const buttonClicked = async () => {
+  //   navigation.navigate('CurrentDelivery', {
+  //     userName: userName,
+  //     userId: userId,
+  //   }, {
+  //     currentOrder: currentOrder,
+  //     status: status
+  //   });
+  //   // console.log(`in button clicked, the status now is: ${status}`)
+  //   // // צריך לסדר שלפי הסטטוס יהיה הפעולה של הכפתור.
+  //   // switch (status) {
+  //   //   case 0: // אין הזמנה נוכחית -> צריך לאפשר לקבל הזמנה חדשה
+  //   //     getNewOrder()
+  //   //     break;
+  //   //   case 1: // יש הזמנה שממתינה לאיסוף -> צריך לאפשר לשליח לעדכן שהוא אסף את המשלוח מהסניף
+
+  //   //     break;
+  //   //   case 2: // ההזמנה ממתינה למסירה -> צריך לאפשר לשליח לדווח על מסירה
+  //   //     break;
+  //   //   default:
+  //   //     break;
+  //   // }
+  // }
   const buttonClicked = async () => {
-    navigation.navigate('CurrentDeluvery', {
+    navigation.navigate('CurrentDelivery', {
       userName: userName,
       userId: userId,
-    }, {
       currentOrder: currentOrder,
-      status: status
+      currentStatus: status
     });
-    // console.log(`in button clicked, the status now is: ${status}`)
-    // // צריך לסדר שלפי הסטטוס יהיה הפעולה של הכפתור.
-    // switch (status) {
-    //   case 0: // אין הזמנה נוכחית -> צריך לאפשר לקבל הזמנה חדשה
-    //     getNewOrder()
-    //     break;
-    //   case 1: // יש הזמנה שממתינה לאיסוף -> צריך לאפשר לשליח לעדכן שהוא אסף את המשלוח מהסניף
-        
-    //     break;
-    //   case 2: // ההזמנה ממתינה למסירה -> צריך לאפשר לשליח לדווח על מסירה
-    //     break;
-    //   default:
-    //     break;
-    // }
   }
+
 
 
   const getNewOrder = async () => {
@@ -83,6 +114,7 @@ const Home = ({ route }) => {
       if (response.status === 200) {
         const data = await response.json();
         console.log(`data is ${data}`)
+
       }
       else {
 
@@ -96,17 +128,20 @@ const Home = ({ route }) => {
 
   return (
     <View style={styles.container}>
+      <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.goBack}>
+        <Image source={require('../Media/back.png')} style={styles.imageStyle} />
+      </TouchableOpacity>
       <TouchableOpacity onPress={() => console.log('Navigate to Profile')} style={styles.profileButton}>
-        <Text style={styles.icon}>👤</Text>
+        <Image source={require('../Media/login.jpg')} style={styles.imageStyle} />
         <Text style={styles.icon}>{userName}</Text>
       </TouchableOpacity>
 
       <View style={styles.content}>
-        
+
         <Text style={styles.greeting}>{status > 0 ? `Adress: ${currentOrder.street} ${currentOrder.number}, ${currentOrder.city}` : `You don't have order to deliver now, click the button to get a new one`}</Text>
 
 
-        <TouchableOpacity style={styles.button} onPress={() => navigation.navigate('CurrentDelivery')}>
+        <TouchableOpacity style={styles.button} onPress={() => buttonClicked()}>
           <Text style={styles.buttonText}>{texts[status]}</Text>
         </TouchableOpacity>
 
@@ -168,6 +203,17 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: 'bold',
     textAlign: 'center',
+  },
+  imageStyle: {
+    width: 40, // רוחב התמונה
+    height: 40, // גובה התמונה
+    borderRadius: 50, // חצי הרוחב מייצר מסגרת עגולה
+  },
+  goBack: {
+    position: 'absolute',
+    top: 20,
+    right: 20,
+    zIndex: 1,
   },
 });
 

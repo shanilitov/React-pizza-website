@@ -42,7 +42,7 @@ function ProductView() {
         if (params.data === 'add') {
             console.log(name, price, enable)
             fetch(`http://localhost:3600/menue/addproduct/${name}/${price}/${enable}`)
-                .then(navigate('/menue'))
+                .then(navigate('/menu'))
         }
         else {
             let data = JSON.parse(params.data)
@@ -50,7 +50,7 @@ function ProductView() {
             console.log(id)
 
             fetch(`http://localhost:3600/menue/updateproduct/${id}/${name}/${price}/${enable}`)
-            .then(navigate('/menue'))
+            .then(navigate('/menu'))
         }
 
     }

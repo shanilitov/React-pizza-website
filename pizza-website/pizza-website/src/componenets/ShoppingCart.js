@@ -7,56 +7,51 @@ import back from '../img/back.png'
 import '../CSS/ShopingCart.css'
 
 function ShoppingCart() {
-    const [finleprice, setprice] = useState(0)
-    const [list, setList] = useState([])
-    const state = [];
-    useEffect(() => {
-        // localStorage.clear()
-        let getlist = JSON.parse(localStorage.getItem('shopping_cart'))
-        console.log(getlist)
-        setList(getlist)
-        let sum = 0
-        if (getlist != null) {
-            getlist.map((data, i) => {
-                console.log(`data: ${data}`)
-                let t = JSON.stringify(data)
-                console.log(JSON.parse(t))
-                console.log('t' + t)
-                let v = JSON.parse(t)
-                console.log('t' + v.product.price + " a" + v.quantity)
-                sum = sum +( v.product.price * v.quantity);
-                return true;
-            })
-            setprice(sum)
-            
-        }
-        else {
-            setprice(0)
-        }
+    const [finleprice, setprice] = useState(0);
+    const [products, setProducts] = useState([]);
+    const [addings, setAddings] = useState([]);
 
-    }, state)
+    useEffect(() => {
+        let getlist = JSON.parse(localStorage.getItem('shopping_cart'));
+        console.log(getlist);
+
+        if (getlist) {
+            let tempProducts = [];
+            let tempAddings = [];
+            let sum = 0;
+
+            getlist.forEach((data) => {
+                if (data.key === -1) {
+                    console.log(`Adding to addings: ${JSON.stringify(data)}`);
+                    tempAddings.push(data);
+                } else {
+                    console.log(`Adding to products: ${JSON.stringify(data)}`);
+                    tempProducts.push(data);
+                }
+
+                sum += data.product.price * data.quantity;
+            });
+
+            setAddings(tempAddings);
+            setProducts(tempProducts);
+            setprice(sum);
+        } else {
+            setprice(0);
+        }
+    }, []);
+
+
     return (
         <div className="shoppingCartContainer">
             <Header />
-            <div id="shoppingcart" >
-          
+            <div id="shoppingcart">
                 <div className="shoppingcart">
-                    <div >
-                        {list != null || list == [] ?
-                            list.map((data, i) => {
-                                if (data) {
-                                    console.log(data)
-                                    return (
-                                        <Item data={JSON.stringify(data)} key={i} />
-                                    )
-                                }
-                                else {
-                                    return (
-                                        <h1>YOUR SHOPPING CART IS EMPTY</h1>
-                                    )
-                                }
-                            })
-                            : 'You dont have any dish in your cart yet...'
+                    <div>
+                        {products.length > 0 ?
+                            products.map((data, i) => (
+                                <Item data={data} addings={addings.filter(a => JSON.parse(a.product).product_id === data.key)} key={i} />
+                            )) :
+                            <h1>YOUR SHOPPING CART IS EMPTY</h1>
                         }
                     </div>
                     <div className="linkdiv">
@@ -64,14 +59,14 @@ function ShoppingCart() {
                         <div>
                             <h1>{finleprice + '$'}</h1>
                         </div>
-                        {finleprice == 0 ? <></> :
-                            <Link to="/finish1" ><img src={finish2} className="myButton" width='100px' /></Link>
+                        {finleprice === 0 ? null :
+                            <Link to="/finish1"><img src={finish2} className="myButton" width='100px' /></Link>
                         }
                     </div>
                 </div>
             </div>
-
         </div>
-    )
+    );
 }
+
 export default ShoppingCart;
