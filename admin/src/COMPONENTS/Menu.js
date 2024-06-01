@@ -25,7 +25,7 @@ function Menu() {
     }, []);
 
     const handleDeleteProduct = async (productId) => {
-        await fetch(`http://localhost:3600/menue/delete/${productId}`, { method: 'DELETE' });
+        await fetch(`http://localhost:3600/menue/delete/${productId}`);
         setProductList(prevProductList => prevProductList.filter(product => product.id !== productId));
     };
 

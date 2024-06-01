@@ -3,3 +3,9 @@
     background-size: cover;
     background-position: center;
   }
+  #homecontainer{
+    height: 100vh;
+    background-image: url('../img/back-ground.jfif'); /* החלף background.jpg בשם התמונה שלך */
+    background-size: cover;
+    background-position: center;
+  }

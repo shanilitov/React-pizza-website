@@ -24,7 +24,8 @@ function Pizza() {
                     console.log(ans)
                     let temp = JSON.parse(ans)
                     console.log(temp)
-                    setadd(temp)
+                    if(temp)
+                        setadd(temp)
 
                 })
         }
@@ -35,7 +36,8 @@ function Pizza() {
                     console.log(ans)
                     let temp = JSON.parse(ans)
                     console.log(temp[0])
-                    setpizza(temp[0])
+                    if(temp)
+                        setpizza(temp[0])
                 })
         }
 

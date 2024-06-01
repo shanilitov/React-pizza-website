@@ -33,13 +33,13 @@ function Order(id) {
     }, state)
 
     const buttonclick = ()=>{
-        let orderviewdata = {
+        let data = {
             'name':name,
             'order_id': myData.id,
             'comment': myData.comment
         }
 
-        navigate(`/orderview/${JSON.stringify(orderviewdata)}`)
+        navigate(`/orderview/${JSON.stringify(data)}`)
     }
 
     return (

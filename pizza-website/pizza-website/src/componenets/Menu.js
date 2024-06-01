@@ -24,7 +24,8 @@ function Menu() {
                     console.log(ans)
                     let temp = JSON.parse(ans)
                     console.log(temp)
-                    setProductList(temp)
+                    if(ans)
+                        setProductList(temp)
                 })
         }
         getallproduct()

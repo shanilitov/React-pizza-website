@@ -1,44 +1,66 @@
 .container {
-    background-image: url('http://localhost:3000/static/media/back-ground.4dc9b437b8177d1dda1b.jfif'); /* החלף background.jpg בשם התמונה שלך */
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-  }
-  
-  .header {
-    margin-bottom: 20px;
-  }
-  
-  .registration-form {
-    text-align: center;
-    background-color: rgba(255, 255, 255, 0.8); /* שינוי רמת השקיפות לפי הצורך */
-    padding: 20px;
-    border-radius: 10px;
-  }
-  
-  input {
-    width: 100%;
-    padding: 10px;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-  }
-  
-  button {
-    background-color: #4e1c07;
-    color: #ffffff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-  }
-  
-  button:hover {
-    background-color: #0056b3;
-  }
-  
+  background-image: url('http://localhost:3000/static/media/back-ground.4dc9b437b8177d1dda1b.jfif');
+  /* החלף background.jpg בשם התמונה שלך */
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  font-family: Arial;
+  font-size: 17px
+}
+
+.header {
+  margin-bottom: 20px;
+}
+
+.registration-form {
+  text-align: center;
+  background-color: rgba(17, 16, 16, 0.8);
+  /* שינוי רמת השקיפות לפי הצורך */
+  padding: 20px;
+  border-radius: 10px;
+  font-family: Arial, sans-serif;
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #dc1e1e;
+  color: #dc1e1e;
+  background-color: #0a0303;
+  border-radius: 5px;
+}
+
+/* button {
+  background-color: #c90808;
+  color: #0a0303;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+} */
+
+button:hover {
+  background-color: #b38000;
+}
+.RButton{
+  background-color: #c90808;
+  color: #0a0303;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+#backiconR{
+  background-image: '../img/back.png';
+  border-radius: 50px;
+  width: 50px;
+  height: 50px;
+}

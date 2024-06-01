@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../CSS/RegistrationComponent.css' // כותבים את שם קובץ ה-CSS החדש שיצרנו
-import { useNavigate } from 'react-router-dom';
+import {Link, useNavigate } from 'react-router-dom';
+import back from '../img/back.png';
 
 
 const RegistrationComponent = () => {
@@ -53,7 +54,7 @@ const RegistrationComponent = () => {
     <div className="container" >
       <div className="header">
         {/* אייקון חזרה לדף הבית */}
-        <button onClick={() => window.history.back()}>🏠</button>
+        <Link to="/"><img src={back} className="backicon" /></Link>
       </div>
       <div className="registration-form">
         {/* שדה להזנת מספר הפלפון */}
@@ -64,7 +65,7 @@ const RegistrationComponent = () => {
           onChange={handlePhoneNumberChange}
         />
         {/* כפתור להרשמה */}
-        <button onClick={handleRegistration}>Find your orders</button>
+        <button className='RButton' onClick={handleRegistration}>Find your orders</button>
       </div>
     </div>
   );

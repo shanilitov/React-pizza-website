@@ -13,7 +13,7 @@ const ProductsComponent = ({ products }) => {
   return (
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '10px' }}>
       {products.map((product, index) => (
-        <div key={index} onClick={()=> selectionChanged(index)} style={{ backgroundColor: product.ready === 0 ? '#8a2a216e' : '#0d090933', padding: '20px', borderRadius: '10px', textAlign: 'center' }}>
+        <div key={index} onClick={()=> selectionChanged(index)} style={{ backgroundColor: product.ready === 0 ? 'black' : 'red', color: product.ready == 0 ? 'red': 'black' ,padding: '20px', borderRadius: '10px', textAlign: 'center' }}>
           <h1>{product.product_name}</h1>
           {displayAll !== -1 && index === chosen && (
             <div>

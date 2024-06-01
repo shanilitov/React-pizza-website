@@ -1,37 +1,44 @@
 const mysql = require('mysql');
+const pool = mysql.createPool({
+    connectionLimit: 10, // הגדרת מקסימום חיבורים
+    host: 'localhost',
+    port: 3306,
+    user: 'root',
+    password: 'od1cos2mysql',
+    // database: 'pizzawebsite' // בטעות זה היה בהערה בקוד שלך
+});
 
 async function query(sql, callback) {
-    console.log('\nserver sql in DB: ' + sql)
-    const connection = mysql.createConnection({
-        host: 'localhost',
-        port: 3306,
-        user: 'root',
-        password: 'od1cos2mysql',
-        // database: 'pizzawebsite'
-    });
-    // כאן מריצים את השאילתה ואחרי שיש תשובה מפעילים את הפונקצית calback עם הפרמטר
-    connection.connect((err) => {
-        if (err){
-            console.log(err)
-            callback(false)
-        }
-        else {
-            connection.query(sql, (err, result, field) => {
-                console.log('err: ' + err, 'result: ' + JSON.stringify(result), "field: " + field)
+    console.log('\nserver sql in DB: ' + sql);
+    try {
 
-                if (err || result === undefined)
-                    callback(false)
-                else {
+        pool.getConnection((err, connection) => {
+            if (err) {
+                console.error('Error getting connection from pool:', err);
+                callback(false);
+                return;
+            }
 
-                    result = JSON.stringify(result)
-                    console.log(`in query, the response: ${result}`)
+            connection.query(sql, (err, result) => {
+                console.log('err: ' + err, 'result: ' + JSON.stringify(result));
 
-                    if(result)
-                        callback(result);
+                connection.release(); // שחרור החיבור בחזרה לבריכה
+
+                if (err || result === undefined) {
+                    callback(false);
+                } else {
+                    result = JSON.stringify(result);
+                    console.log(`in query, the response: ${result}`);
+                    callback(result);
                 }
-            })
-        }
-
-    })
+            });
+        });
+    }
+    catch (err) {
+        console.log('err')
+        callback(false)
+    }
 }
+
 module.exports = { query };
+

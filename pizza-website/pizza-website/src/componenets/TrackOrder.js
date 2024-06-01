@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../CSS/OrderTrack.css'; // נניח שיש לך קובץ CSS לעיצובים
-import { useLocation, useNavigate } from 'react-router-dom';
+import {Link, useLocation, useNavigate } from 'react-router-dom';
+import back from '../img/back.png';
 
 const TrackOrder = () => {
 
@@ -23,7 +24,8 @@ const TrackOrder = () => {
 
     return (
         <div className="order-tracker">
-         
+            <Link to="/"><img src={back} className="backicon" /></Link>
+            <h1>Track you orders</h1>
             <ul className="order-list">
                 {orders.map(order => (
                     <li

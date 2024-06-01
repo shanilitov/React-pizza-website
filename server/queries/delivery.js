@@ -48,12 +48,17 @@ async function getCurrentOrder(deliverId, callback) {
 async function getOrederWaiting(branchId, callback) {
     try {
         console.log(`making query to get the order to the new deliver for branch number: ${branchId}`)
+        // השאילתא אמורה למצוא את ההזמנה הבאה של השליח.
+        // השאילתא מוצאת את ההזמנות של הסניף המבוקש שלא משויכות למשלוח, ושאינם איסוף עצמי
         let sql = `
         SELECT o.*
-        FROM orders as o
+        FROM orders.orders as o
         JOIN branches.branch_orders as bo ON o.id = bo.order_id
-        WHERE bo.branch_id = ${branchId} and o.id not in (select orderId
-                                                         from delivery.deliver)
+        WHERE bo.branch_id = ${branchId} 
+            and o.id not in (select orderId
+                            from delivery.deliver)
+            AND o.id not in (select orderId
+                            from orders.takeaway;)
         ORDER BY o.id ASC
         LIMIT 1;
         `
@@ -113,4 +118,14 @@ async function getStatus(orderId, callback){
     }
 }
 
-module.exports = {getStatus, getCurrentOrder, loginDelivery, signinDelivery, getDeliverBranch, getOrederWaiting, addNewDeliveryToDeliver }
+async function changeSatus(orderId, deliverId, status, callback){
+    console.log(`in change deliver order status, to status: ${status}`)
+    let query = `
+    UPDATE delivery.deliver 
+    SET status = ${status} 
+    WHERE orderId = ${orderId} and userId = ${deliverId};
+    `
+    db.query(query, callback)
+}
+
+module.exports = {changeSatus, getStatus, getCurrentOrder, loginDelivery, signinDelivery, getDeliverBranch, getOrederWaiting, addNewDeliveryToDeliver }

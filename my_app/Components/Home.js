@@ -14,11 +14,12 @@ const Home = ({ route }) => {
   const navigation = useNavigation();
 
   useEffect(() => {
-    if (flag)
-      checkIfUserHasOrderNow()
 
-  }, [status]);
+    checkIfUserHasOrderNow()
 
+  }, []);
+
+  // check If User Has any Order Now
   const checkIfUserHasOrderNow = async () => {
     try {
       const response = await fetch(
@@ -48,6 +49,8 @@ const Home = ({ route }) => {
       console.error('Error fetching chat:', error);
     }
   }
+
+  // fetch to get the Order Status
   const getOrderStatus = async (orderId) => {
     try {
       const response = await fetch(
@@ -71,65 +74,82 @@ const Home = ({ route }) => {
     }
   }
 
-  // const buttonClicked = async () => {
-  //   navigation.navigate('CurrentDelivery', {
-  //     userName: userName,
-  //     userId: userId,
-  //   }, {
-  //     currentOrder: currentOrder,
-  //     status: status
-  //   });
-  //   // console.log(`in button clicked, the status now is: ${status}`)
-  //   // // צריך לסדר שלפי הסטטוס יהיה הפעולה של הכפתור.
-  //   // switch (status) {
-  //   //   case 0: // אין הזמנה נוכחית -> צריך לאפשר לקבל הזמנה חדשה
-  //   //     getNewOrder()
-  //   //     break;
-  //   //   case 1: // יש הזמנה שממתינה לאיסוף -> צריך לאפשר לשליח לעדכן שהוא אסף את המשלוח מהסניף
-
-  //   //     break;
-  //   //   case 2: // ההזמנה ממתינה למסירה -> צריך לאפשר לשליח לדווח על מסירה
-  //   //     break;
-  //   //   default:
-  //   //     break;
-  //   // }
-  // }
-  const buttonClicked = async () => {
-    navigation.navigate('CurrentDelivery', {
-      userName: userName,
-      userId: userId,
-      currentOrder: currentOrder,
-      currentStatus: status
-    });
-  }
-
-
-
-  const getNewOrder = async () => {
-    // אין הזמנה נוכחית -> צריך לאפשר לקבל הזמנה חדשה
+  // Change status
+  const changeTheStatus = async () => {
+    console.log(`change the status, current is ${status}`)
     try {
+      let nextStatus= status + 1
       const response = await fetch(
-        `http://localhost:3600/delivery/getCurrentOrder/${userId}`
+        `http://localhost:3600/delivery/changeDeliveryStatus/${userId}/${currentOrder.orderId}/${nextStatus}`
       );
       if (response.status === 200) {
         const data = await response.json();
         console.log(`data is ${data}`)
-
+        if (data !== false) {
+            if(nextStatus > 2)
+              setStatus(0)
+            else
+              setStatus(nextStatus)
+        }
       }
       else {
-
+        // היתה תקלה בשרת
+        // צריך לסדר שתהיה הודעת שגיאה יפה.
       }
-
     }
-    catch (err) {
-
+    catch (error) {
+      console.error('Error fetching chat:', error);
     }
   }
+
+  const buttonClicked = async () => {
+    console.log(`in button clicked, the status now is: ${status}`)
+
+    if (status == 0) // if there is no order yet
+      fetchNewOrder()
+    else
+      changeTheStatus()
+  }
+  // const buttonClicked = async () => {
+  //   navigation.navigate('CurrentDelivery', {
+  //     userName: userName,
+  //     userId: userId,
+  //     currentOrder: currentOrder,
+  //     currentStatus: status
+  //   });
+  // }
+
+  // get new order to deliver
+  const fetchNewOrder = async () => {
+    try {
+      console.log("Fetching new order...");
+      const response = await fetch(`http://localhost:3600/delivery/getNewOrder/${userId}`);
+      const data = await response.json();
+      console.log("Response data:", data);
+      if (data !== false) {
+        setCurrentOrder(data); // No need to parse data again, assuming it's already JSON
+        setStatus(1);
+      }
+    } catch (error) {
+      console.error('Error fetching order:', error);
+    }
+  };
+
+  const chatClicked = async()=>{
+    console.log('chat clicked')
+    if(status !== 0 && currentOrder.orderId !== undefined){
+      navigation.navigate('Chat', { userId: userId, userName: userName, currentOrderId: currentOrder.orderId })
+    }
+    else{
+      console.log(currentOrder)
+    }
+  }
+  console.log(status)
 
   return (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => navigation.navigate('Login')} style={styles.goBack}>
-        <Image source={require('../Media/back.png')} style={styles.imageStyle} />
+        <Image source={require('../Media/back.png')} style={styles.chatImg} />
       </TouchableOpacity>
       <TouchableOpacity onPress={() => console.log('Navigate to Profile')} style={styles.profileButton}>
         <Image source={require('../Media/login.jpg')} style={styles.imageStyle} />
@@ -149,6 +169,10 @@ const Home = ({ route }) => {
           <Text style={styles.buttonText}>My Activities</Text>
         </TouchableOpacity>
       </View>
+
+      <TouchableOpacity onPress={() => chatClicked()} style={styles.chatIcon} role="button">
+        <Image source={require('../Media/chat.jpeg')} style={styles.chatImg} />
+      </TouchableOpacity>
     </View>
   );
 };
@@ -215,6 +239,17 @@ const styles = StyleSheet.create({
     right: 20,
     zIndex: 1,
   },
+  chatIcon: {
+    position: 'absolute',
+    bottom: 20,
+    left: 20,
+    zIndex: 1,
+  },
+  chatImg: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  }
 });
 
 export default Home;

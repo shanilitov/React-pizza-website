@@ -1,12 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, ScrollView, StyleSheet, Image } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 
-const Chat = () => {
+const Chat = ({ route }) => {
+  const { userName, userId, currentOrderId } = route.params
   const [messages, setMessages] = useState([]);
   const [inputMessage, setInputMessage] = useState('');
-  const [orderId, setOrderId] = useState(151)
-
+  const [orderId, setOrderId] = useState(currentOrderId)
+  console.log(`orderId: ${orderId}`)
+  
+  const navigation = useNavigation();
 
   const [update, setUpdate] = useState(0)
   const [connection, setConnection] = useState('DS') //שומר את ההגדרה עם מי הצ'אט הנוכחי
@@ -51,7 +54,7 @@ const Chat = () => {
         console.error('Error fetching chat:', error);
       }
     };
-
+    console.log('update')
     fetchChat();
   }, [connection, update]);
 
@@ -82,25 +85,33 @@ const Chat = () => {
   };
 
 
-
+  const changeConnection = async()=>{
+    if(connection == 'DS')
+      setConnection('DC')
+    else
+      setConnection('DS')
+  }
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={() => console.log('Navigate to CurrentDelivery')} style={styles.goBack}>
-        <Text style={styles.icon}>⬅️</Text>
-      </TouchableOpacity>
+      {/* <TouchableOpacity onPress={() => console.log('Navigate to CurrentDelivery')} style={styles.goBack}>
+
+      </TouchableOpacity> */}
 
       <View style={styles.header}>
-        <TouchableOpacity style={styles.client}>
-          <Text style={styles.clientText}>Client</Text>
-          <Text style={styles.icon}>👤</Text>
+        <TouchableOpacity onPress={()=>changeConnection()} style={styles.client}>
+          <Text style={styles.clientText}>{connection == 'DS'? 'SHOP' : 'CLIENT'}</Text>
+          <Image source={require('../Media/login.jpg')} style={styles.imageStyle} />
+        </TouchableOpacity>
+        <TouchableOpacity onPress={() => navigation.navigate('Home', {userId: userId, userName: userName})} style={styles.goBack}>
+          <Image source={require('../Media/back.png')} style={styles.chatImg} />
         </TouchableOpacity>
       </View>
 
       <ScrollView contentContainerStyle={styles.chatContainer}>
         {messages.map((message, index) => (
-          <View key={index} style={[styles.messageContainer, message.connection === 'DS' ? styles.sentMessage : styles.receivedMessage]}>
-            <Text style={styles.messageText}>{message.message}</Text>
+          <View key={index} style={[styles.messageContainer, message.connection === 'DS' || message.connection == 'DC' ? styles.sentMessage : styles.receivedMessage]}>
+            <Text style={styles.messageText}>{message.message}{message.connection}</Text>
           </View>
         ))}
       </ScrollView>
@@ -122,14 +133,15 @@ const Chat = () => {
 
 const styles = StyleSheet.create({
   container: {
+    backgroundImage: 'url("../Media/background.jfif")',
     flex: 1,
     backgroundColor: '#fff',
     paddingHorizontal: 20,
   },
   goBack: {
-    position: 'absolute',
-    top: 20,
-    right: 20,
+    position: 'sticky',
+    top: 0,
+    right: 0,
     zIndex: 1,
   },
   icon: {
@@ -199,6 +211,16 @@ const styles = StyleSheet.create({
   sendButtonText: {
     color: '#fff',
     fontWeight: 'bold',
+  },
+  chatImg: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
+  imageStyle: {
+    width: 40, // רוחב התמונה
+    height: 40, // גובה התמונה
+    borderRadius: 50, // חצי הרוחב מייצר מסגרת עגולה
   },
 });
 

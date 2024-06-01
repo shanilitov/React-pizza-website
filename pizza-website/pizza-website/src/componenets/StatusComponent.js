@@ -13,20 +13,20 @@ const StatusComponent = ({ time, totalTime }) => {
           cx="60"
           cy="60"
           r={radius}
-          fill="#4e1c07"
+          fill="black"
         />
         <circle
           cx="60"
           cy="60"
           r={radius}
           fill="transparent"
-          stroke="#f4eae6"
+          stroke="red"
           strokeWidth="10"
           strokeDasharray={circumference}
           strokeDashoffset={strokeDashoffset}
           transform="rotate(-90 60 60)"
         />
-        <text x="50%" y="50%" textAnchor="middle" dy=".3em" fontSize="20px" fill="white">
+        <text x="50%" y="50%" textAnchor="middle" dy=".3em" fontSize="20px" fill="red">
           {time}
         </text>
       </svg>

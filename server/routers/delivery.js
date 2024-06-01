@@ -49,7 +49,7 @@ router.get('/getCurrentOrder/:deliverId', (req, res) => {
     }
 })
 
-
+// התחברות לשליח
 router.post('/login', async (req, res) => {
     try {
         console.log(req.body)
@@ -72,6 +72,7 @@ router.post('/login', async (req, res) => {
 
 })
 
+// שליח שמבקש לקבל הזמנה חדשה
 router.get('/getNewOrder/:deliverId', async (req, res) => {
     try {
         const deliverId = req.params.deliverId
@@ -85,30 +86,40 @@ router.get('/getNewOrder/:deliverId', async (req, res) => {
                     console.log(`deliver branch is ${branchId}`)
                     if (branchId) {
                         // 2. לבקש את ההזמנה שממתינה למשלוח הכי הרבה זמן
-                        queries.getOrederWaiting(JSON.parse(branchId)[0].branch, async(order)=>{
+                        queries.getOrederWaiting(JSON.parse(branchId)[0].branch, async (order) => {
                             console.log(`Order to take is ${order}`)
                             let o = JSON.parse(order)[0]
+                            if(o == undefined)
+                            {
+                                res.status(200).json(false)
+                                return;
+                            }
                             console.log(o)
                             console.log(o.id)
-                             // 3. להוסיף לשליח את ההזמנה
-                             queries.addNewDeliveryToDeliver(deliverId, o.id, (ans)=>{
+                            // 3. להוסיף לשליח את ההזמנה
+                            queries.addNewDeliveryToDeliver(deliverId, o.id, (ans) => {
                                 console.log(`ans after inserting the deliver to the delivery is: ${ans}`)
-                                if(ans){
+                                if (ans) {
                                     res.json(o)
                                 }
-                                else{
+                                else {
                                     res.json(false)
                                 }
-                             })
 
-                            
+
+
+                            })
+
+
+
+
                         })
                     }
                 })
 
             }
-            else{
-                res.status(200).json({error: 'You already have an order'})
+            else {
+                res.status(200).json({ error: 'You already have an order' })
             }
 
         })
@@ -119,22 +130,33 @@ router.get('/getNewOrder/:deliverId', async (req, res) => {
     }
 })
 
-
-router.get(`/getOredrStatus/:orderId`, (req, res)=>{
+// שליח שמבקש את הסטטוס של ההזמנה שהוא אוסף
+router.get(`/getOredrStatus/:orderId`, (req, res) => {
     console.log('in get order status router')
-    queries.getStatus(req.params.orderId, (ans)=>{
+    queries.getStatus(req.params.orderId, (ans) => {
         console.log(`status back is: ${ans}`)
-        if(ans){
+        if (ans) {
             console.log(`res will be ${JSON.parse(ans)[0].status}`)
             res.status(200).json(JSON.parse(ans)[0].status)
         }
-        else{
+        else {
             console.log(`res will be ${false}`)
             res.status(200).json(false)
         }
     })
 })
 
+router.get('/changeDeliveryStatus/:deliveryId/:orderId/:status', (req, res) => {
+    console.log(`Delivery Guy number ${req.params.deliverId}, order number ${req.params.orderId} to status: ${req.params.status}`)
+    queries.changeSatus(req.params.orderId, req.params.deliveryId, req.params.status, (ans) => {
+        console.log(ans)
+        if (ans)
+            res.status(200).json(true)
+        else
+            res.status(500).json(false)
+    })
+
+})
 
 
 module.exports = router

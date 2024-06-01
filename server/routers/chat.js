@@ -37,7 +37,7 @@ router.post('/send', async (req, res) => {
                 // נשלח דרך הweb socket עדכון על ההודעה החדשה.
                 const client1 = JSON.stringify(orderId) + connection[0] 
                 const client2 = JSON.stringify(orderId) + connection[1] 
-                server.sendMessage(client1, client2, message)
+                //server.sendMessage(client1, client2, message)
             }
             else {
                 res.send(false)

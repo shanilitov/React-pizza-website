@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: row;
     padding: 20px;
-    background-image: url('../img/background.jfif');
+    background-image: url('../img/back-ground.jfif');
     border-radius: 10px;
     height: 100vh;
     background-size: cover;
@@ -12,3 +12,12 @@
     transform: scale(1.05); 
     box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); 
 } */
+
+#leftdiv{
+    display: flex;
+    padding: 20px;
+    flex-direction: column;
+    justify-content: space-between;
+    color: black;
+     
+}

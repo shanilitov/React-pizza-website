@@ -28,8 +28,9 @@ function ShoppingCart() {
                     console.log(`Adding to products: ${JSON.stringify(data)}`);
                     tempProducts.push(data);
                 }
-
-                sum += data.product.price * data.quantity;
+                console.log(`price is: ${data.product.price},quantity is: ${data.quantity}, total:${ data.product.price * data.quantity}, current sum is: ${sum}`)
+                if(data.product.price && data.quantity)
+                    sum += data.product.price * data.quantity;
             });
 
             setAddings(tempAddings);

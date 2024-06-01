@@ -6,8 +6,9 @@ import deleteicon from '../img/delete.jpg';
 function Item({ data, addings }) {
 
     const temp = data;
+    const adds = addings;
     const navigate = useNavigate();
-    // console.log(`in item, data is:${temp} addings are: ${JSON.stringify(addings)}`)
+    console.log(`@@@in item, data is:${temp} addings are: ${JSON.stringify(adds)}`)
 
     const deleteClick = () => {
         let list = JSON.parse(localStorage.getItem('shopping_cart'));
@@ -21,16 +22,24 @@ function Item({ data, addings }) {
     }
 
     return (
-        <div className="item">
-            <div className="textdiv">
-                <h1>{temp.product.name}</h1>
-                <p>{temp.product.price + '$'}</p>
-                <p>Quantity: {temp.quantity}</p> {/* תצוגת הכמות של הפריט בעגלה */}
-                {addings.map((a) => {
-                    <label>{JSON.parse(a.product).name}</label>
-                })}
+        <div>
+            <div className="item">
+                <div className="textdiv">
+                    <h1>{temp.product.name}</h1>
+                    <p>{temp.product.price + '$'}</p>
+                    <p>Quantity: {temp.quantity}</p> {/* תצוגת הכמות של הפריט בעגלה */}
+                    {addings.map((a) => {
+                        <label>{JSON.parse(a.product).name}</label>
+                    })}
+                </div>
+                <button onClick={() => deleteClick} className="myButton"><img src={deleteicon} className="deleteicon" /></button>
             </div>
-            <button onClick={() => deleteClick} className="myButton"><img src={deleteicon} className="deleteicon" /></button>
+            {addings.length > 0 &&
+                <div className="item">
+                    {addings.map((a) => {
+                        <label>{JSON.parse(a.product).name}</label>
+                    })}
+                </div>}
         </div>
     )
 

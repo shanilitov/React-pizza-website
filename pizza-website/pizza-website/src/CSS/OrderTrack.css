@@ -1,5 +1,11 @@
 .order-tracker {
     font-family: Arial, sans-serif;
+    color: #0e0e0e;
+    height: 100vh;
+    background-image: url('http://localhost:3000/static/media/back-ground.4dc9b437b8177d1dda1b.jfif'); /* החלף background.jpg בשם התמונה שלך */
+    background-size: cover;
+    background-position: center;
+
   }
   
   .order-list {
@@ -8,6 +14,7 @@
   }
   
   .order-item {
+    color: red;
     padding: 10px;
     margin: 10px 0;
     border: 1px solid #ccc;
@@ -22,8 +29,8 @@
   }
   
   .order-item.active-order {
-    border-color: #4caf50;
-    background-color: #e8f5e9;
+    border-color: #be1d1d;
+    background-color: #0e0e0e;
   }
   
   .order-item.inactive-order {

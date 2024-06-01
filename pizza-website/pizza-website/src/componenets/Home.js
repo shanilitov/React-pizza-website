@@ -9,7 +9,7 @@ import '../CSS/Home.css'
 function Home() {
 
     return (
-        <div >
+        <div id="homecontainer">
             <Header />
             <div id="home" className="Homecontainer">
                 <Link to='/RegistrationComponent'className="homelink" >
