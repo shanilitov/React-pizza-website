@@ -22,7 +22,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Home />} >
             <Route path="login" element={<Login />} ></Route>
-            <Route path='shop/:username/:branchid' element={<Shop />}></Route>
+
             <Route path='signin' element={<Singin />}></Route>
             <Route path='orderview/:data' element={<Orderview />}></Route>
             <Route path='complete' element={<Complete />}></Route>
@@ -32,6 +32,7 @@ function App() {
             <Route path='sent' element={<Sent />}></Route>
 
           </Route>
+          <Route path='shop/:username/:branchid' element={<Shop />}></Route>
         </Routes>
       </Router>
     </div>

@@ -1,0 +1,55 @@
+.order-view {
+    display: flex;
+    flex-direction: column;
+    border-radius: 10px;
+}
+
+.order-view h2 {
+    font-size: 20px;
+    margin: 0 0 10px 0;
+}
+
+.product-list {
+    display: flex;
+    flex-direction: column;
+}
+
+.product-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    border: 1px solid #ccc;
+    margin: 5px 0;
+    border-radius: 5px;
+}
+
+.product-item span {
+    font-size: 16px;
+}
+
+.product-item button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.ready-icon {
+    font-size: 20px;
+    color: green;
+}
+
+.delivery-button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 10px;
+    cursor: pointer;
+    font-size: 16px;
+    border-radius: 5px;
+    margin-top: 20px;
+}

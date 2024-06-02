@@ -1,0 +1,56 @@
+.chat {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    border-radius: 10px; /* הוספת פינות מעוגלות */
+}
+
+.chat h2 {
+    font-size: 20px; /* התאמת גודל הכותרת */
+    margin: 0 0 10px 0;
+}
+
+.messages {
+    flex: 1;
+    overflow-y: auto;
+}
+
+.message {
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 5px; /* הוספת פינות מעוגלות */
+}
+
+.message.outgoing {
+    background-color: #e1ffc7;
+    align-self: flex-end;
+}
+
+.message.incoming {
+    background-color: #fff;
+}
+
+.new-message {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-top: 1px solid #ccc;
+    border-radius: 10px; /* הוספת פינות מעוגלות */
+}
+
+.new-message input {
+    flex: 1;
+    padding: 10px;
+    margin-right: 10px;
+    border-radius: 5px; /* הוספת פינות מעוגלות לשדה הקלט */
+}
+
+.new-message button {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px; /* התאמת גודל הכפתור */
+    border-radius: 5px; /* הוספת פינות מעוגלות לכפתור */
+}

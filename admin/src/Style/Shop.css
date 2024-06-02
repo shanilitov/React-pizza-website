@@ -1,0 +1,82 @@
+.shop-container {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.shop-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    background-color: #1d1c1c;
+    border-bottom: 1px solid #ccc;
+    border-radius: 10px; /* הוספת פינות מעוגלות */
+}
+
+.shop-header h1 {
+    font-size: 24px; /* התאמת גודל הכותרת */
+    margin: 0;
+}
+
+.shop-header p {
+    font-size: 16px; /* התאמת גודל טקסט המשנה */
+    margin: 0;
+}
+
+.logout {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px; /* התאמת גודל הכפתור */
+    border-radius: 5px; /* הוספת פינות מעוגלות לכפתור */
+}
+
+.content-container {
+    display: flex;
+    flex: 1;
+    overflow: hidden;
+}
+
+.orders-section {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    border-right: 1px solid #ccc;
+    border-radius: 10px; /* הוספת פינות מעוגלות */
+}
+
+.order-details-section {
+    flex: 2;
+    overflow-y: auto;
+    padding: 10px;
+    border-radius: 10px; /* הוספת פינות מעוגלות */
+}
+
+.chat-section {
+    flex: 1;
+    overflow-y: auto;
+    padding: 10px;
+    border-left: 1px solid #ccc;
+    border-radius: 10px; /* הוספת פינות מעוגלות */
+}
+
+@media (max-width: 768px) {
+    .content-container {
+        flex-direction: column;
+    }
+
+    .orders-section, .order-details-section, .chat-section {
+        border: none;
+    }
+
+    .orders-section {
+        border-bottom: 1px solid #ccc;
+    }
+
+    .chat-section {
+        border-top: 1px solid #ccc;
+    }
+}
