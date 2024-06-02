@@ -77,6 +77,8 @@ const Home = ({ route }) => {
   // Change status
   const changeTheStatus = async () => {
     console.log(`change the status, current is ${status}`)
+    console.log(`userId is: ${userId}`)
+    console.log(`order ID is ${currentOrder.orderId}`)
     try {
       let nextStatus= status + 1
       const response = await fetch(

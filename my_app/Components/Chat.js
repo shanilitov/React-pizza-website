@@ -111,7 +111,7 @@ const Chat = ({ route }) => {
       <ScrollView contentContainerStyle={styles.chatContainer}>
         {messages.map((message, index) => (
           <View key={index} style={[styles.messageContainer, message.connection === 'DS' || message.connection == 'DC' ? styles.sentMessage : styles.receivedMessage]}>
-            <Text style={styles.messageText}>{message.message}{message.connection}</Text>
+            <Text style={styles.messageText}>{message.message}</Text>
           </View>
         ))}
       </ScrollView>

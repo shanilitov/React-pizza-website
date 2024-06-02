@@ -147,6 +147,9 @@ router.get(`/getOredrStatus/:orderId`, (req, res) => {
 })
 
 router.get('/changeDeliveryStatus/:deliveryId/:orderId/:status', (req, res) => {
+
+    // בדיקת תקינות:
+    // אם הסטטוס הוא נאסף, אז הסטטוס בחנות חייב להיות 1
     console.log(`Delivery Guy number ${req.params.deliverId}, order number ${req.params.orderId} to status: ${req.params.status}`)
     queries.changeSatus(req.params.orderId, req.params.deliveryId, req.params.status, (ans) => {
         console.log(ans)

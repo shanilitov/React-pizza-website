@@ -157,10 +157,10 @@ router.get('/getproductsnamebyid/:id', (req, res) => {
 })
 
 // change order status to sent, by it's id
-router.get('/changesendbyorderid/:id', (req, res) => {
+router.get('/changesendbyorderid/:id/:status', (req, res) => {
     try {
         console.log(req.params.id)
-        queries.changesendbyorderid(req.params.id, (ans) => {
+        queries.changesendbyorderid(req.params.id, req.params.status, (ans) => {
             console.log(ans)
             if (ans) {
                 res.json(ans)

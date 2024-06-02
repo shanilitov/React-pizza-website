@@ -54,11 +54,12 @@ async function getOrederWaiting(branchId, callback) {
         SELECT o.*
         FROM orders.orders as o
         JOIN branches.branch_orders as bo ON o.id = bo.order_id
-        WHERE bo.branch_id = ${branchId} 
+        WHERE bo.branch_id = ${branchId}
+            and bo.status < 2
             and o.id not in (select orderId
                             from delivery.deliver)
-            AND o.id not in (select orderId
-                            from orders.takeaway;)
+            AND o.id not in (select *
+                            from orders.takeaway)
         ORDER BY o.id ASC
         LIMIT 1;
         `
@@ -103,8 +104,8 @@ async function addNewDeliveryToDeliver(deliverId, orderId, callback) {
     }
 }
 
-async function getStatus(orderId, callback){
-    try{
+async function getStatus(orderId, callback) {
+    try {
         console.log(`Get the order status for order ${orderId}`)
         let query = `
         select status 
@@ -118,7 +119,7 @@ async function getStatus(orderId, callback){
     }
 }
 
-async function changeSatus(orderId, deliverId, status, callback){
+async function changeSatus(orderId, deliverId, status, callback) {
     console.log(`in change deliver order status, to status: ${status}`)
     let query = `
     UPDATE delivery.deliver 
@@ -128,4 +129,4 @@ async function changeSatus(orderId, deliverId, status, callback){
     db.query(query, callback)
 }
 
-module.exports = {changeSatus, getStatus, getCurrentOrder, loginDelivery, signinDelivery, getDeliverBranch, getOrederWaiting, addNewDeliveryToDeliver }
+module.exports = { changeSatus, getStatus, getCurrentOrder, loginDelivery, signinDelivery, getDeliverBranch, getOrederWaiting, addNewDeliveryToDeliver }

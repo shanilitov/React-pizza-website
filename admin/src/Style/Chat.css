@@ -19,15 +19,21 @@
     padding: 10px;
     margin: 5px 0;
     border-radius: 5px; /* הוספת פינות מעוגלות */
+    max-width: 60%;
+    word-wrap: break-word;
+    font-size: 1rem;
 }
 
 .message.outgoing {
-    background-color: #e1ffc7;
+    background-color: #cd1414;
+    color: black;
     align-self: flex-end;
 }
 
 .message.incoming {
-    background-color: #fff;
+    background-color: #2a2727;
+    color: rgb(199, 5, 5);
+    align-self: flex-start;
 }
 
 .new-message {
@@ -53,4 +59,10 @@
     cursor: pointer;
     font-size: 14px; /* התאמת גודל הכפתור */
     border-radius: 5px; /* הוספת פינות מעוגלות לכפתור */
+}
+
+.connection {
+    margin-bottom: 10px;
+    padding: 5px 10px;
+    cursor: pointer;
 }

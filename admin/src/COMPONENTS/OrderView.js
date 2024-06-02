@@ -2,10 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../Style/OrderView.css";
 
-function OrderView({ order_id }) {
+function OrderView({ order_id, isTakeAway, status, done }) {
     const [products, setProducts] = useState([]);
     const [allProductsReady, setAllProductsReady] = useState(false);
+    const [isReady, setIsReady] = useState(status)
+    const b_text = ['DONE?', 'Delivered?']
     const params = useParams();
+
+
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -14,7 +18,7 @@ function OrderView({ order_id }) {
                 const response = await fetch(`http://localhost:3600/orders/getproductsnamebyid/${order_id}`);
                 const data = await response.json();
                 const productsArray = Array.isArray(data) ? data : JSON.parse(data);
-                setProducts(productsArray.map(product => ({ ...product, ready: false })));
+                setProducts(productsArray.map(product => ({ ...product, ready: product.ready })));
             } catch (error) {
                 console.error("Error fetching products:", error);
                 setProducts([]); // Set products to an empty array in case of an error
@@ -31,9 +35,9 @@ function OrderView({ order_id }) {
         try {
             // Update product status in the backend (assuming there's an endpoint for this)
             await fetch(`http://localhost:3600/orders/change_product_in_order_status/${order_id}/${productId}`, {
-                method: 'POST',
+                method: 'GET',
             });
-            
+
             // Update product status in the frontend
             setProducts(products.map(product =>
                 product.id === productId ? { ...product, ready: true } : product
@@ -43,17 +47,76 @@ function OrderView({ order_id }) {
         }
     };
 
-    const handleDeliveryClick = async () => {
+    const sendMessage = async (message, connection) => {
         try {
             // Mark the order as delivered in the backend (assuming there's an endpoint for this)
-            await fetch(`http://localhost:3600/orders/changesendbyorderid/${order_id}`, {
+            await fetch(`http://localhost:3600/chat/send`, {
                 method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    message: message, //`Order Number ${order_id} is ready and waiting to be picked up`,
+                    orderId: order_id,
+                    connection: connection
+                })
             });
-            navigate('/sent'); // Navigate to the sent orders page
         } catch (error) {
             console.error("Error marking order as delivered:", error);
         }
+    }
+
+    const handleDeliveryClick = async () => {
+        if (isReady = 0) {
+            try {
+                const response = await fetch(`http://localhost:3600/orders/changesendbyorderid/${order_id}/1`, {
+                    method: 'GET',
+                });
+                if (response) {
+                    setIsReady(true)
+                    // Send messages to the client and the deliver
+                    sendMessage(`Your order Number ${order_id} is ready and waiting to be picked up`, 'SC')
+                    if (isTakeAway == null)
+                        sendMessage(`Order Number ${order_id} is ready and waiting for you to pick it up`, 'SD')
+                }
+            } catch (error) {
+                console.error("Error marking order as delivered:", error);
+            }
+        }
+        // if (isReady) {
+        //     try {
+        //         // Mark the order as delivered in the backend (assuming there's an endpoint for this)
+        //         const response = await fetch(`http://localhost:3600/orders/changesendbyorderid/${order_id}/2`, {
+        //             method: 'GET',
+        //         });
+        //         if (response)
+        //             done()
+
+        //     } catch (error) {
+        //         console.error("Error marking order as delivered:", error);
+        //     }
+        // }
+        // else {
+        //     try {
+        //         const response = await fetch(`http://localhost:3600/orders/changesendbyorderid/${order_id}/1`, {
+        //             method: 'GET',
+        //         });
+        //         if (response) {
+        //             setIsReady(true)
+        //             // Send messages to the client and the deliver
+        //             sendMessage(`Your order Number ${order_id} is ready and waiting to be picked up`, 'SC')
+        //             if (isTakeAway == null)
+        //                 sendMessage(`Order Number ${order_id} is ready and waiting for you to pick it up`, 'SD')
+        //         }
+        //     } catch (error) {
+        //         console.error("Error marking order as delivered:", error);
+        //     }
+
+        // }
+
+
     };
+
 
     return (
         <div className="order-view">
@@ -77,9 +140,12 @@ function OrderView({ order_id }) {
                 )}
             </div>
             {allProductsReady && (
-                <button className="delivery-button" onClick={handleDeliveryClick}>
-                    Mark Order as Delivered
-                </button>
+                <div>
+                    <button className="delivery-button" onClick={handleDeliveryClick}>
+                        All Done? {isReady?? '✔️'}
+                    </button>
+
+                </div>
             )}
         </div>
     );

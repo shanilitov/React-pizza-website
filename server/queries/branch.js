@@ -34,7 +34,11 @@ async function getBranchById(branchId, callback) {
 async function getOrdersByBranchId(branchId, callback) {
     try {
         console.log('in get order by branch id function')
-        let sql = `SELECT order_id FROM branches.branch_orders WHERE branch_id = ${branchId} and send=false`
+        let sql = `
+        SELECT b.order_id, b.status, t.orderId as IstakeAway
+        FROM branches.branch_orders b
+        Left join orders.takeaway t on b.order_id = t.orderId
+        WHERE b.branch_id = ${branchId} and b.status=1`
 
         db.query(sql, callback);
     }

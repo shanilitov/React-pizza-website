@@ -9,6 +9,7 @@ function Shop() {
     const [orders, setOrders] = useState([]);
     const [branchDetails, setBranchDetails] = useState({});
     const [selectedOrder, setSelectedOrder] = useState(null);
+    const [update, setUpdate] = useState(0)
     const params = useParams();
     const ID = params.branchid;
 
@@ -33,11 +34,17 @@ function Shop() {
         }
         fetchOrders();
         fetchBranchDetails();
-    }, [ID, params.branchid]);
+    }, [ID, params.branchid, update]);
 
     const handleOrderClick = (orderId) => {
         setSelectedOrder(orderId);
     };
+
+    const handleSendClicked = () =>{
+        // כאן אני רוצה לשים את הפקודה שתוריד מorders את ההזמנה.
+        setSelectedOrder(null)
+        setUpdate(update+ 1)
+    }
 
     return (
         <div className="shop-container">
@@ -51,14 +58,14 @@ function Shop() {
             <div className="content-container">
                 <div className="orders-section">
                     {orders.map((order, index) => (
-                        <Order key={index} id={order.order_id} onClick={handleOrderClick} />
+                        <Order key={index} id={order.order_id} onClick={handleOrderClick} isTakeAway={order.IstakeAway} />
                     ))}
                 </div>
                 <div className="order-details-section">
-                    {selectedOrder ? <OrderView order_id={selectedOrder} /> : <p>Please select an order.</p>}
+                    {selectedOrder ? <OrderView order_id={selectedOrder} status={selectedOrder.status} done={handleSendClicked}/> : <p>Please select an order.</p>}
                 </div>
                 <div className="chat-section">
-                    <Chat />
+                    {selectedOrder ? <Chat order_id={selectedOrder} /> : <p>Please select an order.</p>}
                 </div>
             </div>
         </div>

@@ -94,7 +94,7 @@ async function getaddingnbyorderid(id, callback) {
 async function getproductsnbyorderid(id, callback) {
     try {
         console.log('in get products by order id' + id)
-        let sql = `SELECT products.id, products.name
+        let sql = `SELECT products.id, products.name, order_details.ready
                  FROM products.products products 
                  Join orders.order_details order_details
                  ON products.id = order_details.product_id
@@ -108,14 +108,14 @@ async function getproductsnbyorderid(id, callback) {
     }
 }
 
-async function changesendbyorderid(id, callback) {
+async function changesendbyorderid(id, status, callback) {
     try {
         console.log('in change set by orderid function' + id)
         let sql = `UPDATE branches.branch_orders
         SET 
-            send = true
+            status = ${status}
         WHERE
-            order_id =${id}`
+            order_id =${id};`
 
         db.query(sql, callback);
     }
