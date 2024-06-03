@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 
 function Chat({ order_id }) {
     const [inputMessage, setInputMessage] = useState('');
-    const [orderId, setOrderId] = useState(order_id);
     const [update, setUpdate] = useState(0);
     const [connection, setConnection] = useState('SC'); //שומר את ההגדרה עם מי הצ'אט הנוכחי
     const [messages, setMessages] = useState([]);
@@ -37,7 +36,7 @@ function Chat({ order_id }) {
                     },
                     body: JSON.stringify({
                         message: inputMessage,
-                        orderId: orderId,
+                        orderId: order_id,
                         connection: connection,
                     }),
                 });

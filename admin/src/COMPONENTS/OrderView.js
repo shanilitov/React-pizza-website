@@ -67,12 +67,15 @@ function OrderView({ order_id, isTakeAway, status, done }) {
     }
 
     const handleDeliveryClick = async () => {
-        if (isReady = 0) {
+        console.log(`status is: ${status}`)
+        if (status == 0) {
             try {
                 const response = await fetch(`http://localhost:3600/orders/changesendbyorderid/${order_id}/1`, {
                     method: 'GET',
                 });
                 if (response) {
+                    done()
+                    console.log(response)
                     setIsReady(true)
                     // Send messages to the client and the deliver
                     sendMessage(`Your order Number ${order_id} is ready and waiting to be picked up`, 'SC')
@@ -120,11 +123,12 @@ function OrderView({ order_id, isTakeAway, status, done }) {
 
     return (
         <div className="order-view">
-            <h2>Order Details</h2>
+            <h2>Order Number {order_id} Details</h2>
             <div className="product-list">
                 {products.length > 0 ? (
                     products.map((product, index) => (
                         <div key={index} className="product-item">
+                            <span>{product.amount}</span>
                             <span>{product.name}</span>
                             {product.ready ? (
                                 <span className="ready-icon">✔️</span>
@@ -142,7 +146,7 @@ function OrderView({ order_id, isTakeAway, status, done }) {
             {allProductsReady && (
                 <div>
                     <button className="delivery-button" onClick={handleDeliveryClick}>
-                        All Done? {isReady?? '✔️'}
+                        All Done{isReady? '✔️' : '?'}
                     </button>
 
                 </div>

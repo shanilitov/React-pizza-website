@@ -4,7 +4,10 @@ async function loginDelivery(name, id, callback) {
     try {
         console.log('name ' + name, 'id ' + id)
         console.log('making sql requset')
-        let sql = `select * from delivery.users where name = '${name}' and idusers =${id};`
+        let sql = `
+        select * from delivery.users 
+        where name = '${name}' 
+        and idusers =${id};`
 
         db.query(sql, callback);
     }
@@ -17,8 +20,9 @@ async function loginDelivery(name, id, callback) {
 async function signinDelivery(Id, Name, Phone, branch, email, callback) {
     try {
         console.log('in signin function')
-        let sql = `insert into delivery.users(idusers, name, phone, branch, email)
-    values('${Id}', '${Name}', '${Phone}', ${branch}, '${email}');`
+        let sql = `
+        insert into delivery.users(idusers, name, phone, branch, email)
+        values('${Id}', '${Name}', '${Phone}', ${branch}, '${email}');`
 
         db.query(sql, callback);
     }
@@ -31,7 +35,8 @@ async function signinDelivery(Id, Name, Phone, branch, email, callback) {
 async function getCurrentOrder(deliverId, callback) {
     try {
         console.log(`making query to get current order for deliver: ${deliverId}`)
-        let sql = `SELECT o.city, o.street, o.number, d.orderId, d.status
+        let sql = `
+        SELECT o.id, o.city, o.street, o.number, d.status
         FROM orders.orders o
         INNER JOIN delivery.deliver d ON o.id = d.orderId
         WHERE d.userId = ${deliverId}
@@ -129,4 +134,24 @@ async function changeSatus(orderId, deliverId, status, callback) {
     db.query(query, callback)
 }
 
-module.exports = { changeSatus, getStatus, getCurrentOrder, loginDelivery, signinDelivery, getDeliverBranch, getOrederWaiting, addNewDeliveryToDeliver }
+async function verify_that_status_in_the_shop_is_1(order_id, callback){
+    console.log(`Check that order number ${order_id} has status 1`)
+    let query = `
+    Select status
+    from branches.branch_order
+    where order_id = ${order_id};
+    `
+    db.query(query, callback)
+}
+
+async function update_delivery_in_shop(order_id, callback){
+    console.log(`Change that order number ${order_id} in the store to status 2`)
+    let query = `
+    Update branches.branch_orders
+    set status = 2
+    where order_id = ${order_id};
+    `
+    db.query(query, callback)
+}
+
+module.exports = {update_delivery_in_shop, verify_that_status_in_the_shop_is_1, changeSatus, getStatus, getCurrentOrder, loginDelivery, signinDelivery, getDeliverBranch, getOrederWaiting, addNewDeliveryToDeliver }

@@ -89,8 +89,7 @@ router.get('/getNewOrder/:deliverId', async (req, res) => {
                         queries.getOrederWaiting(JSON.parse(branchId)[0].branch, async (order) => {
                             console.log(`Order to take is ${order}`)
                             let o = JSON.parse(order)[0]
-                            if(o == undefined)
-                            {
+                            if (o == undefined) {
                                 res.status(200).json(false)
                                 return;
                             }
@@ -115,6 +114,8 @@ router.get('/getNewOrder/:deliverId', async (req, res) => {
 
                         })
                     }
+                    else
+                        res.status(200).json({ error: 'You already have an order' })
                 })
 
             }
@@ -146,18 +147,45 @@ router.get(`/getOredrStatus/:orderId`, (req, res) => {
     })
 })
 
-router.get('/changeDeliveryStatus/:deliveryId/:orderId/:status', (req, res) => {
-
-    // בדיקת תקינות:
-    // אם הסטטוס הוא נאסף, אז הסטטוס בחנות חייב להיות 1
+router.get('/changeDeliveryStatus/:deliveryId/:orderId/:status', async (req, res) => {
     console.log(`Delivery Guy number ${req.params.deliverId}, order number ${req.params.orderId} to status: ${req.params.status}`)
-    queries.changeSatus(req.params.orderId, req.params.deliveryId, req.params.status, (ans) => {
+    // בדיקת תקינות:
+    // אם הסטטוס הוא נאסף, אז הסטטוס של ההזמנה  בסניף חייב להיות 1
+    const callback = async (ans) => {
         console.log(ans)
         if (ans)
             res.status(200).json(true)
         else
             res.status(500).json(false)
-    })
+    }
+    if (req.params.status == 1) {
+
+        queries.verify_that_status_in_the_shop_is_1(req.params.orderId, (data) => {
+            if (data) {
+                console.log(`status in the branch oredr is ${JSON.parse(data)[0]}`)
+                if (JSON.parse(data)[0] == 1) {
+                    queries.changeSatus(req.params.orderId, req.params.deliveryId, req.params.status, (ans) => {
+                        console.log(ans)
+                        // נעדכן את הסטטוס בחנות
+                        if (ans) {
+                            queries.update_delivery_in_shop(req.params.orderId, callback)
+                        } else
+                            res.status(500).json('delivery is not ready yet')
+                    })
+                } else
+                    res.status(500).json('delivery is not ready yet')
+            }
+            else
+                res.status(500).json(`Couln't find current status`)
+
+        })
+
+    }
+    else {
+        queries.changeSatus(req.params.orderId, req.params.deliveryId, req.params.status, callback)
+    }
+
+
 
 })
 

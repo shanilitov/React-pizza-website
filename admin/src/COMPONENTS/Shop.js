@@ -12,6 +12,7 @@ function Shop() {
     const [update, setUpdate] = useState(0)
     const params = useParams();
     const ID = params.branchid;
+    const navigate = useNavigate()
 
     useEffect(() => {
         async function fetchOrders() {
@@ -53,7 +54,7 @@ function Shop() {
                     <h1>{branchDetails.name}</h1>
                     <p>{params.username}</p>
                 </div>
-                <button className="logout">Logout</button>
+                <button className="logout" onClick={()=>navigate('/login')}>Logout</button>
             </header>
             <div className="content-container">
                 <div className="orders-section">
@@ -62,7 +63,7 @@ function Shop() {
                     ))}
                 </div>
                 <div className="order-details-section">
-                    {selectedOrder ? <OrderView order_id={selectedOrder} status={selectedOrder.status} done={handleSendClicked}/> : <p>Please select an order.</p>}
+                    {selectedOrder ? <OrderView order_id={selectedOrder} status={orders.filter(o => o.order_id == selectedOrder)[0].status} done={handleSendClicked}/> : <p>Please select an order.</p>}
                 </div>
                 <div className="chat-section">
                     {selectedOrder ? <Chat order_id={selectedOrder} /> : <p>Please select an order.</p>}

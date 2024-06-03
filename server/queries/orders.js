@@ -21,8 +21,9 @@ async function createneworder(city, street, number, order_date, comment, price, 
         // המרת תאריך לפורמט YYYY-MM-DD
         let formattedDate = new Date(order_date).toISOString().split('T')[0];
 
-        let sql = `INSERT INTO orders.orders 
-        (clint_id, city, street, number, order_date, comment, price, accept, name) 
+        let sql = `
+        INSERT INTO orders.orders 
+        (phone, city, street, number, order_date, comment, price, status, name) 
         VALUES ('${phone}', '${city}', '${street}', ${number}, '${formattedDate}', '${comment}', ${price}, 0, '${name}');`;
 
         db.query(sql, callback);
@@ -32,13 +33,12 @@ async function createneworder(city, street, number, order_date, comment, price, 
     }
 }
 
-
-
 async function insertintobranchorders(order_id, branch_id, callback) {
     try {
         console.log(order_id + branch_id)
-        let sql = `insert into branches.branch_orders(branch_id, order_id, send)
-    values(${order_id}, ${branch_id}, false)`
+        let sql = `
+        insert into branches.branch_orders(branch_id, order_id, status)
+        values(${order_id}, ${branch_id}, 0)`
 
         db.query(sql, callback);
     }
@@ -51,8 +51,9 @@ async function insertintobranchorders(order_id, branch_id, callback) {
 async function insertintoorderdetailes(order_id, product_id, amount, price, callback) {
     try {
         console.log(order_id + product_id + price)
-        let sql = `insert into orders.order_details(order_id, product_id, amount, price, ready, accept)
-    values(${order_id}, ${product_id}, ${amount}, ${price}, false, false)`
+        let sql = `
+        insert into orders.order_details(order_id, product_id, amount, price, ready)
+        values(${order_id}, ${product_id}, ${amount}, ${price}, 0);`
 
         db.query(sql, callback);
     }
@@ -65,7 +66,10 @@ async function insertintoorderdetailes(order_id, product_id, amount, price, call
 async function getproductandpricebyorderid(order_id, callback) {
     try {
         console.log('in get product and price by order id' + order_id)
-        let sql = `select product_id, price from orders.order_details where order_id = ${order_id}`
+        let sql = `
+        select product_id, price 
+        from orders.order_details 
+        where order_id = ${order_id}`
 
         db.query(sql, callback);
     }
@@ -78,10 +82,13 @@ async function getproductandpricebyorderid(order_id, callback) {
 async function getaddingnbyorderid(id, callback) {
     try {
         console.log('in get adding by order id' + id)
-        let sql = `SELECT adding.name
-    FROM products.adding adding Join orders.order_details order_details
-    ON adding.id = order_details.product_id
-    where order_details.price<3 And order_details.order_id = ${id}`
+        let sql = `
+        SELECT adding.name
+        FROM products.adding adding 
+        Join orders.order_details order_details
+            ON adding.id = order_details.product_id
+        where order_details.price < 3 
+        And order_details.order_id = ${id}`
 
         db.query(sql, callback);
     }
@@ -94,11 +101,13 @@ async function getaddingnbyorderid(id, callback) {
 async function getproductsnbyorderid(id, callback) {
     try {
         console.log('in get products by order id' + id)
-        let sql = `SELECT products.id, products.name, order_details.ready
-                 FROM products.products products 
-                 Join orders.order_details order_details
-                 ON products.id = order_details.product_id
-                 where order_details.price>3 And order_details.order_id = ${id}`
+        let sql = `
+                SELECT products.id, products.name, order_details.ready, order_details.amount
+                FROM products.products products 
+                Join orders.order_details order_details
+                ON products.id = order_details.product_id
+                where order_details.price > 3 
+                And order_details.order_id = ${id}`
 
         db.query(sql, callback);
     }
@@ -132,8 +141,9 @@ async function getOrderByPhone(phone, callback) {
 
         //השאילתא:
         let sql = `
-    select * from orders.orders
-    where clint_id = ${phone} and accept = false;
+        select *
+        from orders.orders 
+        where phone = ${phone} and status = 0;
     `;
 
         //שולחים את השאילתא לשלב הבא שמתקשר עם הדאטה בייס.
@@ -159,8 +169,7 @@ async function get_full_order(orderId, callback) {
                            '"product_name": "', p.name, '", ',
                            '"price": ', p.price, ', ',
                            '"amount": ', od1.amount, ', ',
-                           '"ready": ', od1.ready, ', ',
-                           '"accept": ', od1.accept, 
+                           '"ready": ', od1.ready, 
                            '}'
                        )
                    SEPARATOR ', '), ']') AS order_products
@@ -183,7 +192,7 @@ async function get_order_status(orderId, callback) {
     try {
         console.log(orderId)
         let query = `
-                    select distinct o.accept as client_accepted, bo.send as branch_send, d.status as delivery_status
+                    select distinct o.status as client_accepted, bo.status as branch_status, d.status as delivery_status
                     from (
 	                    select * 
                         from orders.orders as o1
@@ -213,19 +222,20 @@ async function get_ready_products_list(orderId, callback){
     db.query(query, callback)
 }
 
-async function takeaway(orderId, calback){
+async function takeaway(orderId, callback){
     console.log('\nin takeAway')
     let query = `
     INSERT INTO orders.takeaway(orderId)
     VALUES(${orderId});
     `
+    db.query(query, callback)
 }
 
 async function setProductStatus(orderId, productId, callback){
     console.log('in setProductStatus function')
     let query = `
     UPDATE orders.order_details as o
-    SET ready = true
+    SET ready = 1
     WHERE order_id = ${orderId} and product_id = ${productId};
     `
     db.query(query, callback)

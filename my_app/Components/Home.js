@@ -37,7 +37,7 @@ const Home = ({ route }) => {
           // data = {orderId, status, city, street, number} or false.
           setFlag(false)
           setCurrentOrder(data)
-          getOrderStatus(data.orderId)
+          getOrderStatus(data.id)
         }
       }
       else {
@@ -78,11 +78,12 @@ const Home = ({ route }) => {
   const changeTheStatus = async () => {
     console.log(`change the status, current is ${status}`)
     console.log(`userId is: ${userId}`)
-    console.log(`order ID is ${currentOrder.orderId}`)
+    console.log(`Current Order is: ${JSON.stringify(currentOrder)}`)
+    console.log(`order ID is ${currentOrder.id}`)
     try {
       let nextStatus= status + 1
       const response = await fetch(
-        `http://localhost:3600/delivery/changeDeliveryStatus/${userId}/${currentOrder.orderId}/${nextStatus}`
+        `http://localhost:3600/delivery/changeDeliveryStatus/${userId}/${currentOrder.id}/${nextStatus}`
       );
       if (response.status === 200) {
         const data = await response.json();
@@ -112,14 +113,7 @@ const Home = ({ route }) => {
     else
       changeTheStatus()
   }
-  // const buttonClicked = async () => {
-  //   navigation.navigate('CurrentDelivery', {
-  //     userName: userName,
-  //     userId: userId,
-  //     currentOrder: currentOrder,
-  //     currentStatus: status
-  //   });
-  // }
+
 
   // get new order to deliver
   const fetchNewOrder = async () => {
@@ -139,8 +133,8 @@ const Home = ({ route }) => {
 
   const chatClicked = async()=>{
     console.log('chat clicked')
-    if(status !== 0 && currentOrder.orderId !== undefined){
-      navigation.navigate('Chat', { userId: userId, userName: userName, currentOrderId: currentOrder.orderId })
+    if(status !== 0 && currentOrder.id !== undefined){
+      navigation.navigate('Chat', { userId: userId, userName: userName, currentOrderId: currentOrder.id })
     }
     else{
       console.log(currentOrder)

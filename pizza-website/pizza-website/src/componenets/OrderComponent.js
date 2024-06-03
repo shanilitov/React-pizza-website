@@ -26,48 +26,48 @@ const OrderComponent = () => {
 
 
   useEffect(() => {
-    console.log(`orderId: ${orderId}`)
+    console.log(`orderId: ${orderId}`);
     // Fetch to get the current order
     fetch(`http://localhost:3600/orders/get_full_order/${orderId}`)
       .then(response => response.json())
       .then(data => {
-        console.log(data)
+        console.log(`data is ${data}`);
         if (data) {
-          let o = JSON.parse(data)[0]
-          if (o !== undefined) {
-            setOrder(JSON.parse(data)[0]);
-            setProducts(JSON.parse(JSON.parse(data)[0].order_products));
+          const orderData = JSON.parse(data)[0];
+          console.log(`orderData is ${orderData}`);
+          if (orderData !== undefined) {
+            setOrder(orderData);
+            console.log(`products from orderData: ${orderData.order_products}`);
+            setProducts(JSON.parse(orderData.order_products));
           }
         }
       })
       .catch(error => console.error('Error fetching order:', error));
+  }, [orderId]);
+  
 
+  // יש להשתמש באפשרות useEffect על מנת לקבל את הצ'אט בעת טעינת הדף או כל שינוי בערכי connection
+  useEffect(() => {
+    const fetchChat = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:3600/chat/get/${orderId}/${connection}`
+        );
+        const data = await response.json();
+        console.log(data)
+        if (data !== false)
+          // כאן תוכלי לעדכן את הצ'אט עם ההודעות מהשרת
+          setMessages(JSON.parse(data));
+      } catch (error) {
+        console.error('Error fetching chat:', error);
+      }
+    };
+    console.log('update')
+    fetchChat();
+  }, [connection, update]);
 
-
-  }, []);
-
-    // יש להשתמש באפשרות useEffect על מנת לקבל את הצ'אט בעת טעינת הדף או כל שינוי בערכי connection
-    useEffect(() => {
-      const fetchChat = async () => {
-        try {
-          const response = await fetch(
-            `http://localhost:3600/chat/get/${orderId}/${connection}`
-          );
-          const data = await response.json();
-          console.log(data)
-          if (data !== false)
-            // כאן תוכלי לעדכן את הצ'אט עם ההודעות מהשרת
-            setMessages(JSON.parse(data));
-        } catch (error) {
-          console.error('Error fetching chat:', error);
-        }
-      };
-      console.log('update')
-      fetchChat();
-    }, [connection, update]);
-
-  console.log(`order: ${JSON.stringify(order)}`)
-  console.log(`products: ${products}`)
+  // console.log(`order: ${JSON.stringify(order)}`)
+  // console.log(`products: ${products}`)
 
   useEffect(() => {
     //check the status
@@ -103,37 +103,37 @@ const OrderComponent = () => {
   }, [setTimeout(10000)])
 
   const handleSendMessage = async (inputMessage) => {
-      try {
-        const response = await fetch('http://localhost:3600/chat/send', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            message: inputMessage,
-            orderId: orderId, // ערך מסוים של הזמנה
-            connection: connection,
-          }),
-        });
-        const data = await response.json();
-        // כאן תוכלי לעדכן את הצ'אט עם ההודעה החדשה מהשרת אם יש צורך
-        console.log('Message sent:', data);
-      } catch (error) {
-        console.error('Error sending message:', error);
-      }
+    try {
+      const response = await fetch('http://localhost:3600/chat/send', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          message: inputMessage,
+          orderId: orderId, // ערך מסוים של הזמנה
+          connection: connection,
+        }),
+      });
+      const data = await response.json();
+      // כאן תוכלי לעדכן את הצ'אט עם ההודעה החדשה מהשרת אם יש צורך
+      console.log('Message sent:', data);
+    } catch (error) {
+      console.error('Error sending message:', error);
+    }
 
-      setUpdate(update + 1)
+    setUpdate(update + 1)
 
   };
 
   const onConnectionChange = () => {
-    if(connection == 'CS')
+    if (connection == 'CS')
       setConnection('CD')
     else
       setConnection('CS')
   }
 
-  
+
   if (order === null || products === null) {
     return <div>Loading...</div>;
   }

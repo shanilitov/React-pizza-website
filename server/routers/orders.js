@@ -31,41 +31,43 @@ router.post('/create_new_order', async (req, res) => {
         const order = req.body;
         console.log({ order });
 
-
-        await queries.createneworder(order.city, order.street, order.number, order.order_date, order.comment, order.price, order.name, order.phone, orderResponse => {
+        // דבר ראשון נוסיף את ההזמנה לטבלת ההזמנות 
+        await queries.createneworder(order.city, order.street, order.number, order.order_date, order.comment, order.price, order.name, order.phone, (orderResponse) => {
             console.log(`res1 is ${orderResponse}`)
             console.log(`####: ${orderResponse}`)
             const orderInsertId = JSON.parse(orderResponse).insertId;
-
-            
             console.log(`%%%%: ${orderResponse}`)
+            // כעת שיש לנו מזהה להזמנה, נוסיף את ההזמנה לסניף בדאטה בייס
             queries.insertintobranchorders(order.branch_id, orderInsertId, branchOrderResponse => {
                 if (!branchOrderResponse) {
                     return res.send(false);
                 }
-
+                // עבור כל פריט ופריט נוסיף אותו
                 for (const detail of order.orderdetails) {
                     console.log({ detail })
                     //const product = JSON.parse( JSON.stringify(detail.product));
                     //console.log({ product })
                     const quantity = detail.quantity;
 
-                    queries.insertintoorderdetailes(orderInsertId, detail.key, quantity, detail.product.price, orderDetailsResponse => {
+                    queries.insertintoorderdetailes(orderInsertId, detail.key, quantity, detail.product.price, (orderDetailsResponse) => {
                         if (!orderDetailsResponse) {
-
                             return res.send(false);
-                        }
-                        if(order.takeaway){
-                            queries.takeaway(order.id,(takeawayRes)=>{
-                                if(!takeawayRes){
-                                    return res.send(false)
-                                }
-                            })
                         }
                     })
                 }
-            })
 
+            })
+            // אם ההזמנה היא טיקאווי נוסיף אותה לטבלת האיסוף העצמי
+            console.log(`order is takeayaw? ${order.takeAway}`)
+            if (order.takeAway) {
+                console.log('Add to takaway')
+                queries.takeaway(orderInsertId, (takeawayRes) => {
+                    if (!takeawayRes) {
+                        return res.send(false)
+                    }
+                })
+            }
+            // אם הגענו עד פה בלי ליפול, סימן שההזמנה נכנסה למערכת בהצלחה ונחזיר אמת ללקוח
             res.send(true);
         })
     } catch (error) {
@@ -163,10 +165,10 @@ router.get('/changesendbyorderid/:id/:status', (req, res) => {
         queries.changesendbyorderid(req.params.id, req.params.status, (ans) => {
             console.log(ans)
             if (ans) {
-                res.json(ans)
+                res.json(true)
             }
             else {
-                res.send()
+                res.send(false)
             }
         })
     }
@@ -225,7 +227,7 @@ router.get('/get_status/:orderId', (req, res) => {
                 console.log(`\n${data}`)
                 let sum = 0
                 sum += data.client_accepted
-                sum += data.branch_send
+                sum += data.branch_status
                 sum += data.delivery_status === null ? 0 : data.delivery_status
 
                 res.json(sum)
@@ -237,16 +239,16 @@ router.get('/get_status/:orderId', (req, res) => {
         })
     }
     catch (err) {
-        
+
     }
 
 })
 
-router.get('/get_ready_products_list/:orderId', (req, res)=>{
+router.get('/get_ready_products_list/:orderId', (req, res) => {
     console.log(`\nin get productlist: ${req.params.orderId}`)
-    queries.get_ready_products_list(req.params.orderId, (products)=>{
+    queries.get_ready_products_list(req.params.orderId, (products) => {
         console.log(`\nproducts: ${products}`)
-        if(products)
+        if (products)
             res.json(products)
         else
             res.json(false)
@@ -254,10 +256,10 @@ router.get('/get_ready_products_list/:orderId', (req, res)=>{
 
 })
 
-router.get('/change_product_in_order_status/:orderId/:productId', (req, res)=>{
+router.get('/change_product_in_order_status/:orderId/:productId', (req, res) => {
     console.log('update ststus to product')
-    queries.setProductStatus(req.params.orderId, req.params.productId, (ans)=>{
-        if(ans)
+    queries.setProductStatus(req.params.orderId, req.params.productId, (ans) => {
+        if (ans)
             res.json('Success')
         else
             res.json(false)
