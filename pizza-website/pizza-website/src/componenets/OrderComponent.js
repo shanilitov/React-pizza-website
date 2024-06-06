@@ -23,7 +23,8 @@ const OrderComponent = () => {
 
   const [update, setUpdate] = useState(0)
   const [connection, setConnection] = useState('CS') //שומר את ההגדרה עם מי הצ'אט הנוכחי
-  const [takeAway, setTakeAway] = useState(order.is_take_away)
+  const [takeAway, setTakeAway] = useState(order.is_take_away == orderId)
+  const [tatalStatus, setTotalStatus] = useState(6)
 
 
   useEffect(() => {
@@ -40,7 +41,11 @@ const OrderComponent = () => {
             setOrder(orderData);
             console.log(`products from orderData: ${orderData.order_products}`);
             setProducts(JSON.parse(orderData.order_products));
-            setTakeAway(orderData.is_take_away)
+            setTakeAway(orderData.is_take_away == orderId)
+            if(takeAway)
+              setTotalStatus(3)
+            else
+              setTotalStatus(6)
           }
         }
       })
@@ -140,15 +145,29 @@ const OrderComponent = () => {
     return <div>Loading...</div>;
   }
 
+  const pickedUpClicked = async () => {
+    console.log(`update status`)
+    const response = await fetch(`http://localhost:3600/delivery/changeToRecivedTakeAwayOrders/${orderId}`)
+    const data = await response.json();
+    // כאן תוכלי לעדכן את הצ'אט עם ההודעה החדשה מהשרת אם יש צורך
+    console.log('Message sent:', data);
+    if (data == true) {
+      setStatus(5)
+    }
+
+
+  }
+
   return (
     <div id='order' >
       <div id='leftdiv' style={{ flex: 3, padding: '20px' }}>
         <div className='takeaway'>
-          {takeAway == null ? 'Delivery' : 'Take-away'}
+          {!takeAway ? 'Delivery' : 'Take-away'}
           <h1 style={{ backgroundColor: 'red', color: 'black' }}>Your order:</h1>
+          {takeAway && status !== 3 ? <button onClick={pickedUpClicked}>Picked up?</button>: <></>}
         </div>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
-          <StatusComponent time={status} totalTime="5" />
+          <StatusComponent time={status} totalTime={tatalStatus} />
           <ProductsComponent products={products} />
         </div>
         <AddressComponent address={`${order.street} ${order.number}, ${order.city}`} />

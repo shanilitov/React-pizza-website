@@ -138,7 +138,7 @@ async function verify_that_status_in_the_shop_is_1(order_id, callback){
     console.log(`Check that order number ${order_id} has status 1`)
     let query = `
     Select status
-    from branches.branch_order
+    from branches.branch_orders
     where order_id = ${order_id};
     `
     db.query(query, callback)
@@ -154,7 +154,7 @@ async function update_delivery_in_shop(order_id, callback){
     db.query(query, callback)
 }
 async function update_delivery_in_order(order_id, callback){
-    console.log(`Change that order number ${order_id} in the orders to status 1`)
+    console.log(`Change the status of order number ${order_id} to 1`)
     let query = `
     Update orders.orders
     set status = 1

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import '../CSS/OrderTrack.css'; // נניח שיש לך קובץ CSS לעיצובים
 import {Link, useLocation, useNavigate } from 'react-router-dom';
 import back from '../img/back.png';
@@ -36,7 +36,7 @@ const TrackOrder = () => {
                         <div className="order-summary">
                             <span>Order number: {order.id}</span>
                             <span>{order.order_date !== null ? new Date(order.order_date).toISOString().split('T')[0] : ''}</span>
-                            <span>{order.status === 0 ? 'active' : 'old'}</span>
+                            <span>{order.status == 0 ? 'active' : 'old'}</span>
                         </div>
                         {selectedOrderId === order.id && (
                             <div>

@@ -143,7 +143,8 @@ async function getOrderByPhone(phone, callback) {
         let sql = `
         select *
         from orders.orders 
-        where phone = ${phone} and status = 0;
+        where phone = ${phone}
+        order by status
     `;
 
         //שולחים את השאילתא לשלב הבא שמתקשר עם הדאטה בייס.
