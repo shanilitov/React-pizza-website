@@ -36,7 +36,7 @@ const TrackOrder = () => {
                         <div className="order-summary">
                             <span>Order number: {order.id}</span>
                             <span>{order.order_date !== null ? new Date(order.order_date).toISOString().split('T')[0] : ''}</span>
-                            <span>{order.accept === 0 ? 'active' : 'old'}</span>
+                            <span>{order.status === 0 ? 'active' : 'old'}</span>
                         </div>
                         {selectedOrderId === order.id && (
                             <div>

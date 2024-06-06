@@ -21,3 +21,13 @@
     color: black;
      
 }
+.takeaway{
+    background-color: black;
+    color: red;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    cursor: pointer;
+    
+}

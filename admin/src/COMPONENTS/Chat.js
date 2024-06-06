@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import "../Style/Chat.css";
 import { useNavigate } from "react-router-dom";
 
-function Chat({ order_id }) {
+function Chat({ order_id, takeaway }) {
     const [inputMessage, setInputMessage] = useState('');
     const [update, setUpdate] = useState(0);
     const [connection, setConnection] = useState('SC'); //שומר את ההגדרה עם מי הצ'אט הנוכחי
     const [messages, setMessages] = useState([]);
+    const [takeAway, setTakeAway] = useState(takeaway)
 
     const navigation = useNavigate();
 
@@ -25,6 +26,10 @@ function Chat({ order_id }) {
         };
         fetchChat();
     }, [connection, update, order_id]);
+
+    useEffect(() => {
+        setTakeAway(takeaway)
+    }, [takeaway])
 
     const handleSendMessage = async () => {
         if (inputMessage.trim() !== '') {
@@ -49,7 +54,8 @@ function Chat({ order_id }) {
     };
 
     const changeConnection = async () => {
-        setConnection((prev) => (prev === 'SC' ? 'SD' : 'SC'));
+        if (takeAway !== null)
+            setConnection((prev) => (prev === 'SC' ? 'SD' : 'SC'));
     };
 
     return (

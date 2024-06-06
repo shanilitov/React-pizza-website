@@ -39,8 +39,9 @@ async function getOrdersByBranchId(branchId, callback) {
     try {
         console.log('in get order by branch id function')
         let sql = `
-        SELECT b.order_id, b.status, t.orderId as IstakeAway
+        SELECT b.order_id, b.status, t.orderId as IstakeAway, o.comment
         FROM branches.branch_orders b
+        Left join orders.orders o on o.id = b.order_id
         Left join orders.takeaway t on b.order_id = t.orderId
         WHERE b.branch_id = ${branchId} 
         and b.status < 2`

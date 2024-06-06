@@ -23,6 +23,7 @@ const OrderComponent = () => {
 
   const [update, setUpdate] = useState(0)
   const [connection, setConnection] = useState('CS') //שומר את ההגדרה עם מי הצ'אט הנוכחי
+  const [takeAway, setTakeAway] = useState(order.is_take_away)
 
 
   useEffect(() => {
@@ -39,12 +40,13 @@ const OrderComponent = () => {
             setOrder(orderData);
             console.log(`products from orderData: ${orderData.order_products}`);
             setProducts(JSON.parse(orderData.order_products));
+            setTakeAway(orderData.is_take_away)
           }
         }
       })
       .catch(error => console.error('Error fetching order:', error));
   }, [orderId]);
-  
+
 
   // יש להשתמש באפשרות useEffect על מנת לקבל את הצ'אט בעת טעינת הדף או כל שינוי בערכי connection
   useEffect(() => {
@@ -141,7 +143,10 @@ const OrderComponent = () => {
   return (
     <div id='order' >
       <div id='leftdiv' style={{ flex: 3, padding: '20px' }}>
-        <h1>Your order:</h1>
+        <div className='takeaway'>
+          {takeAway == null ? 'Delivery' : 'Take-away'}
+          <h1 style={{ backgroundColor: 'red', color: 'black' }}>Your order:</h1>
+        </div>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <StatusComponent time={status} totalTime="5" />
           <ProductsComponent products={products} />
@@ -149,7 +154,7 @@ const OrderComponent = () => {
         <AddressComponent address={`${order.street} ${order.number}, ${order.city}`} />
       </div>
       <div style={{ flex: 2, padding: '20px', backgroundColor: 'black', borderRadius: '10px' }}>
-        <ChatComponent messages={messages} onSendMessage={handleSendMessage} onConnectionChange={onConnectionChange} connection={connection} />
+        <ChatComponent messages={messages} onSendMessage={handleSendMessage} onConnectionChange={onConnectionChange} connection={connection} takeAway={takeAway} />
       </div>
     </div>
   );

@@ -153,5 +153,14 @@ async function update_delivery_in_shop(order_id, callback){
     `
     db.query(query, callback)
 }
+async function update_delivery_in_order(order_id, callback){
+    console.log(`Change that order number ${order_id} in the orders to status 1`)
+    let query = `
+    Update orders.orders
+    set status = 1
+    where id = ${order_id};
+    `
+    db.query(query, callback)
+}
 
-module.exports = {update_delivery_in_shop, verify_that_status_in_the_shop_is_1, changeSatus, getStatus, getCurrentOrder, loginDelivery, signinDelivery, getDeliverBranch, getOrederWaiting, addNewDeliveryToDeliver }
+module.exports = {update_delivery_in_order, update_delivery_in_shop, verify_that_status_in_the_shop_is_1, changeSatus, getStatus, getCurrentOrder, loginDelivery, signinDelivery, getDeliverBranch, getOrederWaiting, addNewDeliveryToDeliver }

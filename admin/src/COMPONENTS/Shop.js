@@ -63,10 +63,10 @@ function Shop() {
                     ))}
                 </div>
                 <div className="order-details-section">
-                    {selectedOrder ? <OrderView order_id={selectedOrder} status={orders.filter(o => o.order_id == selectedOrder)[0].status} done={handleSendClicked}/> : <p>Please select an order.</p>}
+                    {selectedOrder ? <OrderView order_id={selectedOrder} status={orders.filter(o => o.order_id == selectedOrder)[0].status } comment={orders.filter(o => o.order_id == selectedOrder)[0].comment} done={handleSendClicked}/> : <p>Please select an order.</p>}
                 </div>
                 <div className="chat-section">
-                    {selectedOrder ? <Chat order_id={selectedOrder} /> : <p>Please select an order.</p>}
+                    {selectedOrder ? <Chat order_id={selectedOrder} status={orders.filter(o => o.order_id == selectedOrder)[0].IstakeAway} /> : <p>Please select an order.</p>}
                 </div>
             </div>
         </div>

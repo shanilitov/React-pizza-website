@@ -56,8 +56,8 @@ router.post('/login', async (req, res) => {
 
         queries.loginDelivery(req.body.name, req.body.id, (user => {
             console.log('answer: ' + user)
-            if (user) {
-                // const dataBack = { 'user': user[0].id, 'admin': user[0].adamin, 'userData': { 'branchId': user[0].branch_id, 'userName': user[0].user_name } }
+            if (user && JSON.parse(user)[0] !== undefined) {
+                //const dataBack = { 'user': user[0].id, 'admin': user[0].adamin, 'userData': { 'branchId': user[0].branch_id, 'userName': user[0].user_name } }
                 res.json(user)
             }
             else {
@@ -147,10 +147,80 @@ router.get(`/getOredrStatus/:orderId`, (req, res) => {
     })
 })
 
+// שליח שרוצה לעדכן שהוא אסף את ההזמנה או שהוא מסר אותה כבר לשליח
 router.get('/changeDeliveryStatus/:deliveryId/:orderId/:status', async (req, res) => {
-    console.log(`Delivery Guy number ${req.params.deliverId}, order number ${req.params.orderId} to status: ${req.params.status}`)
-    // בדיקת תקינות:
-    // אם הסטטוס הוא נאסף, אז הסטטוס של ההזמנה  בסניף חייב להיות 1
+    try {
+        console.log(`Delivery Guy number ${req.params.deliveryId}, order number ${req.params.orderId} to status: ${req.params.status}`)
+        // נכתוב מראש את הפונקציה שתשלח חזרה למשתמש אם הפעולה הצליחה, ונשתמש בה כשנרצה להחזיר תשובה בהמשך...
+        const callback = async (ans) => {
+            console.log(ans)
+            if (ans)
+                res.status(200).json(true)
+            else
+                res.status(500).json(false)
+        }
+
+        // בדיקת תקינות:
+        // אם השליח רוצה לעדכן שהוא אוסף מהסניף, נצטרך לוודא שההזמנה כבר מוכנה בסניף- כלומר שהסטטוס שלה בסניף הוא 1
+        if (req.params.status == 2) {
+            // נפנה לשאילתה שבודקת את הסטטוס בסניף ונבדוק את התשובה שחזרה
+            queries.verify_that_status_in_the_shop_is_1(req.params.orderId, (data) => {
+                if (data) {
+                    console.log(`status in the branch oredr is ${JSON.parse(data)[0]}`)
+                    // data = [0/1/2]
+                    // רק אם זה מצב 1 נשנה את הססטוס של השלח וההזמנה בסניף
+                    if (JSON.parse(data)[0] == 1) {
+                        // נשנה את הסטטוס של ההזמנה אצל השליח ל2
+                        queries.changeSatus(req.params.orderId, req.params.deliveryId, req.params.status, (ans) => {
+                            console.log(ans)
+                            // נעדכן את הסטטוס בחנות
+                            if (ans) {
+                                queries.update_delivery_in_shop(req.params.orderId, callback) // נשלח את הפונקציה שכתבנו ששולחת בחזרה ללקוח אמת אם הכל עבד תקין
+                            } else
+                                res.status(500).json('delivery is not ready yet')
+                        })
+                    } else
+                        res.status(500).json('delivery is not ready yet')
+                }
+                else
+                    res.status(500).json(`Couln't find current status`)
+
+            })
+
+        }
+        else { // אם השליח רוצה לעדכן את הסטטוס לכך שהוא מסר לשליח, נפנה אותו ישר לפונקציה שמעדכנת סטטוס
+            queries.changeSatus(req.params.orderId, req.params.deliveryId, req.params.status, (ans) => {
+                if (ans) {
+                    console.log('change the status in orders to 1')
+                    // נעדכן גם את הסטטוס הכללי של ההזמנה
+                    queries.update_delivery_in_order(req.params.orderId, callback) // נשתמש בפונקציה שכתבנו בשלביל להחזיר למשתמש תשובה תקינה אם הכל הולך טוב
+                }
+                else
+                    callback(false)
+
+            })
+        }
+    }
+    catch (err) {
+        console.log('err!')
+        res.status(500).json(false)
+    }
+
+
+
+})
+
+router.get('/changeToRecivedTakeAwayOrders/:orderId', async (req, res) => {
+    console.log(`change status in case of take away, order number ${req.params.orderId}`)
+    // נבדוק שההזמנה היא באמת takeAway ושהיא מוכנה, כלומר שהסטטוס שלה בסניף היא 1
+    queries.verify_that_status_in_the_shop_is_1(req.params.orderId, (data) => {
+        if (!data || !(JSON.parse(data)[0] == 1)) {
+            res.status(500).json('Oreder is not ready yet!')
+            return
+        }
+    })
+
+    // נכתוב מראש את הפונקציה שתשלח חזרה למשתמש אם הפעולה הצליחה, ונשתמש בה כשנרצה להחזיר תשובה בהמשך...
     const callback = async (ans) => {
         console.log(ans)
         if (ans)
@@ -158,35 +228,18 @@ router.get('/changeDeliveryStatus/:deliveryId/:orderId/:status', async (req, res
         else
             res.status(500).json(false)
     }
-    if (req.params.status == 1) {
 
-        queries.verify_that_status_in_the_shop_is_1(req.params.orderId, (data) => {
-            if (data) {
-                console.log(`status in the branch oredr is ${JSON.parse(data)[0]}`)
-                if (JSON.parse(data)[0] == 1) {
-                    queries.changeSatus(req.params.orderId, req.params.deliveryId, req.params.status, (ans) => {
-                        console.log(ans)
-                        // נעדכן את הסטטוס בחנות
-                        if (ans) {
-                            queries.update_delivery_in_shop(req.params.orderId, callback)
-                        } else
-                            res.status(500).json('delivery is not ready yet')
-                    })
-                } else
-                    res.status(500).json('delivery is not ready yet')
-            }
-            else
-                res.status(500).json(`Couln't find current status`)
+    // אם הכל תקין, נשנה את הסטטוס בחנות ואת הסטטוס של ההזמנה
+    queries.update_delivery_in_shop(req.params.orderId, (ans) => {
+        if (ans) {
+            console.log('change the status in orders to 1')
+            // נעדכן גם את הסטטוס הכללי של ההזמנה
+            queries.update_delivery_in_order(req.params.orderId, c)
+        }
+        else
+            callback(false)
 
-        })
-
-    }
-    else {
-        queries.changeSatus(req.params.orderId, req.params.deliveryId, req.params.status, callback)
-    }
-
-
-
+    })
 })
 
 

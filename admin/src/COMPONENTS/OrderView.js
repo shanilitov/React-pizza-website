@@ -2,10 +2,11 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../Style/OrderView.css";
 
-function OrderView({ order_id, isTakeAway, status, done }) {
+function OrderView({ order_id, isTakeAway, status, done, comment }) {
     const [products, setProducts] = useState([]);
     const [allProductsReady, setAllProductsReady] = useState(false);
     const [isReady, setIsReady] = useState(status)
+    const [Comment, setComment] = useState(comment)
     const b_text = ['DONE?', 'Delivered?']
     const params = useParams();
 
@@ -24,8 +25,9 @@ function OrderView({ order_id, isTakeAway, status, done }) {
                 setProducts([]); // Set products to an empty array in case of an error
             }
         }
+        setComment(comment)
         fetchProducts();
-    }, [order_id]);
+    }, [order_id, comment]);
 
     useEffect(() => {
         setAllProductsReady(products.length > 0 && products.every(product => product.ready));
@@ -124,6 +126,7 @@ function OrderView({ order_id, isTakeAway, status, done }) {
     return (
         <div className="order-view">
             <h2>Order Number {order_id} Details</h2>
+            <p className="comment">{Comment}</p>
             <div className="product-list">
                 {products.length > 0 ? (
                     products.map((product, index) => (

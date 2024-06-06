@@ -1,7 +1,7 @@
 import { Button } from 'bootstrap';
 import React, { useState } from 'react';
 
-const ChatComponent = ({ messages, onSendMessage, onConnectionChange, connection }) => {
+const ChatComponent = ({ messages, onSendMessage, onConnectionChange, connection, takeAway }) => {
   const [newMessage, setNewMessage] = useState('');
 
   const handleSendMessage = () => {
@@ -10,6 +10,7 @@ const ChatComponent = ({ messages, onSendMessage, onConnectionChange, connection
       setNewMessage('');
     }
   };
+  console.log(`take away? ${takeAway}`)
 
   const myMessages = {
     backgroundColor: 'red',
@@ -35,7 +36,7 @@ const ChatComponent = ({ messages, onSendMessage, onConnectionChange, connection
 
   return (
     <div>
-      <button onClick={onConnectionChange} style={{ marginLeft: '10px', padding: '10px', borderRadius: '10px', backgroundColor: 'red', color: 'black' }}>
+      <button onClick={()=> takeAway == null ? onConnectionChange(): console.log('Take-away')} style={{ marginLeft: '10px', padding: '10px', borderRadius: '10px', backgroundColor: 'red', color: 'black' }}>
         {connection === 'CS' ? 'SHOP' : 'DELIVER'}
       </button>
       <div style={{ height: '200px', overflowY: 'scroll', border: '1px solid gray', marginBottom: '10px', padding: '10px', borderRadius: '10px', display: 'flex', flexDirection: 'column' }}>

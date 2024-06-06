@@ -12,6 +12,7 @@ function Pizza() {
     const [existedid, setexistedid] = useState([])
     const [comment, setcomment] = useState('')
     const [pizza, setpizza] = useState()
+    const [strAddings, setStrAddings] = useState(['Addings are:\n'])
     const state = []
 
     const navigate = useNavigate()
@@ -24,7 +25,7 @@ function Pizza() {
                     console.log(ans)
                     let temp = JSON.parse(ans)
                     console.log(temp)
-                    if(temp)
+                    if (temp)
                         setadd(temp)
 
                 })
@@ -36,7 +37,7 @@ function Pizza() {
                     console.log(ans)
                     let temp = JSON.parse(ans)
                     console.log(temp[0])
-                    if(temp)
+                    if (temp)
                         setpizza(temp[0])
                 })
         }
@@ -48,74 +49,70 @@ function Pizza() {
 
     const checked = (a, i) => {
         let t = JSON.parse(a)
+        // נוסיף את זה כמו מחרוזת
+        let str = ''
+        if(strAddings[1] == undefined)
+            str = JSON.parse(a).name
+        else
+            str = `, ${JSON.parse(a).name}`
+        setStrAddings(prevState => [...prevState, str])
+
         console.log(a + 'checked!!!!!1')
 
-        console.log('i : ' + i);
+        console.log('name : ' + JSON.parse(a).name);
 
-        let currentAdd = {
-            'key': -1,
-            'product': a,
-            'quantity': 1
-        }
-        console.log(`current add: ${JSON.stringify(currentAdd)}`)
-        let e = existedid.find(element => element === currentAdd)
-        console.log(e)
-        if (e === undefined) {
-            let value = selected
-            value.push(currentAdd)
-            setselected(value)
-            value = existedid
-            value.push(i)
-        }
-        else {
-            let index = selected.find(element => element === a)
-            let value = selected
-            value.splice(index, 1)
-            value = existedid
-            value.splice(e, 1)
-        }
+        // let currentAdd = {
+        //     'key': -1,
+        //     'product': a,
+        //     'quantity': 1
+        // }
+        // console.log(`current add: ${JSON.stringify(currentAdd)}`)
+        // let e = existedid.find(element => element === currentAdd)
+        // console.log(e)
+        // if (e === undefined) {
+        //     let value = selected
+        //     value.push(currentAdd)
+        //     setselected(value)
+        //     value = existedid
+        //     value.push(i)
+        // }
+        // else {
+        //     let index = selected.find(element => element === a)
+        //     let value = selected
+        //     value.splice(index, 1)
+        //     value = existedid
+        //     value.splice(e, 1)
+        // }
     }
     const okclick = () => {
+        // נוסיף לעגלת הקניות פיצה
         let list = JSON.parse(localStorage.getItem('shopping_cart'))
         console.log('current list: ' + list)
-        if (list === null) {
+        if (list === null)
             list = []
-        }
-        console.log('selected: ' + selected)
-        selected.map((a, i) => {
-            if (a !== null) {
-                console.log(a + 'add to list')
-                let t = JSON.parse(JSON.stringify( a))
-                console.log(t)
-                list.push(t)
-            }
-
-        })
-        console.log(pizza)
-        if (list === null) {
-            list = []
-        }
-
         list.push({
             'key': pizza.id,
             'product': pizza,
             'quantity': 1
-        }
-            )
+        })
         console.log(list)
         localStorage.removeItem('shopping_cart')
         console.log('your list: ' + list)
         localStorage.setItem('shopping_cart', JSON.stringify(list))
+
+        // נוסיף את ההערה שכוללת בצורה מסודרת את התוספות, ואת ההערות שהלקוח כתב.
         list = localStorage.getItem('comment')
-        if (list === null) {
+        if (list === null)
             list = []
-        }
         else {
             console.log(list)
             list = [list]
-            // list = JSON.parse(localStorage.getItem('comment'))
         }
-        list.push(comment)
+        let joinedString = strAddings.join('')
+        let fCooment = joinedString + 'Client says: "' + comment + '"'
+
+        console.log(fCooment)
+        list.push(fCooment)
         console.log(list + 'now insert this to local storege')
         localStorage.removeItem('comment')
         localStorage.setItem('comment', list)
