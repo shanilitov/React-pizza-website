@@ -14,7 +14,7 @@ async function getOrderDataByOrderId(order_id, callback) {
     }
 }
 
-async function createneworder(city, street, number, order_date, comment, price, name, phone, callback) {
+async function createneworder(city, street, number, order_date, comment, price, name, phone, addings, callback) {
     try {
         console.log('in create new order');
 
@@ -23,8 +23,8 @@ async function createneworder(city, street, number, order_date, comment, price, 
 
         let sql = `
         INSERT INTO orders.orders 
-        (phone, city, street, number, order_date, comment, price, status, name) 
-        VALUES ('${phone}', '${city}', '${street}', ${number}, '${formattedDate}', '${comment}', ${price}, 0, '${name}');`;
+        (phone, city, street, number, order_date, comment, price, status, addings, name) 
+        VALUES ('${phone}', '${city}', '${street}', ${number}, '${formattedDate}', '${comment}', ${price}, 0, '${addings}', '${name}');`;
 
         db.query(sql, callback);
     } catch (err) {

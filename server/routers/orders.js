@@ -32,7 +32,7 @@ router.post('/create_new_order', async (req, res) => {
         console.log({ order });
 
         // דבר ראשון נוסיף את ההזמנה לטבלת ההזמנות 
-        await queries.createneworder(order.city, order.street, order.number, order.order_date, order.comment, order.price, order.name, order.phone, (orderResponse) => {
+        await queries.createneworder(order.city, order.street, order.number, order.order_date, order.comment, order.price, order.name, order.phone, order.addings,  (orderResponse) => {
             console.log(`res1 is ${orderResponse}`)
             console.log(`####: ${orderResponse}`)
             const orderInsertId = JSON.parse(orderResponse).insertId;
@@ -204,7 +204,7 @@ router.get('/get_full_order/:id', (req, res) => {
     console.log(`\nin get ful order: ${req.params.id}`)
     // מחזיר את הפרטים המלאים של ההזמנה.
     // יראה ככה: 
-    // [order_id, adress, order_date, status, client_name, products_list[{item_in_order_id, product_name, product_price, status}, {...}, ...], total_price, worker_id, is_takeaway, deliver_id]
+    // [order_id, adress, order_date, status, client_name, products_list[{item_in_order_id, product_name, product_price, status}, {...}, ...], total_price, worker_id, is_takeaway, deliver_id, addings]
     queries.get_full_order(req.params.id, (order) => {
         console.log('@@@')
         console.log(order)

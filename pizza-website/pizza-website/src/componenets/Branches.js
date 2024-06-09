@@ -29,9 +29,9 @@ function Branches() {
     
 
     return (
-        <div>
+        <div  className="branchesdisplay">
             <Header />
-            <div className="branchesdisplay">
+            <div>
                 {branchList.map((v,i)=>{
                     if (v !== undefined) {
                         console.log(v)

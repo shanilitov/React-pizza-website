@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Link } from 'react-router-dom';
 import ProductsComponent from './ProductsComponent';
 import StatusComponent from './StatusComponent';
 import AddressComponent from './AddressComponent';
 import ChatComponent from './ChatComponent';
 import '../CSS/Order.css'
-
-
-
+import back from '../img/back.png';
 
 
 const OrderComponent = () => {
@@ -42,7 +40,7 @@ const OrderComponent = () => {
             console.log(`products from orderData: ${orderData.order_products}`);
             setProducts(JSON.parse(orderData.order_products));
             setTakeAway(orderData.is_take_away == orderId)
-            if(takeAway)
+            if (takeAway)
               setTotalStatus(3)
             else
               setTotalStatus(6)
@@ -164,7 +162,7 @@ const OrderComponent = () => {
         <div className='takeaway'>
           {!takeAway ? 'Delivery' : 'Take-away'}
           <h1 style={{ backgroundColor: 'red', color: 'black' }}>Your order:</h1>
-          {takeAway && status !== 3 ? <button onClick={pickedUpClicked}>Picked up?</button>: <></>}
+          {takeAway && status !== 3 ? <button onClick={pickedUpClicked}>Picked up?</button> : <></>}
         </div>
         <div style={{ display: 'flex', flexDirection: 'row' }}>
           <StatusComponent time={status} totalTime={tatalStatus} />
@@ -173,6 +171,7 @@ const OrderComponent = () => {
         <AddressComponent address={`${order.street} ${order.number}, ${order.city}`} />
       </div>
       <div style={{ flex: 2, padding: '20px', backgroundColor: 'black', borderRadius: '10px' }}>
+        <Link to="/RegistrationComponent"><img src={back} className="backicon" /></Link>
         <ChatComponent messages={messages} onSendMessage={handleSendMessage} onConnectionChange={onConnectionChange} connection={connection} takeAway={takeAway} />
       </div>
     </div>

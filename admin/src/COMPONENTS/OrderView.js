@@ -2,11 +2,12 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../Style/OrderView.css";
 
-function OrderView({ order_id, isTakeAway, status, done, comment }) {
+function OrderView({ order_id, isTakeAway, status, done, comment, addings }) {
     const [products, setProducts] = useState([]);
     const [allProductsReady, setAllProductsReady] = useState(false);
     const [isReady, setIsReady] = useState(status)
     const [Comment, setComment] = useState(comment)
+    const [Addings, setAddings] = useState('')
     const b_text = ['DONE?', 'Delivered?']
     const params = useParams();
 
@@ -26,6 +27,7 @@ function OrderView({ order_id, isTakeAway, status, done, comment }) {
             }
         }
         setComment(comment)
+        setAddings(addings)
         fetchProducts();
     }, [order_id, comment]);
 
@@ -130,16 +132,22 @@ function OrderView({ order_id, isTakeAway, status, done, comment }) {
             <div className="product-list">
                 {products.length > 0 ? (
                     products.map((product, index) => (
-                        <div key={index} className="product-item">
-                            <span>{product.amount}</span>
-                            <span>{product.name}</span>
-                            {product.ready ? (
-                                <span className="ready-icon">✔️</span>
-                            ) : (
-                                <button onClick={() => handleProductClick(product.name, product.id)}>
-                                    Mark as Ready
-                                </button>
-                            )}
+                        <div>
+                            <div key={index} className="product-item">
+                                <span>{product.amount}</span>
+                                <span>{product.name}</span>
+                                {product.ready ? (
+                                    <span className="ready-icon">✔️</span>
+                                ) : (
+                                    <button onClick={() => handleProductClick(product.name, product.id)}>
+                                        Mark as Ready
+                                    </button>
+                                )}
+
+                            </div>
+                            {product.id == 1 && Addings != '' ?
+                                <p className="comment">Addings: {Addings}</p> : ''
+                            }
                         </div>
                     ))
                 ) : (
@@ -149,7 +157,7 @@ function OrderView({ order_id, isTakeAway, status, done, comment }) {
             {allProductsReady && (
                 <div>
                     <button className="delivery-button" onClick={handleDeliveryClick}>
-                        All Done{isReady? '✔️' : '?'}
+                        All Done{isReady ? '✔️' : '?'}
                     </button>
 
                 </div>

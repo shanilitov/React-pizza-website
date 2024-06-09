@@ -1,50 +1,55 @@
-import React, { useContext, useEffect, useState } from "react";
-import { Link, useParams, useNavigate, Navigate } from 'react-router-dom';
-import back from '../img/back.png'
-import ok from '../img/ok.jpg'
-import pay from '../img/pay.png'
+import React, { useEffect, useState } from "react";
+import { Link, useNavigate } from 'react-router-dom';
+import back from '../img/back.png';
+import pay from '../img/pay.png';
 
 function Finish1() {
-    //display your product and your comment
-    const [shoppinglist, setshoppinglist] = useState([])
-    const [final, setfinal] = useState(0)
-    const [comment, setcomment] = useState("")
-    const state = []
+    const [shoppinglist, setshoppinglist] = useState([]);
+    const [final, setfinal] = useState(0);
+    const [comment, setcomment] = useState("");
+    const [addings, setaddings] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
-        let getlist = localStorage.getItem('shopping_cart')
-        console.log(getlist)
+        // Load shopping list
+        let getlist = localStorage.getItem('shopping_cart');
         if (getlist) {
-            getlist = JSON.parse(getlist)
-            setshoppinglist(getlist)
-            let sum = 0
-            getlist.map((data, i) => {
-                console.log(`data: ${data}`)
-                let t = JSON.stringify(data)
-                console.log(JSON.parse(t))
-                console.log('t' + t)
-                let v = JSON.parse(t)
-                console.log('t' + v.product.price + " a" + v.quantity)
-                sum = sum +( v.product.price * v.quantity);
-                return true;
-            })
-            setfinal(sum)
-            localStorage.setItem('price', JSON.stringify(sum))
+            getlist = JSON.parse(getlist);
+            setshoppinglist(getlist);
+            let sum = 0;
+            getlist.forEach((data) => {
+                sum += data.product.price * data.quantity;
+            });
+            setfinal(sum);
+            localStorage.setItem('price', JSON.stringify(sum));
         }
 
-        getlist = localStorage.getItem('comment')
-        console.log(getlist);
-        if (getlist) {
-            // getlist = JSON.parse(getlist)
-            console.log(getlist);
-            setcomment(getlist)
-            console.log(comment)
+        // Load comment
+        let getComment = localStorage.getItem('comment');
+        if (getComment) {
+            setcomment(getComment);
         }
 
+        // Load addings
+        let getAddings = localStorage.getItem('addings');
+        if (getAddings) {
+            try {
+                // Try to parse as JSON
+                const parsedAddings = JSON.parse(getAddings);
+                if (Array.isArray(parsedAddings)) {
+                    setaddings(parsedAddings);
+                } else {
+                    // If not an array, assume it's a comma-separated string
+                    setaddings(getAddings.split(',').map(item => item.trim()));
+                }
+            } catch (error) {
+                // If error in parsing, assume it's a comma-separated string
+                setaddings(getAddings.split(',').map(item => item.trim()));
+            }
+        }
+    }, []);
 
-    }, state)
-
-    function saveCommit(){
+    function saveCommit() {
         localStorage.setItem('comment', comment);
     }
 
@@ -55,34 +60,26 @@ function Finish1() {
                     backgroundColor: 'red',
                     color: 'black'
                 }}>YOUR ORDER</h1>
-                {shoppinglist.map((a, i) => {
-                    console.log(a)
-                    if (a !== undefined) {
-                        return (
-                            <div className="finish1p" key={i}>
-                                <h1 className="h1f1">{a.product.name}</h1>
-                                <p>{`Quantity: ${a.quantity}`}</p>
-                            </div>
-                        )
-                    }
-                    else {
-                        Navigate('/')
-                    }
-                })}
+                {shoppinglist.map((a, i) => (
+                    <div className="finish1p" key={i}>
+                        <h1 className="h1f1">{a.product.name}</h1>
+                        <p>{`Quantity: ${a.quantity}`}</p>
+                        {a.product.id === 1 && a.product.name === 'pizza' && addings.length > 0 && (
+                            <p>{`Addings: ${addings.join(', ')}`}</p>
+                        )}
+                    </div>
+                ))}
             </div>
-            <div >
-
-
+            <div>
                 <Link to='/'><img src={back} className="myButton" width='50px' /></Link>
                 <div style={{ backgroundColor: 'black' }}>
-
-                    <textarea style={{height: '100px'}} onChange={(event) => { setcomment(event.target.value) }} onBlur={saveCommit} placeholder="Leave your commits here..." value={comment}></textarea>
-
+                    <textarea style={{ height: '100px' }} onChange={(event) => { setcomment(event.target.value) }} onBlur={saveCommit} placeholder="Leave your commits here..." value={comment}></textarea>
                     <h1 style={{ color: 'red' }}>{final + '$'}</h1>
-                    <Link to='/pay' > <img src={pay} className='myButton' width='50px' /></Link>
+                    <Link to='/pay'><img src={pay} className='myButton' width='50px' /></Link>
                 </div>
             </div>
         </div>
-    )
+    );
 }
+
 export default Finish1;

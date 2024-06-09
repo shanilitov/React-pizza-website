@@ -2,7 +2,7 @@
     font-family: Arial, sans-serif;
     color: #0e0e0e;
     height: 100vh;
-    background-image: url('http://localhost:3000/static/media/back-ground.4dc9b437b8177d1dda1b.jfif'); /* החלף background.jpg בשם התמונה שלך */
+    background-image: url('../img/back-ground.jfif');
     background-size: cover;
     background-position: center;
 

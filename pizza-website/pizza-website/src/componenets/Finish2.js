@@ -50,7 +50,8 @@ function Finish2() {
                 name: name,
                 branch_id: choice.id,
                 orderdetails: JSON.parse(localStorage.getItem('shopping_cart')),
-                takeAway: takeAway
+                takeAway: takeAway, 
+                addings: localStorage.getItem('addings')
             };
             console.log({ order });
             const option = {

@@ -1,24 +1,24 @@
 .shoppingCartContainer {
-    background-image: url('http://localhost:3000/static/media/back-ground.4dc9b437b8177d1dda1b.jfif'); /* החלף background.jpg בשם התמונה שלך */
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
+  background-image: url('../img/back-ground.jfif');
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
 }
 
-.shoppingcart{
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: flex-start;
-    width: fit-content;
-    height: fit-content;
-    box-shadow: 3px 4px 2px 10px #8a2a21;
-    margin: 30px;
-    background-color: rgba(255, 255, 255, 0.8);
+.shoppingcart {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  width: fit-content;
+  height: fit-content;
+  box-shadow: 3px 4px 2px 10px #8a2a21;
+  margin: 30px;
+  background-color: rgba(255, 255, 255, 0.8);
 
-  }
+}
 
-  #shoppingcart{
-    display: flex;
-    justify-content: space-around
-  }
+#shoppingcart {
+  display: flex;
+  justify-content: space-around
+}

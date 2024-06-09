@@ -7,7 +7,7 @@ function Chat({ order_id, takeaway }) {
     const [update, setUpdate] = useState(0);
     const [connection, setConnection] = useState('SC'); //שומר את ההגדרה עם מי הצ'אט הנוכחי
     const [messages, setMessages] = useState([]);
-    const [takeAway, setTakeAway] = useState(takeaway)
+    const [takeAway, setTakeAway] = useState(false)
 
     const navigation = useNavigate();
 
@@ -25,6 +25,7 @@ function Chat({ order_id, takeaway }) {
             }
         };
         fetchChat();
+        setTakeAway(takeAway)
     }, [connection, update, order_id]);
 
     useEffect(() => {
@@ -54,8 +55,10 @@ function Chat({ order_id, takeaway }) {
     };
 
     const changeConnection = async () => {
-        if (takeAway !== null)
+        if (!takeAway)
             setConnection((prev) => (prev === 'SC' ? 'SD' : 'SC'));
+        else
+            console.log('Take Away')
     };
 
     return (
