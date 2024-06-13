@@ -50,6 +50,7 @@ async function getCurrentOrder(deliverId, callback) {
     }
 }
 
+// נותן לשליח את ההזמנה הבאה שממתינה למשלוח בסניף שלו
 async function getOrederWaiting(branchId, callback) {
     try {
         console.log(`making query to get the order to the new deliver for branch number: ${branchId}`)
@@ -69,6 +70,7 @@ async function getOrederWaiting(branchId, callback) {
         LIMIT 1;
         `
         db.query(sql, callback)
+        // [choisen- order]
     }
     catch (err) {
         console.log(`in querise : ${err}`)

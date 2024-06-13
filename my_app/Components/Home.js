@@ -81,7 +81,7 @@ const Home = ({ route }) => {
     console.log(`Current Order is: ${JSON.stringify(currentOrder)}`)
     console.log(`order ID is ${currentOrder.id}`)
     try {
-      let nextStatus= status + 1
+      let nextStatus = status + 1
       const response = await fetch(
         `http://localhost:3600/delivery/changeDeliveryStatus/${userId}/${currentOrder.id}/${nextStatus}`
       );
@@ -89,10 +89,10 @@ const Home = ({ route }) => {
         const data = await response.json();
         console.log(`data is ${data}`)
         if (data !== false) {
-            if(nextStatus > 2)
-              setStatus(0)
-            else
-              setStatus(nextStatus)
+          if (nextStatus > 2)
+            setStatus(0)
+          else
+            setStatus(nextStatus)
         }
       }
       else {
@@ -131,12 +131,12 @@ const Home = ({ route }) => {
     }
   };
 
-  const chatClicked = async()=>{
+  const chatClicked = async () => {
     console.log('chat clicked')
-    if(status !== 0 && currentOrder.id !== undefined){
+    if (status !== 0 && currentOrder.id !== undefined) {
       navigation.navigate('Chat', { userId: userId, userName: userName, currentOrderId: currentOrder.id })
     }
-    else{
+    else {
       console.log(currentOrder)
     }
   }
@@ -153,18 +153,20 @@ const Home = ({ route }) => {
       </TouchableOpacity>
 
       <View style={styles.content}>
-
+        <Text style={styles.greeting}>{status > 0 ? `Order number: ${currentOrder.id}` : <></>}</Text>
         <Text style={styles.greeting}>{status > 0 ? `Adress: ${currentOrder.street} ${currentOrder.number}, ${currentOrder.city}` : `You don't have order to deliver now, click the button to get a new one`}</Text>
 
 
         <TouchableOpacity style={styles.button} onPress={() => buttonClicked()}>
           <Text style={styles.buttonText}>{texts[status]}</Text>
         </TouchableOpacity>
-
+        { /*
         <TouchableOpacity style={styles.button} onPress={() => console.log('Navigate to Activities')}>
           <Text style={styles.buttonText}>My Activities</Text>
-        </TouchableOpacity>
+        </TouchableOpacity>    */}
+
       </View>
+
 
       <TouchableOpacity onPress={() => chatClicked()} style={styles.chatIcon} role="button">
         <Image source={require('../Media/chat.jpeg')} style={styles.chatImg} />

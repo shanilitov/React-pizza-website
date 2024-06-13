@@ -36,7 +36,7 @@ const ChatComponent = ({ messages, onSendMessage, onConnectionChange, connection
 
   return (
     <div>
-      <button onClick={()=> takeAway == null ? onConnectionChange(): console.log('Take-away')} style={{ marginLeft: '10px', padding: '10px', borderRadius: '10px', backgroundColor: 'red', color: 'black' }}>
+      <button onClick={()=> takeAway ? onConnectionChange(): console.log('Take-away')} style={{ marginLeft: '10px', padding: '10px', borderRadius: '10px', backgroundColor: 'red', color: 'black' }}>
         {connection === 'CS' ? 'SHOP' : 'DELIVER'}
       </button>
       <div style={{ height: '200px', overflowY: 'scroll', border: '1px solid gray', marginBottom: '10px', padding: '10px', borderRadius: '10px', display: 'flex', flexDirection: 'column' }}>

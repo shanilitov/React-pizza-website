@@ -172,7 +172,7 @@ const OrderComponent = () => {
       </div>
       <div style={{ flex: 2, padding: '20px', backgroundColor: 'black', borderRadius: '10px' }}>
         <Link to="/RegistrationComponent"><img src={back} className="backicon" /></Link>
-        <ChatComponent messages={messages} onSendMessage={handleSendMessage} onConnectionChange={onConnectionChange} connection={connection} takeAway={takeAway} />
+        <ChatComponent messages={messages} onSendMessage={handleSendMessage} onConnectionChange={onConnectionChange} connection={connection} takeAway={!takeAway} />
       </div>
     </div>
   );

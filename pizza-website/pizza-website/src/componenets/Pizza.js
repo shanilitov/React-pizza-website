@@ -78,7 +78,7 @@ function Pizza() {
                     {add.map((a, i) => (
                         <div key={i} className='displayadding'>
                             <input type='checkbox' onChange={() => checked(JSON.stringify(a), i)} />
-                            <p style={{ color: 'white', }}>{a.name}</p>
+                            <p style={{ color: 'white' }}>{a.name}</p>
                         </div>
                     ))}
                 </div>

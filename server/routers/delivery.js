@@ -170,10 +170,10 @@ router.get('/changeDeliveryStatus/:deliveryId/:orderId/:status', async (req, res
         // נפנה לשאילתה שבודקת את הסטטוס בסניף ונבדוק את התשובה שחזרה
         queries.verify_that_status_in_the_shop_is_1(req.params.orderId, (data) => {
             if (data) {
-                console.log(`status in the branch oredr is ${JSON.parse(data)[0]}`)
+                console.log(`status in the branch oredr is ${JSON.parse(data)[0].status}`)
                 // data = [0/1/2]
                 // רק אם זה מצב 1 נשנה את הססטוס של השלח וההזמנה בסניף
-                if (JSON.parse(data)[0] == 1) {
+                if (JSON.parse(data)[0].status == 1) {
                     // נשנה את הסטטוס של ההזמנה אצל השליח ל2
                     queries.changeSatus(req.params.orderId, req.params.deliveryId, req.params.status, (ans) => {
                         console.log(ans)
@@ -218,6 +218,18 @@ router.get('/changeToRecivedTakeAwayOrders/:orderId', async (req, res) => {
             res.status(500).json('Oreder is not ready yet!')
             return
         }
+        // אם הכל תקין, נשנה את הסטטוס בחנות ואת הסטטוס של ההזמנה
+        queries.update_delivery_in_shop(req.params.orderId, (ans) => {
+            if (ans) {
+                console.log('change the status in orders to 1')
+                // נעדכן גם את הסטטוס הכללי של ההזמנה
+                queries.update_delivery_in_order(req.params.orderId, callback)
+            }
+            else
+                callback(false)
+
+        })
+
     })
 
     // נכתוב מראש את הפונקציה שתשלח חזרה למשתמש אם הפעולה הצליחה, ונשתמש בה כשנרצה להחזיר תשובה בהמשך...
@@ -233,17 +245,7 @@ router.get('/changeToRecivedTakeAwayOrders/:orderId', async (req, res) => {
         }
     }
 
-    // אם הכל תקין, נשנה את הסטטוס בחנות ואת הסטטוס של ההזמנה
-    queries.update_delivery_in_shop(req.params.orderId, (ans) => {
-        if (ans) {
-            console.log('change the status in orders to 1')
-            // נעדכן גם את הסטטוס הכללי של ההזמנה
-            queries.update_delivery_in_order(req.params.orderId, callback)
-        }
-        else
-            callback(false)
 
-    })
 })
 
 

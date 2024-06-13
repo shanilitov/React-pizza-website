@@ -200,11 +200,13 @@ router.post('/getOrderByPhone', (req, res) => {
     }
 })
 
+
+// השאילתה שמצרפת את כל הטבלאות כדי להחזיר פירוט של הזמנה מסוימת כולל המוצרים שלה בצורת רשימה והאם היא איסוף עצמי.
 router.get('/get_full_order/:id', (req, res) => {
     console.log(`\nin get ful order: ${req.params.id}`)
     // מחזיר את הפרטים המלאים של ההזמנה.
     // יראה ככה: 
-    // [order_id, adress, order_date, status, client_name, products_list[{item_in_order_id, product_name, product_price, status}, {...}, ...], total_price, worker_id, is_takeaway, deliver_id, addings]
+    // [order_id, adress, order_date, status, client_name, products_list[{item_in_order_id, product_name, product_price, status}, {...}, ...], total_price, is_takeaway]
     queries.get_full_order(req.params.id, (order) => {
         console.log('@@@')
         console.log(order)

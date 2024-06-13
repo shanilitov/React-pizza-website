@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from 'react-router-dom';
-import back from '../img/back.png'
-import pay from '../img/pay.png'
-import delivery from '../img/delivery.png'
+import back from '../img/back.png';
+import pay from '../img/pay.png';
+import delivery from '../img/delivery.png';
+import '../CSS/Finish2.css';
 
 function Finish2() {
-    // pic up your branch and set the personal detailes and the adress
     const [branch, setBranch] = useState([]);
     const [choice, setChoice] = useState({ 'name': '' });
     const [name, setName] = useState('');
@@ -73,38 +73,37 @@ function Finish2() {
 
     return (
         <div className="finish2">
-            <Link to='/finish1'><img src={back} className="myButton" width='50px' /></Link>
-            <br />
-            <input type='text' placeholder="NAME" onChange={(event) => { setName(event.target.value); }} />
-            <div>
+            <div className="form-container">
+                <Link to='/finish1'><img src={back} className="myButton" width='50px' /></Link>
+                <input type='text' placeholder="NAME" onChange={(event) => { setName(event.target.value); }} />
                 <input type='text' placeholder="CITY" onChange={(event) => { setCity(event.target.value); }} />
                 <input type='text' placeholder="STREET" onChange={(event) => { setStreet(event.target.value); }} />
                 <input type='text' placeholder="NUMBER" onChange={(event) => { setNumber(event.target.value); }} />
+                <input type='text' placeholder="Phone Number" onChange={(event) => { setPhone(event.target.value); }} />
             </div>
-            <input type='text' placeholder="Phone Number" onChange={(event) => { setPhone(event.target.value); }} />
             
-            <div className="branchesinf2">
-                {branch.map((a, i) => {
-                    console.log(a);
-                    return (
-                        <div key={i}>
-                            <button
-                                onClick={() => { setChoice({ 'id': a.id, 'name': a.name }); }}
-                                style={choice.id === a.id ? { backgroundColor: 'green' } : {}}
-                            >
-                                <h1>{a.name}</h1>
-                                <p>{a.street + ' ' + a.number + ',' + a.city}</p>
-                            </button>
-                        </div>
-                    );
-                })}
-            </div>
-            <button id="takeaway" onClick={() => setTakeAway(!takeAway)} style={takeAway ? { backgroundColor: "green" } : {}}>
-                <h1>TAKE AWAY?</h1>
-                <p>press if yes</p>
-            </button>
-            <div>
-                <button onClick={() => { finish2Click(); }}><img src={delivery} className="myButton" width='50px' /></button>
+            <div className="buttons-container">
+                <div className="branchesinf2">
+                    {branch.map((a, i) => (
+                        <button
+                            key={i}
+                            onClick={() => { setChoice({ 'id': a.id, 'name': a.name }); }}
+                            style={choice.id === a.id ? { backgroundColor: 'green', color: 'white' } : {}}
+                        >
+                            <h1>{a.name}</h1>
+                            <p>{a.street + ' ' + a.number + ',' + a.city}</p>
+                        </button>
+                    ))}
+                </div>
+                <button 
+                    id="takeaway" 
+                    onClick={() => setTakeAway(!takeAway)} 
+                    className={takeAway ? 'active' : ''}
+                >
+                    <h1>TAKE AWAY?</h1>
+                    <p>press if yes</p>
+                </button>
+                <button type="submit" onClick={() => { finish2Click(); }}><img src={delivery} className="myButton" width='50px' /></button>
             </div>
         </div>
     );
