@@ -53,6 +53,8 @@
   margin-left: 10px;
 }
 
+.tag {}
+
 .shoplogo {
   width: 120px;
   height: auto;
@@ -68,25 +70,29 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  position: sticky; /* הוספת סטיקי */
-  top: 0; /* להבטיח שהכותרת תישאר בחלק העליון */
- 
-  z-index: 1000; /* כדי שהכותרת תהיה מעל התוכן */
+  position: sticky;
+  /* הוספת סטיקי */
+  top: 0;
+  /* להבטיח שהכותרת תישאר בחלק העליון */
+
+  z-index: 1000;
+  /* כדי שהכותרת תהיה מעל התוכן */
 }
 
 
 .homediv {
   width: 90%;
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   border-radius: 25px;
-  align-items: center;
+  align-items: flex-start;
   border: 2px solid black;
   color: black;
   border-radius: 10px;
   padding: 10px;
   transition: background-color 0.3s ease;
-  /* תוסיף אנימציה חלקה */
+  justify-content: space-between;
+  background-color: #171717a1;
 }
 
 .homediv:hover {
@@ -117,7 +123,7 @@
 
 .homep {
   font-size: 1.5rem;
-
+  color: #c62d1f;
 }
 
 a:-webkit-any-link {
@@ -129,17 +135,17 @@ a:-webkit-any-link {
 }
 
 .homelink {
-  width: 50%;
+  /* width: 50%; */
   display: flex;
   justify-content: space-around;
-  margin-top: 50px;
-
+  margin-top: 5px;
+  height: fit-content;
 }
 
 .branchdiv {
   width: 200px;
-  height: 100px;
-  
+  height: 150;
+
   display: flex;
   flex-direction: column;
   margin-top: 10px;
@@ -151,6 +157,7 @@ a:-webkit-any-link {
 
 .branchtext {
   margin: 5px;
+  color: #ffffff;
 }
 
 
@@ -203,6 +210,7 @@ a:-webkit-any-link {
   /* אנימציה עבור צל והתפרצות */
 }
 
+
 .productdiv:hover {
   transform: scale(1.05);
   /* אפקט זוהר כשעוברים על ה-DIV */
@@ -214,6 +222,15 @@ a:-webkit-any-link {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.productAddButton {
+  background-color: red;
+  width: fit-content;
+}
+
+.redText {
+  color: red;
 }
 
 .producttext {
@@ -321,14 +338,18 @@ a:-webkit-any-link {
 .displayadding {
   display: flex;
   flex-direction: row;
-  align-items: center; /* זה מוודא שכל הילדים יהיו במרכז על הציר האנכי */
+  align-items: center;
+  /* זה מוודא שכל הילדים יהיו במרכז על הציר האנכי */
   width: 100px;
   font-size: 1.5rem;
   word-wrap: break-word;
 }
+
 .displayadding input[type='checkbox'] {
-  width: 20px; /* הגדרת הרוחב הרצוי */
-  height: 20px; /* הגדרת הגובה הרצוי */
+  width: 20px;
+  /* הגדרת הרוחב הרצוי */
+  height: 20px;
+  /* הגדרת הגובה הרצוי */
 }
 
 .pizza {
@@ -342,6 +363,7 @@ a:-webkit-any-link {
   width: 500px;
   height: 500px;
   word-wrap: break-word;
+  border-radius: 50%;
 }
 
 .bandt {
@@ -431,4 +453,13 @@ a:-webkit-any-link {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+#containerPizza {
+  background-image: url('./img/black-background.jpeg');
+  background-size: contain;
+  background-position: center;
+}
+#addingsDiv{
+  background-color: #232323ab;
 }

@@ -1,12 +1,13 @@
 #MainDiv{
     display: flex;
     flex-direction: column;
+    background-image: url('../img/black-background.jpeg');
+    background-size: contain;
+    background-position: center;
 }
 
 .menuContainer{
-    background-image: url('../img/back-ground.jfif'); /* החלף background.jpg בשם התמונה שלך */
-    background-size: cover;
-    background-position: center;
+
 }
 
 .menudiv{

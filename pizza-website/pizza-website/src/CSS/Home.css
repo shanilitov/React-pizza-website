@@ -1,11 +1,23 @@
-.Homecontainer {
-    background-image: url('../img/back-ground.jfif'); /* החלף background.jpg בשם התמונה שלך */
+/* .Homecontainer {
+    background-image: url('../img/black-background.jpeg'); 
     background-size: cover;
     background-position: center;
-  }
+  } */
   #homecontainer{
-    height: 100vh;
-    background-image: url('../img/back-ground.jfif'); /* החלף background.jpg בשם התמונה שלך */
-    background-size: cover;
+    height: 100%;
+    background-image: url('../img/black-background.jpeg');
+    background-size: contain;
     background-position: center;
   }
+  .Homecontent {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    flex-wrap: wrap;
+    justify-content: center;
+    /* align-content: flex-end; */
+    color: #df1e08;
+    text-align: left;
+    margin-left: 10px;
+    background-color: #0a03037d;
+}

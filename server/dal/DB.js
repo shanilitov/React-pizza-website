@@ -4,8 +4,7 @@ const pool = mysql.createPool({
     host: 'localhost',
     port: 3306,
     user: 'root',
-    password: 'od1cos2mysql',
-    // database: 'pizzawebsite' // בטעות זה היה בהערה בקוד שלך
+    password: 'od1cos2mysql'
 });
 
 async function query(sql, callback) {

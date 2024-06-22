@@ -90,7 +90,7 @@ function Finish2() {
                             onClick={() => { setChoice({ 'id': a.id, 'name': a.name }); }}
                             style={choice.id === a.id ? { backgroundColor: 'green', color: 'white' } : {}}
                         >
-                            <h1>{a.name}</h1>
+                            <h1 className="redText">{a.name}</h1>
                             <p>{a.street + ' ' + a.number + ',' + a.city}</p>
                         </button>
                     ))}

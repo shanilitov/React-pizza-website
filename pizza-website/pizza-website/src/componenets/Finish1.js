@@ -63,9 +63,9 @@ function Finish1() {
                 {shoppinglist.map((a, i) => (
                     <div className="finish1p" key={i}>
                         <h1 className="h1f1">{a.product.name}</h1>
-                        <p>{`Quantity: ${a.quantity}`}</p>
+                        <p className="redText">{`Quantity: ${a.quantity}`}</p>
                         {a.product.id === 1 && a.product.name === 'pizza' && addings.length > 0 && (
-                            <p>{`Addings: ${addings.join(', ')}`}</p>
+                            <p className="redText">{`Addings: ${addings.join(', ')}`}</p>
                         )}
                     </div>
                 ))}

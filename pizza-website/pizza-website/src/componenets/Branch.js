@@ -10,7 +10,7 @@ function Branch(data) {
             <img src={branch} className="branchimg"/>
             <div className="branchdiv">
                 <h1 className="branchtext">{temp.name}</h1>
-                <p className="branchtext">{temp.street + ' ' + temp.number + ', ' + temp.city}</p>
+                <p className="branchtext">{temp.street + ' street number ' + temp.number + ', ' + temp.city}</p>
 
             </div>
         </div>

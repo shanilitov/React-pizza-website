@@ -4,6 +4,7 @@ import branch from '../img/branch.png'
 import shoping from '../img/shoping.jfif'
 import login from '../img/login.jpg'
 import logo from '../img/logo.jpg'
+import track from '../img/finish2.jfif'
 
 
 function Header() {
@@ -13,6 +14,7 @@ function Header() {
             <div>
                 <Link to='/branches'><img src={branch} className="headerimg" alt="branches list" /></Link>
                 <Link to='/shoppingcart'><img src={shoping} className="headerimg" alt="your bag" /></Link>
+                <Link to='/RegistrationComponent'><img src={track} className="headerimg" alt="your bag" /></Link>
                 
             </div>
         </div>

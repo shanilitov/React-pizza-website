@@ -71,10 +71,10 @@ function Pizza() {
     };
 
     return (
-        <div>
+        <div id="containerPizza">
             <Header />
             <div className="pizza">
-                <div>
+                <div id="addingsDiv">
                     {add.map((a, i) => (
                         <div key={i} className='displayadding'>
                             <input type='checkbox' onChange={() => checked(JSON.stringify(a), i)} />
